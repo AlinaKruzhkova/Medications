@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
+
+    id("com.google.gms.google-services") version "4.4.2" apply false
 }
 
 android {
@@ -41,6 +43,13 @@ android {
 }
 
 dependencies {
+
+    implementation(libs.play.services.auth)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     implementation(libs.hilt.android.v2511)
     kapt(libs.hilt.android.compiler.v2511)

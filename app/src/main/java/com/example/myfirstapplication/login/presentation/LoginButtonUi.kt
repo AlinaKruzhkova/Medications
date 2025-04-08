@@ -20,7 +20,7 @@ import com.example.myfirstapplication.R
 import com.example.myfirstapplication.ui.theme.Burgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
-@Composable//аннотация, кот показывает что функция ниже будет отображать
+@Composable //аннотация, кот показывает что функция ниже будет отображать
 fun LoginButtonUi(
     modifier: Modifier,
     onClick: () -> Unit
@@ -33,7 +33,7 @@ fun LoginButtonUi(
                 color = Burgundy,
                 shape = RoundedCornerShape(16.dp)
             )
-            .clickable {  },
+            .clickable { },
 
         contentAlignment = Alignment.Center
     ) {
