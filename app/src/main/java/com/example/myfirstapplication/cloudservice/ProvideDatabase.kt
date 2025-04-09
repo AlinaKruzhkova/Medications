@@ -28,7 +28,8 @@ interface ProvideDatabase {
         }
 
         companion object {
-            private const val DATABASE_URL = "" // TODO: ADD URL FOR OUR DATABASE
+            private const val DATABASE_URL =
+                "https://medications-ccfe8-default-rtdb.europe-west1.firebasedatabase.app"
         }
     }
 }
