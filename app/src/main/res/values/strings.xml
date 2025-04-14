@@ -1,8 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">My First Application</string>
     <string name="registration_text">Войти с помощью Google</string>
     <string name="authorization_text">У меня уже есть профиль</string>
     <string name="next_text">Далее</string>
     <string name="title_text">Мои лекарства</string>
     <string name="hello_text">Удобное расписание приёма лекарственных препаратов уже с Вами!</string>
+    <string name="your_web_client_id" translatable="false" tools:ignore="TypographyDashes">866220557705-vlq9asm6rl9o31di5t6d4oemdopugmqb.apps.googleusercontent.com</string>
 </resources>
