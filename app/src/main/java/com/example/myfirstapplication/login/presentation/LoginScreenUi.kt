@@ -39,38 +39,45 @@ fun LoginScreenUi() {
         modifier = Modifier
             .fillMaxSize()
             .background(color = Pink)
-            .padding(12.dp)
-            .padding(vertical = 36.dp),
+            .padding(12.dp, vertical = 64.dp),
         horizontalAlignment = Alignment.CenterHorizontally, // Центрируем содержимое по горизонтали
         verticalArrangement = Arrangement.Center // Центрируем содержимое по вертикали
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 36.dp)
         ) {
-            Spacer(modifier = Modifier.width(16.dp))
-            Image(painterResource(R.drawable.capsule_pill), contentDescription = null)
-            Spacer(modifier = Modifier.width(8.dp))
+            Image(
+                painterResource(R.drawable.capsule_pill),
+                contentDescription = null
+            )
+            Spacer(
+                modifier = Modifier.width(8.dp)
+            )
             Text(
                 text = stringResource(R.string.title_text),
                 color = Rose,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = customFont
+                fontFamily = customFont,
             )
         }
         Text(
             text = stringResource(R.string.hello_text),
-
             color = DeepBurgundy,
             fontSize = 15.sp, // Размер шрифта для подзаголовка
             modifier = Modifier.padding(bottom = 24.dp), // Отступ снизу (опционально)
             textAlign = TextAlign.Center, // Выравнивание текста по центру
             fontWeight = FontWeight.Bold,
-            fontFamily = customFont
+            fontFamily = customFont,
+            lineHeight = 24.sp
         )
-        Spacer(modifier = Modifier.weight(1f))
-        LoginButtonUi(onClick = {}, modifier = Modifier.padding(bottom = 16.dp))
+        Spacer(
+            modifier = Modifier.weight(1f)
+        )
+        LoginButtonUi(
+            onClick = {}, modifier = Modifier.padding(bottom = 16.dp)
+        )
     }
 }
 
@@ -78,10 +85,8 @@ fun LoginScreenUi() {
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
+fun PreviewLoginScreen() {
     LoginScreenUi()
 }
-
-
 
 
