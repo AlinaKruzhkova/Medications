@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
-
+    id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services") version "4.4.2" apply false
 }
 
@@ -44,6 +44,9 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.activity.compose)
+
     implementation(libs.play.services.auth)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
@@ -52,6 +55,7 @@ dependencies {
     implementation(libs.googleid)
 
     implementation(libs.hilt.android.v2511)
+    implementation(libs.androidx.navigation.compose)
     kapt(libs.hilt.android.compiler.v2511)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

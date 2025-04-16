@@ -28,11 +28,14 @@ interface LoginUiState {
     object Initial : LoginUiState {
         @Composable
         override fun Update(viewModel: LoginViewModel, navigate: () -> Unit) {
-            LoginButtonUi(Modifier) {
-                viewModel.login()
-            }
+            LoginScreenUi(
+                navigate = {
+                    viewModel.login()
+                }
+            )
         }
     }
+
 
     data class Error(private val message: String) : LoginUiState {
         @Composable

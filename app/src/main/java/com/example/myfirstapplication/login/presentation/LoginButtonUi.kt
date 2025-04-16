@@ -33,7 +33,7 @@ fun LoginButtonUi(
                 color = Burgundy,
                 shape = RoundedCornerShape(16.dp)
             )
-            .clickable { },
+            .clickable { onClick() },
 
         contentAlignment = Alignment.Center
     ) {

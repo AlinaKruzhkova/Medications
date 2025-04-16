@@ -29,7 +29,7 @@ import com.example.myfirstapplication.ui.theme.Rose
 
 
 @Composable
-fun LoginScreenUi() {
+fun LoginScreenUi(navigate: () -> Unit) {
 
     val customFont = FontFamily(
         Font(R.font.rubik_one_regular)
@@ -76,17 +76,14 @@ fun LoginScreenUi() {
             modifier = Modifier.weight(1f)
         )
         LoginButtonUi(
-            onClick = {}, modifier = Modifier.padding(bottom = 16.dp)
+            onClick = navigate,
+            modifier = Modifier.padding(bottom = 16.dp)
         )
     }
 }
 
-
-
 @Preview(showBackground = true)
 @Composable
-fun PreviewLoginScreen() {
-    LoginScreenUi()
+fun LoginScreenPreview() {
+    LoginScreenUi(navigate = {})
 }
-
-
