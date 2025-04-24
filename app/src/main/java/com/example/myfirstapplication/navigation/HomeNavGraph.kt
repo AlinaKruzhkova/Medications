@@ -4,22 +4,22 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.myfirstapplication.ui.theme.PlaceholderScreen
 
 @Composable
-fun HomeNavGraph(bottomNavController: NavHostController, navController: NavHostController) {
+fun HomeNavGraph(bottomNavController: NavHostController) {
     NavHost(
         navController = bottomNavController,
-        route = Graph.HOME,
         startDestination = BottomItem.MyProfile.route
     ) {
-        composable(route = BottomItem.MyProfile.route) {
-            // TODO: Add Screen
+        composable(BottomItem.MyProfile.route) {
+            PlaceholderScreen("My Profile")
         }
-        composable(route = BottomItem.Drug.route) {
-            // TODO: Add Screen
+        composable(BottomItem.Drug.route) {
+            PlaceholderScreen("Drug Screen")
         }
-        composable(route = BottomItem.Calendar.route) {
-            // TODO: Add Screen
+        composable(BottomItem.Calendar.route) {
+            PlaceholderScreen("Calendar")
         }
     }
 }

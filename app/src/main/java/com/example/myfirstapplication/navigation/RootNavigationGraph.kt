@@ -1,7 +1,6 @@
 package com.example.myfirstapplication.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,11 +12,11 @@ fun RootNavigationGraph(navController: NavHostController) {
         navController = navController,
         startDestination = Graph.LOGIN
     ) {
-        composable(route = Graph.HOME) {
-            // TODO: ADD HOMESCREEN
-        }
         composable(route = Graph.LOGIN) {
             LoginScreen(navController)
+        }
+        composable(route = Graph.HOME) {
+            HomeScreen()
         }
     }
 }
@@ -31,11 +30,10 @@ object Graph {
 fun LoginScreen(navHostController: NavHostController) {
     LoginScreenInner {
         navHostController.navigate(Graph.HOME) {
-            popUpTo(navHostController.graph.findStartDestination().id) {
+            popUpTo(Graph.LOGIN) {
                 inclusive = true
             }
             launchSingleTop = true
-            restoreState = true
         }
     }
 }
