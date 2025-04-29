@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.myfirstapplication.ui.theme.PlaceholderScreen
+import com.example.myfirstapplication.PlaceholderScreen
 
 @Composable
 fun HomeNavGraph(bottomNavController: NavHostController) {

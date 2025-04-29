@@ -1,14 +1,16 @@
-package com.example.myfirstapplication.ui.theme
+package com.example.myfirstapplication
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
 fun PlaceholderScreen(title: String) {
-    androidx.compose.material3.Text(
+    Text(
         text = title,
         modifier = Modifier.fillMaxSize(),
-        style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
+        style = MaterialTheme.typography.headlineLarge
     )
 }
