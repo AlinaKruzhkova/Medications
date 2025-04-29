@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.ui.theme.Burgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
-@Composable//аннотация, кот показывает что функция ниже будет отображать
+@Composable
 fun AddButtonUi(
     modifier: Modifier,
     onClick: () -> Unit
