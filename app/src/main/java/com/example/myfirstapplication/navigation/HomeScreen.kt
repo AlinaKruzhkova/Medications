@@ -68,7 +68,7 @@ fun BottomBar(
                 }, icon = {
                     Icon(painter = painterResource(id = screen.iconId), contentDescription = "Icon")
                 }, label = {
-                    Text(text = screen.tittle, fontSize = 9.sp)
+                    Text(text = screen.title, fontSize = 9.sp)
                 },
                 colors = NavigationBarItemColors(
                     selectedIconColor = colorResource(R.color.black),

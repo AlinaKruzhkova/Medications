@@ -77,4 +77,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(platform(libs.firebase.bom.v33130))
+
+    implementation("androidx.compose.animation:animation:1.6.0")
 }
