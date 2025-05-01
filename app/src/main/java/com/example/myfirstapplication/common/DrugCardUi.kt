@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
+import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.White
@@ -108,7 +109,8 @@ fun DrugAndDays(
             IconButton(onClick = onDelete) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_delete),
-                    contentDescription = "Delete"
+                    contentDescription = "Delete",
+                    tint = DarkBurgundy
                 )
             }
         }
