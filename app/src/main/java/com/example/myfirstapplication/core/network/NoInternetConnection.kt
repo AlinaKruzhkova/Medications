@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.core
+package com.example.myfirstapplication.core.network
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,16 +16,19 @@ import com.example.myfirstapplication.R
 
 @Composable
 fun NoInternet() {
+    val backgroundColor = MaterialTheme.colorScheme.errorContainer
+    val textColor = MaterialTheme.colorScheme.onErrorContainer
+
     Box(
         Modifier
             .fillMaxWidth()
-            .background(color = colorResource(R.color.purple_200)),
+            .background(color = backgroundColor),
         contentAlignment = Alignment.Center
     ) {
         Text(
             modifier = Modifier.padding(8.dp),
             text = stringResource(R.string.no_internet),
-            color = colorResource(R.color.black),
+            color = textColor,
         )
     }
 }

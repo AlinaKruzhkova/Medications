@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
-import com.example.myfirstapplication.core.ConnectionViewModel
-import com.example.myfirstapplication.core.NoInternet
 import com.example.myfirstapplication.core.ScreenPreview
+import com.example.myfirstapplication.core.network.ConnectionViewModel
+import com.example.myfirstapplication.core.network.NoInternet
 import com.example.myfirstapplication.navigation.RootNavigationGraph
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -13,13 +13,13 @@ fun HomeNavGraph(bottomNavController: NavHostController) {
         startDestination = BottomItem.MyProfile.route
     ) {
         composable(BottomItem.MyProfile.route) {
-            PlaceholderScreen("My Profile")
+            PlaceholderScreen(BottomItem.MyProfile.tittle)
         }
         composable(BottomItem.Drug.route) {
-            PlaceholderScreen("Drug Screen")
+            PlaceholderScreen(BottomItem.MyProfile.tittle)
         }
         composable(BottomItem.Calendar.route) {
-            PlaceholderScreen("Calendar")
+            PlaceholderScreen(BottomItem.MyProfile.tittle)
         }
     }
 }
