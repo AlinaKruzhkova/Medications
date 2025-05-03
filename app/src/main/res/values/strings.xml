@@ -4,6 +4,7 @@
     <string name="authorization_text">У меня уже есть профиль</string>
     <string name="next_text">Далее</string>
     <string name="title_text">Мои лекарства</string>
+    <string name="menu_text">Здесь пока ничего нет\n. . .</string>
     <string name="hello_text">Удобное расписание приёма\nлекарственных препаратов уже с\nВами!</string>
     <string name="your_web_client_id" translatable="false" tools:ignore="TypographyDashes">866220557705-tcmrq4q1foh49kkld7dj15i2l9odbng7.apps.googleusercontent.com</string>
     <string name="no_internet">No internet connection</string>

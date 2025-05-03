@@ -36,6 +36,6 @@ fun PlaceholderScreen(title: String) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        DrugCardUi("Абакал", "Ежедневно", 12, {})
+        DrugCardUi("Абактал", "Ежедневно", 12, {})
     }
 }
