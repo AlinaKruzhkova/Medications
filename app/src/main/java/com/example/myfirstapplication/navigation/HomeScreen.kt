@@ -21,6 +21,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.myfirstapplication.R
+import com.example.myfirstapplication.ui.theme.DarkBurgundy
+import com.example.myfirstapplication.ui.theme.GrayPink
 
 @Composable
 fun HomeScreen() {
@@ -48,8 +50,8 @@ fun BottomBar(
     val currentDestination = navBackStackEntry?.destination
     val bottomBarDestination = screens.any { it.route == currentDestination?.route }
     if (bottomBarDestination) NavigationBar(
-        containerColor = colorResource(R.color.teal_700),
-        contentColor = colorResource(R.color.black),
+        containerColor = GrayPink,
+        contentColor = DarkBurgundy,
         tonalElevation = 100.dp
     ) {
         screens.forEach { screen ->
@@ -71,13 +73,13 @@ fun BottomBar(
                     Text(text = screen.title, fontSize = 9.sp)
                 },
                 colors = NavigationBarItemColors(
-                    selectedIconColor = colorResource(R.color.black),
-                    selectedTextColor = colorResource(R.color.black),
-                    selectedIndicatorColor = colorResource(R.color.teal_200),
-                    unselectedIconColor = colorResource(R.color.white),
-                    unselectedTextColor = colorResource(R.color.white),
-                    disabledIconColor = colorResource(R.color.white),
-                    disabledTextColor = colorResource(R.color.white)
+                    selectedIconColor = colorResource(R.color.white),
+                    selectedTextColor = colorResource(R.color.white),
+                    selectedIndicatorColor = GrayPink,
+                    unselectedIconColor = DarkBurgundy,
+                    unselectedTextColor = DarkBurgundy,
+                    disabledIconColor = DarkBurgundy,
+                    disabledTextColor = DarkBurgundy
                 )
             )
 
