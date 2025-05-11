@@ -78,5 +78,6 @@ dependencies {
 
     implementation(platform(libs.firebase.bom.v33130))
 
-    implementation("androidx.compose.animation:animation:1.6.0")
+    implementation("androidx.compose.animation:animation:1.8.0")
+    implementation("androidx.compose.material:material:1.8.0")
 }

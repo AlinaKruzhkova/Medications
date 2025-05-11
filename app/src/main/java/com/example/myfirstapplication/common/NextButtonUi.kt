@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.core
+package com.example.myfirstapplication.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

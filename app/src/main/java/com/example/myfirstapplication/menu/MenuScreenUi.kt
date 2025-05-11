@@ -3,12 +3,15 @@ package com.example.myfirstapplication.menu
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -26,9 +31,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
-import com.example.myfirstapplication.common.DrugCardUi
 import com.example.myfirstapplication.ui.theme.Pink
 import com.example.myfirstapplication.ui.theme.Rose
+
+
+val Pink = Color(0xFFEECED8)
+val Rose = Color(0xFF924959)
+
 
 @Composable
 fun MenuScreenUi (navigate: () -> Unit) {
@@ -47,9 +56,13 @@ fun MenuScreenUi (navigate: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally, // Центрируем содержимое по горизонтали
         verticalArrangement = Arrangement.Center // Центрируем содержимое по вертикали
     ) {
+        //Фикс заголовок с иконкой
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 36.dp),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 36.dp)
+            horizontalArrangement = Arrangement.Center // Центрируем иконку и текст в строке
         ) {
             Image(
                 painterResource(R.drawable.capsule_pill),
@@ -67,12 +80,20 @@ fun MenuScreenUi (navigate: () -> Unit) {
             )
         }
 
-//  Прокручиваемый список элементов
+// Контейнер для списка с градиентом
+Box(
+    modifier = Modifier
+        .weight(1f) // Занимает оставшееся пространство
+        .fillMaxWidth()
+) {
+    //  Прокручиваемый список элементов
     LazyColumn (
         modifier = Modifier
-            .weight(1f) // занимает всё оставшееся пространство
-            .fillMaxWidth(),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
+            .fillMaxWidth(), // занимает всё пространство
+        contentPadding = PaddingValues(
+            horizontal = 12.dp,
+            vertical = 8.dp,
+        )
     ) {
         items(itemsList) { itemText ->
             DrugCardUi(
@@ -80,44 +101,60 @@ fun MenuScreenUi (navigate: () -> Unit) {
                 dosageInfo = "Ежедневно",
                 pillsLeft = 5,
                 {}
-                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
-
-        // Кнопка внизу, тоже фиксирована
-        AddButtonUi(
-            onClick = navigate,
+// Градиент в верхней части списка
+    Box(
+        modifier = Modifier
+            .align(Alignment.TopCenter)
+            .fillMaxWidth()
+            .height(40.dp) // Высота градиента
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Pink, Pink.copy(alpha = 0f)) // От цвета фона до прозрачного
+                )
+            )
+    )
+    // Градиент снизу
+    Box(
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .fillMaxWidth()
+            .height(40.dp)
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Pink.copy(alpha = 0f), Pink)
+                )
+            )
+    )
+}
+        // Обертка для кнопки, чтобы разместить ее справа
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
-        )
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            AddButtonUi(
+                onClick = navigate,
+                modifier = Modifier
+            )
+        }
     }
 }
 
-//        Text(
-//            text = stringResource(R.string.menu_text),
-//            color = DeepBurgundy,
-//            fontSize = 15.sp, // Размер шрифта для подзаголовка
-//            modifier = Modifier.padding(bottom = 24.dp), // Отступ снизу (опционально)
-//            textAlign = TextAlign.Center, // Выравнивание текста по центру
-//            fontWeight = FontWeight.Bold,
-//            fontFamily = customFont,
-//            lineHeight = 24.sp
-//        )
-//        Spacer(
-//            modifier = Modifier.weight(1f)
-//        )
-//        AddButtonUi(
-//            onClick = navigate,
-//            modifier = Modifier
-//                .padding(bottom = 16.dp)
-//
-//        )
-//    }
-//}
+
 
 @Preview(showBackground = true)
 @Composable
 fun MenuScreenPreview() {
     MenuScreenUi(navigate = {})
 }
+
+
+
+
+// TOD: красивый lazycolumn и переместить кнопку вправо и попробовать сделать тень как в фигма
+
