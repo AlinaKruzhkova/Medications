@@ -1,10 +1,12 @@
 package com.example.myfirstapplication.common
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -91,14 +94,23 @@ fun DrugAndDays(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column {
+                var isExpanded by remember { mutableStateOf(false) }
+
                 Text(
                     text = drugName,
                     style = TextStyle(
                         fontSize = 24.sp,
                         fontFamily = customFont,
                         color = DeepBurgundy
-                    )
+                    ),
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .clickable { isExpanded = !isExpanded }
+                        .animateContentSize(animationSpec = tween(durationMillis = 300))
                 )
+
                 Text(
                     text = dosageInfo,
                     fontSize = 14.sp,
@@ -153,7 +165,7 @@ fun getPillsLeftText(count: Int): String {
 @Composable
 fun DrugCardUiPreview() {
     DrugCardUi(
-        drugName = "Абактал",
+        drugName = "АбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбактал АбакталАбакталАбакталАбактал АбакталАбакталАбактал АбакталАбактал АбакталАбактал АбакталАбактал АбакталАбактал",
         dosageInfo = "Ежедневно",
         pillsLeft = 121,
         onDelete = { /* handle delete */ }
