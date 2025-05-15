@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.common
+package com.example.myfirstapplication.menu
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize

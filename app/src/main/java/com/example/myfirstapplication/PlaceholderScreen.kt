@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myfirstapplication.common.DrugCardUi
-import com.example.myfirstapplication.common.customFont
+import com.example.myfirstapplication.menu.DrugCardUi
+import com.example.myfirstapplication.menu.customFont
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
