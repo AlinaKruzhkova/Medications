@@ -1,6 +1,7 @@
 package com.example.myfirstapplication.cloudservice
 
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import javax.inject.Inject
@@ -14,6 +15,8 @@ interface MyUser : UserNotLoggedIn {
     fun id(): String
 
     fun profile(): Pair<String, String>
+
+    fun avatarUrl(): String
 
     fun userProfileCloud(): Pair<String, String>
 
@@ -35,6 +38,10 @@ interface MyUser : UserNotLoggedIn {
         else {
             val user = user()!!
             Pair(user.email!!, user.displayName ?: "")
+        }
+
+        override fun avatarUrl(): String {
+            return FirebaseAuth.getInstance().currentUser?.photoUrl?.toString() ?: ""
         }
 
         override fun userProfileCloud(): Pair<String, String> {

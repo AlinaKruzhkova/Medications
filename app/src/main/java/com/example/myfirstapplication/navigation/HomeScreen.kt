@@ -25,7 +25,7 @@ import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.GrayPink
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
     val bottomNavController = rememberNavController()
     Scaffold(
         bottomBar = {
@@ -33,7 +33,7 @@ fun HomeScreen() {
         }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
-            HomeNavGraph(bottomNavController = bottomNavController)
+            HomeNavGraph(bottomNavController, navController)
         }
     }
 }
