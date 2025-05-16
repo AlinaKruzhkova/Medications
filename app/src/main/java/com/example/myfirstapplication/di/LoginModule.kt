@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.login
+package com.example.myfirstapplication.di
 
 import com.example.myfirstapplication.cloudservice.Auth
 import com.example.myfirstapplication.cloudservice.MyUser

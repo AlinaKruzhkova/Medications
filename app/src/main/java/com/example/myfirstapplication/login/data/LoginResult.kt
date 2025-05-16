@@ -1,6 +1,6 @@
 package com.example.myfirstapplication.login.data
 
-import com.example.myfirstapplication.login.presentation.LoginUiState
+import com.example.myfirstapplication.login.presentation.state.LoginUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 
 interface LoginResult {

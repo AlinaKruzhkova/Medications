@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.login.presentation
+package com.example.myfirstapplication.login.presentation.state
 
 import android.app.Activity
 import android.content.Intent
@@ -13,6 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.core.ManageResource
+import com.example.myfirstapplication.login.presentation.LoginButtonUi
+import com.example.myfirstapplication.login.presentation.LoginScreenUi
+import com.example.myfirstapplication.login.presentation.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.Scopes
@@ -42,7 +45,7 @@ interface LoginUiState {
         override fun Update(viewModel: LoginViewModel, navigate: () -> Unit) {
             Column {
                 Text(text = message)
-                LoginButtonUi(Modifier) {
+                LoginButtonUi(Modifier.Companion) {
                     viewModel.login()
                 }
             }
@@ -67,8 +70,8 @@ interface LoginUiState {
         @Composable
         override fun Update(viewModel: LoginViewModel, navigate: () -> Unit) {
             Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
+                contentAlignment = Alignment.Companion.Center,
+                modifier = Modifier.Companion.fillMaxSize()
             ) {
                 CircularProgressIndicator()
             }
