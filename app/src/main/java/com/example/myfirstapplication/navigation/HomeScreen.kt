@@ -40,49 +40,51 @@ fun HomeScreen() {
 
 
 @Composable
-fun BottomBar(
-    navController: NavHostController,
-) {
-    val screens = listOf(
-        BottomItem.Calendar, BottomItem.Drug, BottomItem.MyProfile,
-    )
+fun BottomBar(navController: NavHostController) {
+
+    val screens = BottomItem.entries.toTypedArray()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
-    if (bottomBarDestination) NavigationBar(
-        containerColor = GrayPink,
-        contentColor = DarkBurgundy,
-        tonalElevation = 100.dp
-    ) {
-        screens.forEach { screen ->
-            NavigationBarItem(
-                selected = currentDestination?.hierarchy?.any {
-                    it.route == screen.route
-                } == true,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }, icon = {
-                    Icon(painter = painterResource(id = screen.iconId), contentDescription = "Icon")
-                }, label = {
-                    Text(text = screen.title, fontSize = 9.sp)
-                },
-                colors = NavigationBarItemColors(
-                    selectedIconColor = colorResource(R.color.white),
-                    selectedTextColor = colorResource(R.color.white),
-                    selectedIndicatorColor = GrayPink,
-                    unselectedIconColor = DarkBurgundy,
-                    unselectedTextColor = DarkBurgundy,
-                    disabledIconColor = DarkBurgundy,
-                    disabledTextColor = DarkBurgundy
-                )
-            )
+    val shouldShowBottomBar = screens.any { it.route == currentDestination?.route }
 
+    if (shouldShowBottomBar) {
+        NavigationBar(
+            containerColor = GrayPink,
+            contentColor = DarkBurgundy,
+            tonalElevation = 100.dp
+        ) {
+            screens.forEach { screen ->
+                NavigationBarItem(
+                    selected = currentDestination?.hierarchy?.any {
+                        it.route == screen.route
+                    } == true,
+                    onClick = {
+                        navController.navigate(screen.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }, icon = {
+                        Icon(
+                            painter = painterResource(id = screen.iconId),
+                            contentDescription = "Icon"
+                        )
+                    }, label = {
+                        Text(text = screen.title, fontSize = 9.sp)
+                    },
+                    colors = NavigationBarItemColors(
+                        selectedIconColor = colorResource(R.color.white),
+                        selectedTextColor = colorResource(R.color.white),
+                        selectedIndicatorColor = GrayPink,
+                        unselectedIconColor = DarkBurgundy,
+                        unselectedTextColor = DarkBurgundy,
+                        disabledIconColor = DarkBurgundy,
+                        disabledTextColor = DarkBurgundy
+                    )
+                )
+            }
         }
     }
 }

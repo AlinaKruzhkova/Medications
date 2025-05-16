@@ -11,7 +11,7 @@ import com.example.myfirstapplication.menu.MenuScreenUi
 fun HomeNavGraph(bottomNavController: NavHostController) {
     NavHost(
         navController = bottomNavController,
-        startDestination = BottomItem.MyProfile.route
+        startDestination = BottomItem.Drug.route
     ) {
         composable(BottomItem.MyProfile.route) {
             PlaceholderScreen(BottomItem.MyProfile.title)

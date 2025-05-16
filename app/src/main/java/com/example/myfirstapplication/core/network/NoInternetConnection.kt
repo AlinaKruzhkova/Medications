@@ -14,7 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.myfirstapplication.R
-import com.example.myfirstapplication.common.customFont
+import com.example.myfirstapplication.menu.customFont
 
 @Composable
 fun NoInternet() {
