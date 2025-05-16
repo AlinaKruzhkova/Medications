@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -34,17 +32,12 @@ import com.example.myfirstapplication.R
 import com.example.myfirstapplication.ui.theme.Pink
 import com.example.myfirstapplication.ui.theme.Rose
 
-
-val Pink = Color(0xFFEECED8)
-val Rose = Color(0xFF924959)
-
-
 @Composable
 fun MenuScreenUi (navigate: () -> Unit) {
     val customFont = FontFamily(
         Font(R.font.rubik_one_regular)
     )
-    val itemsList = List(50) {
+    val itemsList = List(10) {
         "Элемент ${it + 1}"
     }
 
