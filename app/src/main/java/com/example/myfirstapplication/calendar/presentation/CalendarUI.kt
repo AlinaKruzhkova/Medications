@@ -1,5 +1,7 @@
 package com.example.myfirstapplication.calendar.presentation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -9,6 +11,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -73,16 +76,8 @@ fun CalendarUI(onDateSelected: (LocalDate) -> Unit) {
                 }
             }
     ) {
-        Row {
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                modifier = Modifier.padding(12.dp),
-                text = selectedDate.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale("ru"))
-                    .replaceFirstChar { it.uppercase() } + " ${selectedDate.year}",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-            )
-        }
+
+        MonthAndYearRow(selectedDate)
 
         androidx.compose.animation.AnimatedContent(
             targetState = days,
@@ -139,7 +134,7 @@ fun DayItem(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
             isFirstDay && !isSelected -> Pink
             else -> Color.Transparent
         },
-        animationSpec = tween(durationMillis = 200),
+        animationSpec = tween(durationMillis = 350),
         label = "bgColor"
     )
 
@@ -148,26 +143,12 @@ fun DayItem(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
             isSelected -> Pink
             else -> DeepBurgundy
         },
-        animationSpec = tween(durationMillis = 200),
+        animationSpec = tween(durationMillis = 350),
         label = "textColor"
     )
 
     val dayOfMonth = date.dayOfMonth.toString()
     val dayOfWeek = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale("ru"))
-
-    val dotSize = remember { Animatable(0f) }
-
-    LaunchedEffect(isSelected) {
-        if (isSelected) {
-            kotlinx.coroutines.delay(200) // задержка 200ms
-            dotSize.animateTo(
-                targetValue = 5f,
-                animationSpec = tween(durationMillis = 1000)
-            )
-        } else {
-            dotSize.snapTo(0f)
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -180,17 +161,64 @@ fun DayItem(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
     ) {
         Text(dayOfMonth, color = animatedTextColor, fontSize = 16.sp)
         Text(dayOfWeek.take(2), color = if (isSelected) Pink else Rose, fontSize = 12.sp)
-        if (isSelected) {
-            Spacer(modifier = Modifier.height(2.dp))
-            Box(
-                modifier = Modifier
-                    .size(dotSize.value.dp)
-                    .background(Rose, shape = RoundedCornerShape(50))
+        Dot(isSelected)
+    }
+}
+
+@Composable
+fun Dot(visible: Boolean) {
+    val dotSize = remember { Animatable(0f) }
+
+    LaunchedEffect(visible) {
+        if (visible) {
+            dotSize.animateTo(
+                targetValue = 5f,
+                animationSpec = tween(durationMillis = 700, delayMillis = 200)
             )
-            Spacer(modifier = Modifier.height(2.dp))
+        } else {
+            dotSize.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(durationMillis = 700, delayMillis = 200)
+            )
+        }
+    }
+
+    if (dotSize.value > 0f) {
+        Spacer(modifier = Modifier.height(2.dp))
+        Box(
+            modifier = Modifier
+                .size(dotSize.value.dp)
+                .background(Rose, shape = RoundedCornerShape(50))
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun MonthAndYearRow(date: LocalDate) {
+    Row(
+        modifier = Modifier.padding(horizontal = 12.dp)
+    ) {
+        AnimatedContent(
+            targetState = date,
+            transitionSpec = {
+                fadeIn(tween(400)) with fadeOut(tween(100))
+            },
+            label = "MonthAndYearTransition"
+        ) { targetDate ->
+            Text(
+                text = targetDate.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale("ru"))
+                    .replaceFirstChar { it.uppercase() } + " ${targetDate.year}",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(12.dp)
+            )
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
@@ -205,5 +233,5 @@ fun DayItemPreview() {
 @Preview(showBackground = true)
 @Composable
 fun CalendarUiPreview() {
-    CalendarUI({})
+    CalendarUI {}
 }
