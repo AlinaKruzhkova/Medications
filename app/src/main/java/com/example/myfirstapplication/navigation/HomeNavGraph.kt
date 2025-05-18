@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.myfirstapplication.PlaceholderScreen
+import com.example.myfirstapplication.calendar.presentation.CalendarScreenUi
 import com.example.myfirstapplication.menu.MenuScreenUi
 import com.example.myfirstapplication.profile.presentation.ProfileScreenUI
 
@@ -21,7 +21,7 @@ fun HomeNavGraph(bottomNavController: NavHostController, navController: NavHostC
             MenuScreenUi {}
         }
         composable(BottomItem.Calendar.route) {
-            PlaceholderScreen(BottomItem.Calendar.title)
+            CalendarScreenUi(navController)
         }
     }
 }

@@ -3,8 +3,8 @@ package com.example.myfirstapplication.calendar.presentation
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -18,6 +18,7 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,10 +29,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,14 +54,19 @@ import kotlin.math.sign
 
 
 @Composable
-fun CalendarUI(onDateSelected: (LocalDate) -> Unit) {
-    val today = remember { LocalDate.now() }
-    var selectedDate by remember { mutableStateOf(today) }
-    var weekOffset by remember { mutableIntStateOf(0) }
+fun CalendarUI(
+    selectedDate: LocalDate,
+    onDateSelected: (LocalDate) -> Unit,
+    weekOffset: Int,
+    onSwipeWeekChange: (Int) -> Unit,
+) {
+    var swipeDirection by remember { mutableIntStateOf(0) }
 
+    val today = remember { LocalDate.now() }
     val mondayThisWeek = remember(today) { today.minusDays((today.dayOfWeek.value - 1).toLong()) }
     val startDate = mondayThisWeek.plusDays((weekOffset * 14).toLong())
     val days = (0..13).map { startDate.plusDays(it.toLong()) }
+
 
     Column(
         modifier = Modifier
@@ -70,55 +74,78 @@ fun CalendarUI(onDateSelected: (LocalDate) -> Unit) {
             .padding(12.dp)
             .pointerInput(weekOffset) {
                 detectHorizontalDragGestures { _, dragAmount ->
-                    if (abs(dragAmount) > 50) { // простейшая защита от лёгкого свайпа
-                        weekOffset -= dragAmount.sign.toInt()
+                    if (abs(dragAmount) > 50) {
+                        val direction = -dragAmount.sign.toInt()
+                        swipeDirection = direction
+                        onSwipeWeekChange(direction)
                     }
                 }
             }
     ) {
-
         MonthAndYearRow(selectedDate)
+        CalendarBody(
+            days = days,
+            selectedDate = selectedDate,
+            onDateSelected = onDateSelected,
+            swipeDirection = swipeDirection
+        )
 
-        androidx.compose.animation.AnimatedContent(
-            targetState = days,
-            label = "AnimatedCalendarBlock",
-            transitionSpec = {
-                (slideInHorizontally(
-                    animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
-                ) { it } + fadeIn(
-                    animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
-                )).togetherWith(
+    }
+}
+
+@Composable
+fun CalendarBody(
+    days: List<LocalDate>,
+    selectedDate: LocalDate,
+    onDateSelected: (LocalDate) -> Unit,
+    swipeDirection: Int
+) {
+    AnimatedContent(
+        targetState = days,
+        label = "AnimatedCalendarBlock",
+        transitionSpec = {
+            val direction = swipeDirection.takeIf { it != 0 } ?: 1
+            (slideInHorizontally(
+                animationSpec = tween(600, easing = FastOutSlowInEasing)
+            ) { fullWidth -> fullWidth * direction } + fadeIn(tween(600)))
+                .togetherWith(
                     slideOutHorizontally(
-                        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
-                    ) { -it } + fadeOut(
-                        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
-                    )
+                        animationSpec = tween(600, easing = FastOutSlowInEasing)
+                    ) { fullWidth -> -fullWidth * direction } + fadeOut(tween(600))
+                )
+        }
+    ) { animDays ->
+        Column {
+            animDays.chunked(7).forEach { week ->
+                WeekRow(
+                    week = week,
+                    selectedDate = selectedDate,
+                    onDateSelected = onDateSelected
                 )
             }
+        }
+    }
+}
 
-        ) { animDays ->
-            Column {
-                animDays.chunked(7).forEach { week ->
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(64.dp)
-                    ) {
-                        week.forEach { date ->
-                            DayItem(
-                                date = date,
-                                isSelected = date == selectedDate,
-                                onClick = {
-                                    selectedDate = date
-                                    onDateSelected(date)
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-
+@Composable
+fun WeekRow(
+    week: List<LocalDate>,
+    selectedDate: LocalDate,
+    onDateSelected: (LocalDate) -> Unit
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+    ) {
+        week.forEach { date ->
+            DayItem(
+                date = date,
+                isSelected = date == selectedDate,
+                onClick = { onDateSelected(date) }
+            )
         }
     }
 }
@@ -152,53 +179,54 @@ fun DayItem(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
 
     Column(
         modifier = Modifier
-            .width(40.dp)
+            .width(48.dp)
             .padding(4.dp)
-            .background(animatedBgColor, shape = RoundedCornerShape(10.dp))
+            .background(animatedBgColor, shape = RoundedCornerShape(16.dp))
             .clickable { onClick() }
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(dayOfMonth, color = animatedTextColor, fontSize = 16.sp)
         Text(dayOfWeek.take(2), color = if (isSelected) Pink else Rose, fontSize = 12.sp)
-        Dot(isSelected)
+        Dot(visible = isSelected)
     }
 }
 
 @Composable
 fun Dot(visible: Boolean) {
-    val dotSize = remember { Animatable(0f) }
+    val animatedSize by animateFloatAsState(
+        targetValue = if (visible) 5f else 0f,
+        animationSpec = tween(durationMillis = 700, delayMillis = 200),
+        label = "dotAnimation"
+    )
 
-    LaunchedEffect(visible) {
-        if (visible) {
-            dotSize.animateTo(
-                targetValue = 5f,
-                animationSpec = tween(durationMillis = 700, delayMillis = 200)
-            )
-        } else {
-            dotSize.animateTo(
-                targetValue = 0f,
-                animationSpec = tween(durationMillis = 700, delayMillis = 200)
-            )
-        }
-    }
+    val animatedSpacerHeight by animateFloatAsState(
+        targetValue = if (visible) 2f else 0f,
+        animationSpec = tween(durationMillis = 300, delayMillis = 200),
+        label = "spacerAnimation"
+    )
 
-    if (dotSize.value > 0f) {
-        Spacer(modifier = Modifier.height(2.dp))
+    if (animatedSize > 0f) {
+        Spacer(modifier = Modifier.height(animatedSpacerHeight.dp))
         Box(
             modifier = Modifier
-                .size(dotSize.value.dp)
+                .size(animatedSize.dp)
                 .background(Rose, shape = RoundedCornerShape(50))
         )
-        Spacer(modifier = Modifier.height(2.dp))
+        Spacer(modifier = Modifier.height(animatedSpacerHeight.dp))
     }
 }
+
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MonthAndYearRow(date: LocalDate) {
+
+    val date = date.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale("ru"))
+        .replaceFirstChar { it.uppercase() } + " ${date.year}"
+
     Row(
-        modifier = Modifier.padding(horizontal = 12.dp)
+        modifier = Modifier.padding(start = 12.dp)
     ) {
         AnimatedContent(
             targetState = date,
@@ -208,16 +236,14 @@ fun MonthAndYearRow(date: LocalDate) {
             label = "MonthAndYearTransition"
         ) { targetDate ->
             Text(
-                text = targetDate.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale("ru"))
-                    .replaceFirstChar { it.uppercase() } + " ${targetDate.year}",
+                text = targetDate,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp,
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier.padding(8.dp)
             )
         }
     }
 }
-
 
 
 @Preview(showBackground = true)
@@ -233,5 +259,9 @@ fun DayItemPreview() {
 @Preview(showBackground = true)
 @Composable
 fun CalendarUiPreview() {
-    CalendarUI {}
+    CalendarUI(
+        selectedDate = LocalDate.now(),
+        onDateSelected = TODO(),
+        weekOffset = TODO()
+    ) {}
 }
