@@ -19,5 +19,7 @@ val DeepBurgundy = Color(0xFF371628)
 
 val Green = Color(0x8075AD7A)
 val LightGreen = Color(0xFF75AD7A)
+val Blue = Color(0xFF666CFB)
+
 
 val White = Color(0xFFFFFFFE)
