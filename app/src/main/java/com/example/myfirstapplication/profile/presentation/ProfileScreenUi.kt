@@ -10,7 +10,6 @@ fun ProfileScreenUI(navController: NavController) {
 
     val viewModel = hiltViewModel<ProfileViewModel>()
 
-
     ProfileContent(
         user = viewModel.userInfo(),
         logout = {

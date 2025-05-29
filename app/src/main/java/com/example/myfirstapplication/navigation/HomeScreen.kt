@@ -1,5 +1,7 @@
 package com.example.myfirstapplication.navigation
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -9,8 +11,10 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -23,6 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.GrayPink
+import com.example.myfirstapplication.ui.theme.White
+
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
@@ -54,10 +60,19 @@ fun BottomBar(navController: NavHostController) {
             tonalElevation = 100.dp
         ) {
             screens.forEach { screen ->
+
+                val isSelected = currentDestination?.hierarchy?.any {
+                    it.route == screen.route
+                } == true
+
+                val textColor by animateColorAsState(
+                    targetValue = if (isSelected) colorResource(R.color.white) else DarkBurgundy,
+                    label = "textColor",
+                    animationSpec = tween(durationMillis = 300)
+                )
+
                 NavigationBarItem(
-                    selected = currentDestination?.hierarchy?.any {
-                        it.route == screen.route
-                    } == true,
+                    selected = isSelected,
                     onClick = {
                         navController.navigate(screen.route) {
                             popUpTo(navController.graph.findStartDestination().id) {
@@ -67,24 +82,60 @@ fun BottomBar(navController: NavHostController) {
                             restoreState = true
                         }
                     }, icon = {
-                        Icon(
-                            painter = painterResource(id = screen.iconId),
-                            contentDescription = "Icon"
+                        BottomBarItem(
+                            selected = isSelected,
+                            iconId = screen.iconId
                         )
                     }, label = {
-                        Text(text = screen.title, fontSize = 9.sp)
+                        CustomText(
+                            selected = isSelected,
+                            title = screen.title
+                        )
                     },
                     colors = NavigationBarItemColors(
-                        selectedIconColor = colorResource(R.color.white),
-                        selectedTextColor = colorResource(R.color.white),
-                        selectedIndicatorColor = GrayPink,
-                        unselectedIconColor = DarkBurgundy,
-                        unselectedTextColor = DarkBurgundy,
-                        disabledIconColor = DarkBurgundy,
-                        disabledTextColor = DarkBurgundy
+                        selectedIconColor = Color.Unspecified,
+                        selectedTextColor = Color.Unspecified,
+                        selectedIndicatorColor = Color.Transparent,
+                        unselectedIconColor = Color.Unspecified,
+                        unselectedTextColor = Color.Unspecified,
+                        disabledIconColor = Color.Unspecified,
+                        disabledTextColor = Color.Unspecified
                     )
                 )
             }
         }
     }
+}
+
+@Composable
+fun BottomBarItem(
+    selected: Boolean,
+    iconId: Int
+) {
+    Icon(
+        painter = painterResource(id = iconId),
+        contentDescription = "Icon",
+        tint = animatedColor(selected).value
+    )
+}
+
+@Composable
+fun CustomText(
+    selected: Boolean,
+    title: String
+) {
+    Text(
+        text = title,
+        fontSize = 9.sp,
+        color = animatedColor(selected).value
+    )
+}
+
+@Composable
+fun animatedColor(isSelected: Boolean): State<Color> {
+    return animateColorAsState(
+        targetValue = if (isSelected) White else DarkBurgundy,
+        animationSpec = tween(durationMillis = 700, delayMillis = 200),
+        label = "animatedColor"
+    )
 }
