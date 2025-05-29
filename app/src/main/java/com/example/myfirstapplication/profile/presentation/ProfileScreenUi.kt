@@ -18,6 +18,9 @@ fun ProfileScreenUI(navController: NavController) {
                 popUpTo(Graph.HOME) { inclusive = true }
             }
         },
+        navigateToDrugListScreen = {
+            navController.navigate(Graph.DRUG_LIST)
+        }
     )
 
 }

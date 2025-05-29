@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.myfirstapplication.login.presentation.LoginScreenInner
+import com.example.myfirstapplication.profile.presentation.druglist.DrugListScreen
 
 @Composable
 fun RootNavigationGraph(navController: NavHostController) {
@@ -18,12 +19,16 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.HOME) {
             HomeScreen(navController)
         }
+        composable(route = Graph.DRUG_LIST) {
+            DrugListScreen(navController)
+        }
     }
 }
 
 object Graph {
     const val HOME = "home_screen"
     const val LOGIN = "login_screen"
+    const val DRUG_LIST = "drug_list_screen"
 }
 
 @Composable

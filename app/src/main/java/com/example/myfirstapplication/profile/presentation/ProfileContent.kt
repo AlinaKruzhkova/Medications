@@ -2,7 +2,6 @@ package com.example.myfirstapplication.profile.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,24 +28,26 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.myfirstapplication.drug.customFont
 import com.example.myfirstapplication.profile.domain.UserProfile
+import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.LightGreen
+import com.example.myfirstapplication.ui.theme.Pink
 
 @Composable
 fun ProfileContent(
     user: UserProfile,
-    logout: () -> Unit
+    logout: () -> Unit,
+    navigateToDrugListScreen: () -> Unit,
 ) {
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF5DADA)) // розовый фон
+            .background(Pink)
             .padding(16.dp)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.TopStart),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -79,12 +80,14 @@ fun ProfileContent(
 
             IconButton(onClick = logout) {
                 Icon(
-                    imageVector = Icons.Default.ExitToApp, // можно заменить на кастомную иконку
+                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                     contentDescription = "Logout",
-                    tint = Color(0xFF8B004B)
+                    tint = DarkBurgundy
                 )
             }
         }
+
+        Button(onClick = navigateToDrugListScreen) { }
     }
 }
 
@@ -95,10 +98,12 @@ fun ProfileContent(
 @Composable
 fun ProfileContentPreview(){
     ProfileContent(
-      user = UserProfile(
-          name = "Alina",
-          email = "akruzhochek@gmail.com",
-          avatarUrl = "https://lh3.googleusercontent.com/a/ACg8ocKyWpvLQBbHFl99GmHTyoE_NbWRG_wmTxh-JNAq0tKQYksgmyUu=s432-c-no\n"
-      )
-    ) { }
+        user = UserProfile(
+            name = "Alina",
+            email = "akruzhochek@gmail.com",
+            avatarUrl = "https://lh3.googleusercontent.com/a/ACg8ocKyWpvLQBbHFl99GmHTyoE_NbWRG_wmTxh-JNAq0tKQYksgmyUu=s432-c-no\n"
+        ),
+        logout = {},
+        navigateToDrugListScreen = {},
+    )
 }
