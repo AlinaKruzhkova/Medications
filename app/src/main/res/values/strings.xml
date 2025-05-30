@@ -6,6 +6,9 @@
     <string name="title_text">Мои лекарства</string>
     <string name="menu_text">Здесь пока ничего нет\n. . .</string>
     <string name="choice">Выберите форму выпуска:</string>
+    <string name="always_button">Постоянно</string>
+    <string name="days_button">Определённое количество дней</string>
+    <string name="duration">Как долго Вам нужно принимать\nэто лекарство?</string>
     <string name="search_drug_field">Выберите нужное лекарство:</string>
     <string name="drug_choice">Выберите название лекарства\nили введите его вручную:</string>
     <string name="hello_text">Удобное расписание приёма\nлекарственных препаратов уже с\nВами!</string>

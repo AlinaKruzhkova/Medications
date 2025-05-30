@@ -1,0 +1,74 @@
+package com.example.myfirstapplication.dateschoice
+
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.myfirstapplication.R
+import com.example.myfirstapplication.ui.theme.DeepBurgundy
+import com.example.myfirstapplication.ui.theme.Green
+import com.example.myfirstapplication.ui.theme.White
+
+@Composable//аннотация, кот показывает что функция ниже будет отображать
+fun DaysButtonUi(
+    modifier: Modifier,
+    onClick: () -> Unit,
+    isSelected: Boolean
+
+) {
+    val customFont = FontFamily(Font(R.font.nunito_extralight))
+
+    val backgroundColor = if (isSelected) Green else White
+    val textColor = if (isSelected) White else DeepBurgundy
+
+    Box(
+        modifier = Modifier
+            .height(58.dp)
+            .width(304.dp)
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(32.dp)
+            )
+            .clickable(enabled = !isSelected) { onClick() },
+
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.days_button),
+            color = textColor,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = customFont
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun DaysButtonPreview() {
+    DaysButtonUi(
+        modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        isSelected = false,
+        onClick = {}
+    )
+}
