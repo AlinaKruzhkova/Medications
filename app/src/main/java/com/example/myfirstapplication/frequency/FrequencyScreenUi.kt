@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.dateschoice
+package com.example.myfirstapplication.frequency
 
 
 import androidx.compose.foundation.background
@@ -32,12 +32,14 @@ import com.example.myfirstapplication.ui.theme.Pink
 
 enum class SelectedOption {
     NONE,
-    ALWAYS,
-    DAYS
+    ONE,
+    TWO,
+    OWN,
+    HARD
 }
 
 @Composable
-fun DatesChoiceUi(navigate: () -> Unit) {
+fun FrequencyScreenUi(navigate: () -> Unit) {
     var selectedOption by remember { mutableStateOf(SelectedOption.NONE) }
 
     val customFont = FontFamily(
@@ -55,7 +57,7 @@ fun DatesChoiceUi(navigate: () -> Unit) {
     ) {
 
         Text(
-            text = stringResource(R.string.duration),
+            text = stringResource(R.string.how_often),
             color = DeepBurgundy,
             fontSize = 16.sp, // Размер шрифта для подзаголовка
             modifier = Modifier.padding(bottom = 24.dp), // Отступ снизу (опционально)
@@ -64,22 +66,44 @@ fun DatesChoiceUi(navigate: () -> Unit) {
             fontFamily = customFont,
             lineHeight = 24.sp
         )
-        AlwaysButtonUi (
+        OneButtonUi (
             modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == SelectedOption.ALWAYS,
+            isSelected = selectedOption == SelectedOption.ONE,
             onClick = {
-                selectedOption = SelectedOption.ALWAYS
+                selectedOption = SelectedOption.ONE
             }
         )
         Spacer(
             modifier = Modifier.height(12.dp)
         )
 
-        DaysButtonUi (
+        TwoButtonUi (
             modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == SelectedOption.DAYS,
+            isSelected = selectedOption == SelectedOption.TWO,
             onClick = {
-                selectedOption = SelectedOption.DAYS
+                selectedOption = SelectedOption.TWO
+            }
+        )
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
+
+        OwnVersionButtonUi (
+            modifier = Modifier.padding(bottom = 16.dp),
+            isSelected = selectedOption == SelectedOption.OWN,
+            onClick = {
+                selectedOption = SelectedOption.OWN
+            }
+        )
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
+
+        HardSchemeButtonUi (
+            modifier = Modifier.padding(bottom = 16.dp),
+            isSelected = selectedOption == SelectedOption.HARD,
+            onClick = {
+                selectedOption = SelectedOption.HARD
             }
         )
         Spacer(
@@ -94,7 +118,7 @@ fun DatesChoiceUi(navigate: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun DatesChoicePreview() {
-    DatesChoiceUi(navigate = {})
+fun FrequencyScreenPreview() {
+    FrequencyScreenUi(navigate = {})
 }
 

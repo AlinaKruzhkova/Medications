@@ -1,5 +1,4 @@
-package com.example.myfirstapplication.dateschoice
-
+package com.example.myfirstapplication.frequency
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,7 +31,7 @@ import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.White
 
 @Composable
-fun AlwaysButtonUi(
+fun TwoButtonUi(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isSelected: Boolean
@@ -68,7 +67,7 @@ fun AlwaysButtonUi(
                     .padding(end = 8.dp)
             )
             Text(
-                text = stringResource(R.string.always_button),
+                text = stringResource(R.string.two_button),
                 color = textColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -81,8 +80,8 @@ fun AlwaysButtonUi(
 
 @Preview(showBackground = true)
 @Composable
-fun AlwaysButtonPreview() {
-    AlwaysButtonUi(
+fun TwoButtonPreview() {
+    TwoButtonUi(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         isSelected = false,
         onClick = {}
