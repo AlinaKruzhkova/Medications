@@ -23,10 +23,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -45,7 +41,7 @@ import com.example.myfirstapplication.ui.theme.Pink
 
 
 @Composable
-fun DrugChoiceScreenUi (navigate: () -> Unit) {
+fun DrugChoiceScreenUi(navigate: () -> Unit) {
     val customFont = FontFamily(
         Font(R.font.rubik_one_regular)
     )
@@ -64,13 +60,9 @@ fun DrugChoiceScreenUi (navigate: () -> Unit) {
     ) {
         // Заголовок 1
         Text(
-            text = stringResource(R.string.choice),
-            style = TextStyle(
-                fontFamily = customFont,
-                fontSize = 18.sp,
-                color = DeepBurgundy
-            ),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            text = stringResource(R.string.choice), style = TextStyle(
+                fontFamily = customFont, fontSize = 18.sp, color = DeepBurgundy
+            ), modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -122,26 +114,24 @@ fun DrugChoiceScreenUi (navigate: () -> Unit) {
 
         // Заголовок 2
         Text(
-            text = stringResource(R.string.drug_choice),
-            style = TextStyle(
-                fontFamily = customFont,
-                fontSize = 18.sp,
-                color = DeepBurgundy
-            ),
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            text = stringResource(R.string.drug_choice), style = TextStyle(
+                fontFamily = customFont, fontSize = 18.sp, color = DeepBurgundy
+            ), modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         // Поле ввода
-        SearchDrugField(onDrugSearch = {})
+        SearchDrugField(
+            onQueryChanged = {},
+            query = ""
+        )
 
         Spacer(modifier = Modifier.height(54.dp))
 
         // Кнопка далее
         NextButtonUi(
-            onClick = navigate,
-            modifier = Modifier
+            onClick = navigate, modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         )
@@ -149,82 +139,70 @@ fun DrugChoiceScreenUi (navigate: () -> Unit) {
 }
 
 
-
-
 @Composable
 fun DrugsFormChoose(
-    drugFormat: String,
-    onClick: () -> Unit
-){
+    drugFormat: String, onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
             .height(40.dp)
             .background(
-                color = Color.White.copy(alpha = 0.5f),
-                shape = RoundedCornerShape(24.dp)
+                color = Color.White.copy(alpha = 0.5f), shape = RoundedCornerShape(24.dp)
             )
             .clickable { onClick },
 
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = drugFormat,
-            color = DeepBurgundy,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            text = drugFormat, color = DeepBurgundy, fontSize = 16.sp, fontWeight = FontWeight.Bold
         )
     }
 }
 
 
-
-
 //красивое поле ввода для списка лекарств
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchDrugField(onDrugSearch: (String) -> Unit) {
-    var text by rememberSaveable { mutableStateOf("")}
-
-        OutlinedTextField(
-            value = text,
-            onValueChange = {
-                text = it
-                onDrugSearch.invoke(it)
-            },
-            shape = RoundedCornerShape(10.dp),
-            maxLines = 1,
-            label = {
-Text(stringResource(R.string.search_drug_field)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            trailingIcon = {
-                if (text.isNotEmpty()) {
-                    IconButton(onClick = { text = ""}) {
-                        Icon(imageVector =
-Icons.Default.Clear, null)
-                    }
+fun SearchDrugField(
+    query: String, onQueryChanged: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onQueryChanged,
+        shape = RoundedCornerShape(10.dp),
+        maxLines = 1,
+        label = {
+            Text(stringResource(R.string.search_drug_field))
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                IconButton(onClick = { onQueryChanged("") }) {
+                    Icon(
+                        imageVector = Icons.Default.Clear, null
+                    )
                 }
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                // Цвет фона до и после нажатия
-                containerColor = Color(0xFFFFFFFE), // для фонового цвета
-                focusedBorderColor = Color(0x8075AD7A), // граница при фокусе
-                unfocusedBorderColor = Color(0x8075AD7A), // граница без фокуса
-                cursorColor = Color(0x8075AD7A), // цвет курсора
-                focusedLabelColor = Color(0xFF924959), // цвет текста в label при фокусе
-                unfocusedLabelColor = Color(0xFF371628) // цвет текста в label без фокуса
-
-            )
+            }
+        }, colors = TextFieldDefaults.outlinedTextFieldColors(
+            // Цвет фона до и после нажатия
+            containerColor = Color(0xFFFFFFFE), // для фонового цвета
+            focusedBorderColor = Color(0x8075AD7A), // граница при фокусе
+            unfocusedBorderColor = Color(0x8075AD7A), // граница без фокуса
+            cursorColor = Color(0x8075AD7A), // цвет курсора
+            focusedLabelColor = Color(0xFF924959), // цвет текста в label при фокусе
+            unfocusedLabelColor = Color(0xFF371628) // цвет текста в label без фокуса
         )
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewSearchUser() {
-    SearchDrugField() {}
+    SearchDrugField("") {}
 }
 
 @Preview(showBackground = true)

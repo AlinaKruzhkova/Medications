@@ -10,7 +10,6 @@ fun ProfileScreenUI(navController: NavController) {
 
     val viewModel = hiltViewModel<ProfileViewModel>()
 
-
     ProfileContent(
         user = viewModel.userInfo(),
         logout = {
@@ -19,6 +18,9 @@ fun ProfileScreenUI(navController: NavController) {
                 popUpTo(Graph.HOME) { inclusive = true }
             }
         },
+        navigateToDrugListScreen = {
+            navController.navigate(Graph.DRUG_LIST)
+        }
     )
 
 }

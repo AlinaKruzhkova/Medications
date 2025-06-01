@@ -6,7 +6,7 @@ import com.example.myfirstapplication.profile.domain.UserProfile
 import javax.inject.Inject
 
 class BaseProfileRepository @Inject constructor(
-    private val myUser: MyUser,
+    private val myUser: MyUser
 ) : ProfileRepository {
 
     override fun init() {
@@ -17,8 +17,8 @@ class BaseProfileRepository @Inject constructor(
     override fun userProfile(): UserProfile {
         val profile = myUser.profile()
         return UserProfile(
-            name = profile.first,
-            email = profile.second,
+            name = profile.second,
+            email = profile.first,
             avatarUrl = myUser.avatarUrl(),
         )
     }

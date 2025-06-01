@@ -261,7 +261,7 @@ fun DayItemPreview() {
 fun CalendarUiPreview() {
     CalendarUI(
         selectedDate = LocalDate.now(),
-        onDateSelected = TODO(),
-        weekOffset = TODO()
+        onDateSelected = { },
+        weekOffset = 14
     ) {}
 }
