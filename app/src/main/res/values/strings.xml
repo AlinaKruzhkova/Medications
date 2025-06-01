@@ -7,6 +7,7 @@
     <string name="menu_text">Здесь пока ничего нет\n. . .</string>
     <string name="choice">Выберите форму выпуска:</string>
     <string name="always_button">Постоянно</string>
+    <string name="counter_screen">Выберите количество дней\nприёма, прописанных в рецепте:</string>
     <string name="how_often">Как часто Вы принимаете это\nлекарство?</string>
     <string name="one_button">Один раз в день</string>
     <string name="two_button">Два раз в день</string>
