@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drug
+package com.example.myfirstapplication.drug.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,7 +30,7 @@ fun AddButtonUi(
                 color = Burgundy,
                 shape = RoundedCornerShape(32.dp)
             )
-            .clickable { },
+            .clickable(onClick = onClick),
 
         contentAlignment = Alignment.Center
     ) {

@@ -13,7 +13,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -26,13 +30,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.example.myfirstapplication.drug.customFont
+import com.example.myfirstapplication.drug.presentation.customFont
 import com.example.myfirstapplication.profile.domain.UserProfile
 import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.LightGreen
 import com.example.myfirstapplication.ui.theme.Pink
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileContent(
     user: UserProfile,
@@ -47,7 +52,8 @@ fun ProfileContent(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(top = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -56,7 +62,7 @@ fun ProfileContent(
                     model = user.avatarUrl,
                     contentDescription = "User avatar",
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(50.dp)
                         .clip(CircleShape)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -64,14 +70,14 @@ fun ProfileContent(
                     Text(
                         text = "Привет,",
                         color = LightGreen,
-                        fontSize = 14.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = customFont,
                     )
                     Text(
                         text = user.name,
                         color = DeepBurgundy,
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = customFont,
                     )
@@ -87,16 +93,37 @@ fun ProfileContent(
             }
         }
 
-        Button(onClick = navigateToDrugListScreen) { }
+        ProfileActionButton(
+            navigate = navigateToDrugListScreen,
+            text = "Найти препараты",
+            imageVector = Icons.Default.Search
+        )
+
+        ProfileActionButton(
+            navigate = {},
+            text = "Схемы лечения",
+            imageVector = Icons.Default.DateRange
+        )
+
+        ProfileActionButton(
+            navigate = {},
+            text = "Избранные лекарства",
+            imageVector = Icons.Default.Favorite
+        )
+
+        ProfileActionButton(
+            navigate = {},
+            text = "Поддержка",
+            imageVector = Icons.Default.Phone
+        )
+
     }
 }
 
 
-
-
-@Preview (showBackground = true)
+@Preview(showBackground = true)
 @Composable
-fun ProfileContentPreview(){
+fun ProfileContentPreview() {
     ProfileContent(
         user = UserProfile(
             name = "Alina",

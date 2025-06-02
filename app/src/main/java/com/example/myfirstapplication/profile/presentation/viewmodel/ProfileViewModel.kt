@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.profile.presentation
+package com.example.myfirstapplication.profile.presentation.viewmodel
 
 import com.example.myfirstapplication.core.BaseViewModel
 import com.example.myfirstapplication.core.RunAsync

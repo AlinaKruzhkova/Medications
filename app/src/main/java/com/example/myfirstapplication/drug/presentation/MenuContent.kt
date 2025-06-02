@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drug
+package com.example.myfirstapplication.drug.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,10 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
@@ -33,14 +29,10 @@ import com.example.myfirstapplication.ui.theme.Pink
 import com.example.myfirstapplication.ui.theme.Rose
 
 @Composable
-fun MenuScreenUi (navigate: () -> Unit) {
-    val customFont = FontFamily(
-        Font(R.font.rubik_one_regular)
-    )
-    val itemsList = List(10) {
-        "Элемент ${it + 1}"
-    }
-
+fun MenuContent(
+    navigate: () -> Unit,
+    itemsList: List<String>
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,56 +65,59 @@ fun MenuScreenUi (navigate: () -> Unit) {
             )
         }
 
-// Контейнер для списка с градиентом
-Box(
-    modifier = Modifier
-        .weight(1f) // Занимает оставшееся пространство
-        .fillMaxWidth()
-) {
-    //  Прокручиваемый список элементов
-    LazyColumn (
-        modifier = Modifier
-            .fillMaxWidth(), // занимает всё пространство
-        contentPadding = PaddingValues(
-            horizontal = 12.dp,
-            vertical = 8.dp,
-        )
-    ) {
-        items(itemsList) { itemText ->
-            DrugCardUi(
-                drugName = itemText,
-                dosageInfo = "Ежедневно",
-                pillsLeft = 5,
-                {}
+        // Контейнер для списка с градиентом
+        Box(
+            modifier = Modifier
+                .weight(1f) // Занимает оставшееся пространство
+                .fillMaxWidth()
+        ) {
+            //  Прокручиваемый список элементов
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth(), // занимает всё пространство
+                contentPadding = PaddingValues(
+                    horizontal = 12.dp,
+                    vertical = 8.dp,
+                )
+            ) {
+                items(itemsList.size) { index ->
+                    DrugCardUi(
+                        drugName = itemsList[index],
+                        dosageInfo = "Ежедневно",
+                        pillsLeft = 5,
+                        {}
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+            // Градиент в верхней части списка
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth()
+                    .height(40.dp) // Высота градиента
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Pink,
+                                Pink.copy(alpha = 0f)
+                            ) // От цвета фона до прозрачного
+                        )
+                    )
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            // Градиент снизу
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(40.dp)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(Pink.copy(alpha = 0f), Pink)
+                        )
+                    )
+            )
         }
-    }
-// Градиент в верхней части списка
-    Box(
-        modifier = Modifier
-            .align(Alignment.TopCenter)
-            .fillMaxWidth()
-            .height(40.dp) // Высота градиента
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(Pink, Pink.copy(alpha = 0f)) // От цвета фона до прозрачного
-                )
-            )
-    )
-    // Градиент снизу
-    Box(
-        modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .fillMaxWidth()
-            .height(40.dp)
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(Pink.copy(alpha = 0f), Pink)
-                )
-            )
-    )
-}
         // Обертка для кнопки, чтобы разместить ее справа
         Row(
             modifier = Modifier
@@ -137,17 +132,3 @@ Box(
         }
     }
 }
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun MenuScreenPreview() {
-    MenuScreenUi(navigate = {})
-}
-
-
-
-
-// TOD: красивый lazycolumn и переместить кнопку вправо и попробовать сделать тень как в фигма
-

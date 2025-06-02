@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drugchoice
+package com.example.myfirstapplication.common.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,8 +20,8 @@ import com.example.myfirstapplication.R
 import com.example.myfirstapplication.ui.theme.Burgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
-@Composable//аннотация, кот показывает что функция ниже будет отображать
-fun NextButtonUi(
+@Composable
+fun NextButton(
     modifier: Modifier,
     onClick: () -> Unit
 ) {
@@ -33,7 +33,7 @@ fun NextButtonUi(
                 color = Burgundy,
                 shape = RoundedCornerShape(16.dp)
             )
-            .clickable {  },
+            .clickable(onClick = onClick),
 
         contentAlignment = Alignment.Center
     ) {
@@ -50,7 +50,7 @@ fun NextButtonUi(
 @Preview(showBackground = true)
 @Composable
 fun NextButtonPreview() {
-    NextButtonUi(
+    NextButton(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
     ) { }
 }

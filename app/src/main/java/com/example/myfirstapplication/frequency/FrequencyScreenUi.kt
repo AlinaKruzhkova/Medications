@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
-import com.example.myfirstapplication.drugchoice.NextButtonUi
+import com.example.myfirstapplication.common.ui.NextButton
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
@@ -109,7 +109,7 @@ fun FrequencyScreenUi(navigate: () -> Unit) {
         Spacer(
             modifier = Modifier.weight(1f)
         )
-        NextButtonUi (
+        NextButton(
             onClick = navigate,
             modifier = Modifier.padding(bottom = 16.dp)
         )
