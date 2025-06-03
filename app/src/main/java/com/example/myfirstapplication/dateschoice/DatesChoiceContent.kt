@@ -1,10 +1,11 @@
 package com.example.myfirstapplication.dateschoice
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -34,24 +35,35 @@ fun DatesChoiceContent(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Pink)
-            .padding(12.dp, vertical = 64.dp),
+            .padding(16.dp)
+            .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally, // Центрируем содержимое по горизонтали
-        verticalArrangement = Arrangement.Center // Центрируем содержимое по вертикали
     ) {
-        BackButton(
-            onClick = navigateBack
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            BackButton(
+                onClick = navigateBack
+            )
+
+            Text(
+                text = stringResource(R.string.duration),
+                color = DeepBurgundy,
+                fontSize = 18.sp, // Размер шрифта для подзаголовка
+                textAlign = TextAlign.Center, // Выравнивание текста по центру
+                fontWeight = FontWeight.Bold,
+                fontFamily = customFont,
+                lineHeight = 24.sp
+            )
+        }
+
+        Spacer(
+            modifier = Modifier.height(12.dp)
         )
 
-        Text(
-            text = stringResource(R.string.duration),
-            color = DeepBurgundy,
-            fontSize = 16.sp, // Размер шрифта для подзаголовка
-            modifier = Modifier.padding(bottom = 24.dp), // Отступ снизу (опционально)
-            textAlign = TextAlign.Center, // Выравнивание текста по центру
-            fontWeight = FontWeight.Bold,
-            fontFamily = customFont,
-            lineHeight = 24.sp
-        )
         AlwaysButtonUi(
             modifier = Modifier.padding(bottom = 16.dp),
             isSelected = selectedOption == SelectedOption.ALWAYS,

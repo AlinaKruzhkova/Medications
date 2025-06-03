@@ -72,12 +72,15 @@ fun DrugChoiceContent(
                 style = TextStyle(
                     fontFamily = customFont,
                     fontSize = 18.sp,
-                    color = DeepBurgundy
+                    color = DeepBurgundy,
+                    lineHeight = 24.sp
                 ),
             )
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
 
         // Прокручиваемый список возможных форм выпуска
         Box(
