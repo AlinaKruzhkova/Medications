@@ -3,6 +3,7 @@
     <string name="registration_text">Войти с помощью Google</string>
     <string name="authorization_text">У меня уже есть профиль</string>
     <string name="next_text">Далее</string>
+    <string name="save_text">Сохранить</string>
     <string name="title_text">Мои лекарства</string>
     <string name="menu_text">Здесь пока ничего нет\n. . .</string>
     <string name="choice">Выберите форму выпуска:</string>

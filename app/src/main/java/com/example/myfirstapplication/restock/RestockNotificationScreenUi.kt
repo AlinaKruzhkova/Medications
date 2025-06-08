@@ -2,6 +2,7 @@ package com.example.myfirstapplication.restock
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,11 +34,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
+import com.example.myfirstapplication.common.ui.NextButton
+import com.example.myfirstapplication.ui.theme.DarkGreen
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
+import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.Pink
 
 @Composable
@@ -47,41 +52,62 @@ fun RestockNotificationScreenUi (navigate: () -> Unit) {
     )
     var isChecked by remember { mutableStateOf(false) }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Pink)
-            .padding(horizontal = 12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally, // Центрируем содержимое по горизонтали
-        verticalArrangement = Arrangement.Top // Центрируем содержимое по вертикали
+            .background(Pink)
     ) {
-        Spacer(modifier = Modifier.height(36.dp))
-
-        Image(
-            painterResource(R.drawable.blister),
-            contentDescription = null,
+        Column(
             modifier = Modifier
-                .padding(0.dp)
-        )
+                .fillMaxSize()
+                .padding(bottom = 80.dp) // отступ под кнопку
+                .padding(horizontal = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(36.dp))
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Image(
+                painter = painterResource(R.drawable.blister),
+                contentDescription = null
+            )
 
-        Text(
-            text = stringResource(R.string.restock_text),
-            color = DeepBurgundy,
-            fontSize = 16.sp,
-            fontFamily = customFont,
-        )
-        Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        ReminderToggle(
-            isChecked = isChecked,
-            onCheckedChange = { isChecked = it }
-        )
+            Text(
+                text = stringResource(R.string.restock_text),
+                color = DeepBurgundy,
+                fontSize = 16.sp,
+                fontFamily = customFont
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            ReminderButton(
+                isChecked = isChecked,
+                onCheckedChange = { isChecked = it }
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            RestockFields()
+
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+
+        // Кнопка внизу экрана
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .background(Pink)
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            SaveButtonUi(onClick = navigate)
+        }
 
     }
 }
-
 
 
 @Preview(showBackground = true)
@@ -91,11 +117,18 @@ fun RestockNotificationScreenPreview() {
 }
 
 
+
+
+
+
+
 @Composable
-fun ReminderToggle(
+fun ReminderButton(
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
+    val borderColor = if (isChecked) DarkGreen else Color.DarkGray
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -107,17 +140,18 @@ fun ReminderToggle(
         Text(
             text = "Получать напоминания",
             color = DeepBurgundy,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            fontFamily = FontFamily(Font(R.font.nunito_extralight)),
+            fontWeight = FontWeight.Bold
         )
-
-        //Spacer(modifier = Modifier.width(8.dp))
 
         Box(
             modifier = Modifier
                 .width(50.dp)
                 .height(28.dp)
                 .clip(RoundedCornerShape(50))
-                .background(if (isChecked) Color(0xFF4CAF50) else Color.Gray)
+                .background(if (isChecked) Green else Color.Gray)
+                .border(1.dp, borderColor, RoundedCornerShape(50))
                 .clickable { onCheckedChange(!isChecked) },
             contentAlignment = if (isChecked) Alignment.CenterEnd else Alignment.CenterStart
         ) {
@@ -133,7 +167,7 @@ fun ReminderToggle(
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
-                        tint = Color(0xFF4CAF50),
+                        tint = Green,
                         modifier = Modifier.size(14.dp)
                     )
                 }
@@ -143,10 +177,10 @@ fun ReminderToggle(
 }
 @Preview(showBackground = true)
 @Composable
-fun ReminderTogglePreview() {
+fun ReminderButtonPreview() {
     var isChecked by remember { mutableStateOf(false) }
 
-    ReminderToggle(
+    ReminderButton(
         isChecked = isChecked,
         onCheckedChange = { isChecked = it }
     )

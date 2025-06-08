@@ -24,11 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.dateschoice.Counter
-import com.example.myfirstapplication.drugchoice.NextButtonUi
-import com.example.myfirstapplication.frequency.FrequencyScreenUi
 import com.example.myfirstapplication.frequency.SelectedOption
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
+import com.example.myfirstapplication.common.ui.NextButton
 
 @Composable
 fun NotificationTimeDosageScreen(navigate: () -> Unit) {
@@ -73,7 +72,7 @@ fun NotificationTimeDosageScreen(navigate: () -> Unit) {
         Spacer(
             modifier = Modifier.weight(1f)
         )
-        NextButtonUi (
+        NextButton (
             onClick = navigate,
             modifier = Modifier.padding(bottom = 16.dp)
         )
