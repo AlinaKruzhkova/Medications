@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.profile.presentation
+package com.example.myfirstapplication.profile.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

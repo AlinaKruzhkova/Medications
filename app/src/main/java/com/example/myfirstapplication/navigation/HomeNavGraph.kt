@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.myfirstapplication.calendar.presentation.CalendarScreenUi
-import com.example.myfirstapplication.drug.MenuScreenUi
-import com.example.myfirstapplication.profile.presentation.ProfileScreenUI
+import com.example.myfirstapplication.drug.presentation.MenuScreen
+import com.example.myfirstapplication.profile.presentation.ProfileScreen
 
 @Composable
 fun HomeNavGraph(bottomNavController: NavHostController, navController: NavHostController) {
@@ -15,10 +15,10 @@ fun HomeNavGraph(bottomNavController: NavHostController, navController: NavHostC
         startDestination = BottomItem.Drug.route
     ) {
         composable(BottomItem.MyProfile.route) {
-            ProfileScreenUI(navController)
+            ProfileScreen(navController)
         }
         composable(BottomItem.Drug.route) {
-            MenuScreenUi {}
+            MenuScreen(navController)
         }
         composable(BottomItem.Calendar.route) {
             CalendarScreenUi(navController)

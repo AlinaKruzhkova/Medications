@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drugchoice
+package com.example.myfirstapplication.common.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,8 +29,9 @@ import com.example.myfirstapplication.ui.theme.Burgundy
 import com.example.myfirstapplication.ui.theme.Grey
 import com.example.myfirstapplication.ui.theme.Pink
 
+
 @Composable
-fun NextButtonUi(
+fun NextButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isActive: Boolean = true
@@ -48,9 +50,8 @@ fun NextButtonUi(
                 color = backgroundColor,
                 shape = RoundedCornerShape(16.dp)
             )
-            .clickable(enabled = isActive) { onClick() },
+            .clickable(enabled = isActive) { onClick = onClick },
         contentAlignment = Alignment.Center
-
     ) {
         Text(
             text = stringResource(R.string.next_text),

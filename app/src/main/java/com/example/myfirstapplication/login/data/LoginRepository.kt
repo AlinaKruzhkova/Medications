@@ -3,6 +3,7 @@ package com.example.myfirstapplication.login.data
 import com.example.myfirstapplication.cloudservice.Auth
 import com.example.myfirstapplication.cloudservice.MyUser
 import com.example.myfirstapplication.cloudservice.UserNotLoggedIn
+import com.example.myfirstapplication.login.domain.LoginResult
 import com.example.myfirstapplication.login.presentation.AuthResultWrapper
 import javax.inject.Inject
 

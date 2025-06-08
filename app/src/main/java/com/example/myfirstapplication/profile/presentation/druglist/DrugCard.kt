@@ -24,7 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.myfirstapplication.drug.customFont
+import com.example.myfirstapplication.drug.presentation.customFont
 import com.example.myfirstapplication.profile.domain.Drug
 import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.GrayPink

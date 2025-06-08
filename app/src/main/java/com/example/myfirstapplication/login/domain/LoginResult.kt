@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.login.data
+package com.example.myfirstapplication.login.domain
 
 import com.example.myfirstapplication.login.presentation.state.LoginUiState
 import kotlinx.coroutines.flow.MutableStateFlow
