@@ -20,5 +20,14 @@ class BaseDrugRepository @Inject constructor(
     override suspend fun getAllDrugs(): List<Pair<String, Drug>> {
         return myDrug.allDrugs()
     }
+
+    override suspend fun getAllForms(): List<String> {
+        return try {
+            val allDrugs = myDrug.allDrugs()
+            allDrugs.map { (_, drug) -> drug.form }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 }
 

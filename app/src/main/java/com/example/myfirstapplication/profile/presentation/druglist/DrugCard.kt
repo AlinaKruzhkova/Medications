@@ -32,7 +32,10 @@ import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.Pink
 
 @Composable
-fun DrugCard(drug: Drug) {
+fun DrugCard(
+    drug: Drug,
+    showDescriptionAlways: Boolean = true
+) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -58,7 +61,18 @@ fun DrugCard(drug: Drug) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            DrugField(label = "Описание", content = drug.description)
+            if (showDescriptionAlways) {
+                DrugField(label = "Описание", content = drug.description)
+            } else {
+                AnimatedVisibility(
+                    visible = expanded,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut()
+                ) {
+                    DrugField(label = "Описание", content = drug.description)
+                }
+            }
+
 
             AnimatedVisibility(
                 visible = expanded,

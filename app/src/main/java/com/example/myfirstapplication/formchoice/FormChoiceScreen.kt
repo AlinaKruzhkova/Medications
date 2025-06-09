@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drugchoice
+package com.example.myfirstapplication.formchoice
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -9,16 +9,14 @@ import com.example.myfirstapplication.navigation.Graph
 import com.example.myfirstapplication.profile.presentation.viewmodel.DrugViewModel
 
 @Composable
-fun DrugChoiceScreen(navController: NavController) {
+fun FormChoiceScreen(navController: NavController) {
     val viewModel = hiltViewModel<DrugViewModel>()
-    val drugs by viewModel.drugs.collectAsState()
-    val query by viewModel.searchQuery.collectAsState()
+    val forms by viewModel.forms.collectAsState()
 
-    DrugChoiceContent(
-        navigate = { navController.navigate(Graph.DATES_CHOICE) },
+    FormChoiceContent(
+        navigate = { navController.navigate(Graph.DRUG_CHOICE) },
         navigateBack = { navController.popBackStack() },
-        drugs = drugs,
-        query = query,
-        onQueryChanged = viewModel::onSearchQueryChanged,
+        forms = forms
     )
 }
+

@@ -18,7 +18,7 @@ fun MenuScreen(navController: NavController) {
 
     MenuContent(
         navigate = {
-            navController.navigate(Graph.DRUG_CHOICE)
+            navController.navigate(Graph.FORM_CHOICE)
         },
         itemsList = itemsList
     )
