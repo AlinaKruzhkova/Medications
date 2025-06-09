@@ -13,6 +13,8 @@
     <string name="one_button">Один раз в день</string>
     <string name="two_button">Два раз в день</string>
     <string name="own_button">Свой вариант</string>
+    <string name="interval">Интервал</string>
+    <string name="days_of_week">Определённые дни недели</string>
     <string name="restock_text">Хотите получать напоминания о\nпополнении запасов лекарств?</string>
     <string name="dosage">Укажите необходимую дозировку\n(в единицах):</string>
     <string name="hard_scheme_button">Более сложная схема лечения...</string>

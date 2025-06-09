@@ -5,19 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="RestockNotificationScreenPreview">
+      <SelectionState runConfigName="IntervalButtonPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="StockReminderPreview">
+      <SelectionState runConfigName="HardFrequencyScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="RestockScreenPreview">
+      <SelectionState runConfigName="NotificationFieldUiPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="RestockFieldsPreview">
+      <SelectionState runConfigName="DaysOfWeekSelectorPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SaveButtonPreview">
+      <SelectionState runConfigName="DaysOfWeekSelectorPreviewInteractive">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

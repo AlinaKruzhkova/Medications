@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.restock
+package com.example.myfirstapplication.frequency
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,12 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.ui.theme.DarkGreen
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
-import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.Pink
 
 @Composable
-fun CustomRestockField(
+fun Field(
     label: String,
+    suffix: String,
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -82,7 +79,7 @@ fun CustomRestockField(
 
             // текст справа
             Text(
-                text = "единиц",
+                text = suffix,
                 color = DeepBurgundy,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(start = 8.dp)
@@ -92,53 +89,36 @@ fun CustomRestockField(
 }
 
 @Composable
-fun RestockFields() {
-    var currentAmount by remember { mutableStateOf("30") }
-    var thresholdAmount by remember { mutableStateOf("10") }
+fun NotificationFieldUi() {
+    var hours by remember { mutableStateOf("6") }
+    var days by remember { mutableStateOf("5") }
 
-    Column(
+        Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column {
-            Text(
-                text = "Текущие запасы:",
-                color = DeepBurgundy,
-                fontSize = 14.sp
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            CustomRestockField(
-                label = "Количество",
-                value = currentAmount,
-                onValueChange = { currentAmount = it }
-            )
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Column {
-            Text(
-                text = "Напомнить мне, когда:",
-                color = DeepBurgundy,
-                fontSize = 14.sp
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            CustomRestockField(
-                label = "Осталось",
-                value = thresholdAmount,
-                onValueChange = { thresholdAmount = it }
-            )
-        }
+        Field(
+            label = "Напоминать каждые",
+            suffix = "часов",
+            value = hours,
+            onValueChange = { hours = it }
+        )
+        Field(
+            label = "Напоминать каждые",
+            suffix = "дней",
+            value = days,
+            onValueChange = { days = it }
+        )
     }
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun RestockFieldsPreview() {
+fun NotificationFieldUiPreview() {
     MaterialTheme {
-        RestockFields()
+        NotificationFieldUi()
     }
 }
-
