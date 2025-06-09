@@ -22,9 +22,14 @@ class DrugViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
+    private val _forms = MutableStateFlow<List<String>>(emptyList())
+    val forms: StateFlow<List<String>> = _forms
+
+
     init {
         viewModelScope.launch {
             loadAllDrugs()
+            loadAllForms()
         }
 
         viewModelScope.launch {
@@ -40,6 +45,18 @@ class DrugViewModel @Inject constructor(
         _allDrugs.addAll(list)
         _drugs.value = list
     }
+
+    private suspend fun loadAllForms() {
+        val list = drugRepository.getAllForms()
+
+        val normalized = list
+            .map { it.trim().lowercase() }
+            .distinct()
+            .sorted()
+
+        _forms.value = normalized
+    }
+
 
     private fun filterDrugs(query: String) {
         if (query.isBlank()) {

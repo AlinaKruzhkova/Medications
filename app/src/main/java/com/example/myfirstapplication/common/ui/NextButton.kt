@@ -42,14 +42,14 @@ fun NextButton(
     )
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(50.dp)
             .width(280.dp)
             .background(
                 color = backgroundColor,
                 shape = RoundedCornerShape(16.dp)
             )
-            .clickable(enabled = isActive) { onClick },
+            .clickable(enabled = isActive) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(
