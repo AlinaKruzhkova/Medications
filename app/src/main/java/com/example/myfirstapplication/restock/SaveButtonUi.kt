@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.common.ui
+package com.example.myfirstapplication.restock
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -28,9 +28,8 @@ import com.example.myfirstapplication.ui.theme.Burgundy
 import com.example.myfirstapplication.ui.theme.Grey
 import com.example.myfirstapplication.ui.theme.Pink
 
-
 @Composable
-fun NextButton(
+fun SaveButtonUi(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isActive: Boolean = true
@@ -53,7 +52,7 @@ fun NextButton(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(R.string.next_text),
+            text = stringResource(R.string.save_text),
             color = Pink,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
@@ -64,7 +63,7 @@ fun NextButton(
 
 @Preview(showBackground = true)
 @Composable
-fun NextButtonPreview() {
+fun SaveButtonPreview() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -72,11 +71,11 @@ fun NextButtonPreview() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        NextButton(
+        SaveButtonUi(
             isActive = true,
             onClick = {}
         )
-        NextButton(
+        SaveButtonUi(
             isActive = false,
             onClick = {}
         )

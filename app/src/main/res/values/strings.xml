@@ -3,6 +3,7 @@
     <string name="registration_text">Войти с помощью Google</string>
     <string name="authorization_text">У меня уже есть профиль</string>
     <string name="next_text">Далее</string>
+    <string name="save_text">Сохранить</string>
     <string name="title_text">Мои лекарства</string>
     <string name="menu_text">Здесь пока ничего нет\n. . .</string>
     <string name="choice">Выберите форму выпуска:</string>
@@ -12,7 +13,10 @@
     <string name="one_button">Один раз в день</string>
     <string name="two_button">Два раз в день</string>
     <string name="own_button">Свой вариант</string>
+    <string name="restock_text">Хотите получать напоминания о\nпополнении запасов лекарств?</string>
+    <string name="dosage">Укажите необходимую дозировку\n(в единицах):</string>
     <string name="hard_scheme_button">Более сложная схема лечения...</string>
+    <string name="when_text">Когда Вы хотите получать напоминания?</string>
     <string name="days_button">Определённое количество дней</string>
     <string name="duration">Как долго Вам нужно принимать\nэто лекарство?</string>
     <string name="search_drug_field">Выберите нужное лекарство:</string>

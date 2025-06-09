@@ -17,9 +17,10 @@ val Burgundy = Color(0xFFAA3E60)
 val DarkBurgundy = Color(0xFF591D3D)
 val DeepBurgundy = Color(0xFF371628)
 
+val DarkGreen = Color(0xFF42624A)
 val Green = Color(0x8075AD7A)
 val LightGreen = Color(0xFF75AD7A)
 val Blue = Color(0xFF666CFB)
-
+val Grey = Color(0xFF979797)
 
 val White = Color(0xFFFFFFFE)
