@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.myfirstapplication.dateschoice.DatesChoiceScreen
 import com.example.myfirstapplication.drugchoice.DrugChoiceScreen
 import com.example.myfirstapplication.formchoice.FormChoiceScreen
+import com.example.myfirstapplication.frequency.FrequencyScreen
 import com.example.myfirstapplication.login.presentation.LoginScreenInner
 import com.example.myfirstapplication.profile.presentation.druglist.DrugListScreen
 
@@ -34,6 +35,9 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.FORM_CHOICE) {
             FormChoiceScreen(navController)
         }
+        composable(route = Graph.FREQUENCY) {
+            FrequencyScreen(navController)
+        }
     }
 }
 
@@ -44,6 +48,7 @@ object Graph {
     const val DRUG_CHOICE = "drug_choice_screen"
     const val FORM_CHOICE = "form_choice_screen"
     const val DATES_CHOICE = "dates_choice_screen"
+    const val FREQUENCY = "frequency_screen"
 }
 
 @Composable

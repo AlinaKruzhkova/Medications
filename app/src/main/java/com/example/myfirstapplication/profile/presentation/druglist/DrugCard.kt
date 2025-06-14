@@ -34,14 +34,18 @@ import com.example.myfirstapplication.ui.theme.Pink
 @Composable
 fun DrugCard(
     drug: Drug,
-    showDescriptionAlways: Boolean = true
+    showDescriptionAlways: Boolean = true,
+    onClick: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { expanded = !expanded },
+            .clickable {
+                expanded = !expanded
+                onClick()
+            },
         elevation = CardDefaults.cardElevation(4.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = GrayPink)

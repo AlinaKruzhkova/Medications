@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.frequency
+package com.example.myfirstapplication.frequency.buttons
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +31,7 @@ import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.White
 
 @Composable
-fun DaysOfWeekButtonUi(
+fun TwoButtonUi(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isSelected: Boolean
@@ -45,10 +45,10 @@ fun DaysOfWeekButtonUi(
     Box(
         modifier = Modifier
             .height(58.dp)
-            .fillMaxWidth()
+            .width(304.dp)
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(32.dp)
             )
             .clickable(enabled = !isSelected) { onClick() }
     ) {
@@ -67,7 +67,7 @@ fun DaysOfWeekButtonUi(
                     .padding(end = 8.dp)
             )
             Text(
-                text = stringResource(R.string.days_of_week),
+                text = stringResource(R.string.two_button),
                 color = textColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -80,8 +80,8 @@ fun DaysOfWeekButtonUi(
 
 @Preview(showBackground = true)
 @Composable
-fun DaysOfWeekButtonPreview() {
-    DaysOfWeekButtonUi(
+fun TwoButtonPreview() {
+    TwoButtonUi(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         isSelected = false,
         onClick = {}

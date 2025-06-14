@@ -23,11 +23,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
-import com.example.myfirstapplication.dateschoice.Counter
+import com.example.myfirstapplication.common.ui.NextButton
+import com.example.myfirstapplication.dateschoice.buttons.Counter
 import com.example.myfirstapplication.frequency.SelectedOption
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
-import com.example.myfirstapplication.common.ui.NextButton
 
 @Composable
 fun NotificationTimeDosageScreen(navigate: () -> Unit) {

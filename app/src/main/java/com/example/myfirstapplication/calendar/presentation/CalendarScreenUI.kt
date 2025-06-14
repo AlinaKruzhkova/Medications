@@ -14,7 +14,7 @@ import com.example.myfirstapplication.calendar.presentation.viewmodel.CalendarVi
 import com.example.myfirstapplication.ui.theme.Pink
 
 @Composable
-fun CalendarScreenUi(navController: NavHostController) {
+fun CalendarScreen(navController: NavHostController) {
     val viewModel = hiltViewModel<CalendarViewModel>()
     val selectedDate by viewModel.selectedDate
 

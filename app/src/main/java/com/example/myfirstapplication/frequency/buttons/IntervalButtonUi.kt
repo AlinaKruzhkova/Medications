@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.frequency
+package com.example.myfirstapplication.frequency.buttons
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,7 +31,7 @@ import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.White
 
 @Composable
-fun HardSchemeButtonUi(
+fun IntervalButtonUi(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isSelected: Boolean
@@ -45,10 +45,10 @@ fun HardSchemeButtonUi(
     Box(
         modifier = Modifier
             .height(58.dp)
-            .width(304.dp)
+            .fillMaxWidth()
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(32.dp)
+                shape = RoundedCornerShape(16.dp)
             )
             .clickable(enabled = !isSelected) { onClick() }
     ) {
@@ -67,7 +67,7 @@ fun HardSchemeButtonUi(
                     .padding(end = 8.dp)
             )
             Text(
-                text = stringResource(R.string.hard_scheme_button),
+                text = stringResource(R.string.interval),
                 color = textColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -80,8 +80,8 @@ fun HardSchemeButtonUi(
 
 @Preview(showBackground = true)
 @Composable
-fun HardSchemeButtonPreview() {
-    HardSchemeButtonUi(
+fun IntervalButtonPreview() {
+    IntervalButtonUi(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         isSelected = false,
         onClick = {}

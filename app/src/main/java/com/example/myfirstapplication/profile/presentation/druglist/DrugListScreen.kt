@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,7 +41,7 @@ fun DrugListScreen(navController: NavController) {
             modifier = Modifier
                 .padding(start = 8.dp, top = 32.dp)
                 .height(56.dp),
-            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically
         ) {
             BackButton { navController.popBackStack() }
 
@@ -68,7 +69,10 @@ fun DrugListScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(drugs.size) { index ->
-                DrugCard(drug = drugs[index].second)
+                DrugCard(
+                    drug = drugs[index].second,
+                    onClick = {}
+                )
             }
         }
     }

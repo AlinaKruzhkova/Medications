@@ -1,8 +1,6 @@
 package com.example.myfirstapplication.frequency
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.NextButton
+import com.example.myfirstapplication.frequency.buttons.DaysOfWeekButtonUi
+import com.example.myfirstapplication.frequency.buttons.DaysOfWeekSelectorUi
+import com.example.myfirstapplication.frequency.buttons.IntervalButtonUi
+import com.example.myfirstapplication.frequency.buttons.NotificationFieldUi
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
@@ -39,7 +41,7 @@ enum class HardSelectedOption {
 }
 
 @Composable
-fun HardFrequencyScreenUi(navigate: () -> Unit) {
+fun HardFrequencyScreen(navigate: () -> Unit) {
     var selectedOption by remember { mutableStateOf(HardSelectedOption.NONE) }
     val selectedDays = remember { mutableStateListOf<Int>() }
 
@@ -124,6 +126,6 @@ fun HardFrequencyScreenUi(navigate: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun HardFrequencyScreenPreview() {
-    HardFrequencyScreenUi(navigate = {})
+    HardFrequencyScreen(navigate = {})
 }
 

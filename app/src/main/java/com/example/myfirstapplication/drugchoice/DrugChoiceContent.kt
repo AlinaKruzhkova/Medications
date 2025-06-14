@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -44,7 +45,9 @@ fun DrugChoiceContent(
     navigateBack: () -> Unit,
     drugs: List<Pair<String, Drug>>,
     query: String,
-    onQueryChanged: (String) -> Unit
+    onQueryChanged: (String) -> Unit,
+    selectedDrug: String?,
+    onDrugSelected: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -101,18 +104,28 @@ fun DrugChoiceContent(
                 items(drugs.size) { index ->
                     DrugCard(
                         drug = drugs[index].second,
-                        showDescriptionAlways = false
+                        showDescriptionAlways = false,
+                        onClick = { onDrugSelected(drugs[index].second.name) }
                     )
                 }
             }
         }
+
+        Text(
+            text = if (selectedDrug.isNullOrEmpty()) "Вы ничего не выбрали" else "Вы выбрали: $selectedDrug",
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.labelLarge,
+            color = DeepBurgundy
+        )
+
 
         // Кнопка далее
         NextButton(
             onClick = navigate,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp)
+                .padding(bottom = 16.dp),
+            isActive = selectedDrug?.isNotEmpty() == true || query.isNotEmpty()
         )
     }
 }

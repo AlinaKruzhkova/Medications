@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.frequency
+package com.example.myfirstapplication.frequency.buttons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

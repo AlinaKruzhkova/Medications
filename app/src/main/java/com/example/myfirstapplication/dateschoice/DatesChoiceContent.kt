@@ -1,5 +1,10 @@
 package com.example.myfirstapplication.dateschoice
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +25,9 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.common.ui.NextButton
+import com.example.myfirstapplication.dateschoice.buttons.AlwaysButtonUi
+import com.example.myfirstapplication.dateschoice.buttons.Counter
+import com.example.myfirstapplication.dateschoice.buttons.DaysButtonUi
 import com.example.myfirstapplication.drug.presentation.customFont
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
@@ -29,7 +37,9 @@ fun DatesChoiceContent(
     navigate: () -> Unit,
     navigateBack: () -> Unit,
     selectedOption: SelectedOption,
-    onOptionSelected: (SelectedOption) -> Unit
+    onOptionSelected: (SelectedOption) -> Unit,
+    selectedNumber: Int,
+    onNumberSelected: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -45,9 +55,7 @@ fun DatesChoiceContent(
                 .padding(top = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BackButton(
-                onClick = navigateBack
-            )
+            BackButton(onClick = navigateBack)
 
             Text(
                 text = stringResource(R.string.duration),
@@ -79,12 +87,48 @@ fun DatesChoiceContent(
             isSelected = selectedOption == SelectedOption.DAYS,
             onClick = { onOptionSelected(SelectedOption.DAYS) }
         )
+
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
+
+        AnimatedVisibility(
+            visible = selectedOption == SelectedOption.DAYS,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            Column {
+                Text(
+                    text = stringResource(R.string.counter_screen),
+                    color = DeepBurgundy,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = customFont,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                Counter(
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    onNumberSelected = onNumberSelected
+                )
+            }
+        }
+
+
         Spacer(
             modifier = Modifier.weight(1f)
         )
+
+        val isNextActive = when (selectedOption) {
+            SelectedOption.ALWAYS -> true
+            SelectedOption.DAYS -> selectedNumber > 0
+            SelectedOption.NONE -> false
+        }
+
         NextButton(
             onClick = navigate,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp),
+            isActive = isNextActive
         )
     }
 }

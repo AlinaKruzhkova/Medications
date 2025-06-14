@@ -1,5 +1,4 @@
-package com.example.myfirstapplication.dateschoice
-
+package com.example.myfirstapplication.frequency.buttons
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,12 +30,11 @@ import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.White
 
-@Composable//аннотация, кот показывает что функция ниже будет отображать
-fun DaysButtonUi(
-    modifier: Modifier,
+@Composable
+fun OneButtonUi(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isSelected: Boolean
-
 ) {
     val customFont = FontFamily(Font(R.font.nunito_extralight))
 
@@ -51,13 +50,14 @@ fun DaysButtonUi(
                 color = backgroundColor,
                 shape = RoundedCornerShape(32.dp)
             )
-            .clickable(enabled = !isSelected) { onClick() },
-
-        contentAlignment = Alignment.Center
+            .clickable(enabled = !isSelected) { onClick() }
     ) {
         Row(
+            modifier = Modifier
+                .fillMaxSize() // Занимает всю высоту и ширину Box
+                .padding(start = 16.dp), // Отступ слева
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Start,
         ) {
             Image(
                 painter = painterResource(id = icon),
@@ -67,7 +67,7 @@ fun DaysButtonUi(
                     .padding(end = 8.dp)
             )
             Text(
-                text = stringResource(R.string.days_button),
+                text = stringResource(R.string.one_button),
                 color = textColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -80,8 +80,8 @@ fun DaysButtonUi(
 
 @Preview(showBackground = true)
 @Composable
-fun DaysButtonPreview() {
-    DaysButtonUi(
+fun OneButtonPreview() {
+    OneButtonUi(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         isSelected = false,
         onClick = {}

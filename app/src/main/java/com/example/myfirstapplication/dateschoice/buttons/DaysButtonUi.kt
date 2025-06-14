@@ -1,4 +1,5 @@
-package com.example.myfirstapplication.frequency
+package com.example.myfirstapplication.dateschoice.buttons
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,11 +7,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,11 +30,12 @@ import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.White
 
-@Composable
-fun IntervalButtonUi(
-    modifier: Modifier = Modifier,
+@Composable//аннотация, кот показывает что функция ниже будет отображать
+fun DaysButtonUi(
+    modifier: Modifier,
     onClick: () -> Unit,
     isSelected: Boolean
+
 ) {
     val customFont = FontFamily(Font(R.font.nunito_extralight))
 
@@ -45,19 +46,18 @@ fun IntervalButtonUi(
     Box(
         modifier = Modifier
             .height(58.dp)
-            .fillMaxWidth()
+            .width(304.dp)
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(32.dp)
             )
-            .clickable(enabled = !isSelected) { onClick() }
+            .clickable(enabled = !isSelected) { onClick() },
+
+        contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxSize() // Занимает всю высоту и ширину Box
-                .padding(start = 16.dp), // Отступ слева
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.Center
         ) {
             Image(
                 painter = painterResource(id = icon),
@@ -67,7 +67,7 @@ fun IntervalButtonUi(
                     .padding(end = 8.dp)
             )
             Text(
-                text = stringResource(R.string.interval),
+                text = stringResource(R.string.days_button),
                 color = textColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -80,8 +80,8 @@ fun IntervalButtonUi(
 
 @Preview(showBackground = true)
 @Composable
-fun IntervalButtonPreview() {
-    IntervalButtonUi(
+fun DaysButtonPreview() {
+    DaysButtonUi(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         isSelected = false,
         onClick = {}

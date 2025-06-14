@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.frequency
+package com.example.myfirstapplication.frequency.buttons
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,7 +31,7 @@ import com.example.myfirstapplication.ui.theme.Green
 import com.example.myfirstapplication.ui.theme.White
 
 @Composable
-fun TwoButtonUi(
+fun OwnVersionButtonUi(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isSelected: Boolean
@@ -67,7 +67,7 @@ fun TwoButtonUi(
                     .padding(end = 8.dp)
             )
             Text(
-                text = stringResource(R.string.two_button),
+                text = stringResource(R.string.own_button),
                 color = textColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
@@ -80,8 +80,8 @@ fun TwoButtonUi(
 
 @Preview(showBackground = true)
 @Composable
-fun TwoButtonPreview() {
-    TwoButtonUi(
+fun OwnVersionButtonPreview() {
+    OwnVersionButtonUi(
         modifier = Modifier.background(MaterialTheme.colorScheme.background),
         isSelected = false,
         onClick = {}
