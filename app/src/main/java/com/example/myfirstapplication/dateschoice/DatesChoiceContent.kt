@@ -1,6 +1,7 @@
 package com.example.myfirstapplication.dateschoice
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -36,8 +37,8 @@ import com.example.myfirstapplication.ui.theme.Pink
 fun DatesChoiceContent(
     navigate: () -> Unit,
     navigateBack: () -> Unit,
-    selectedOption: SelectedOption,
-    onOptionSelected: (SelectedOption) -> Unit,
+    selectedOption: DaysSelectedOption,
+    onOptionSelected: (DaysSelectedOption) -> Unit,
     selectedNumber: Int,
     onNumberSelected: (Int) -> Unit
 ) {
@@ -74,8 +75,8 @@ fun DatesChoiceContent(
 
         AlwaysButtonUi(
             modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == SelectedOption.ALWAYS,
-            onClick = { onOptionSelected(SelectedOption.ALWAYS) }
+            isSelected = selectedOption == DaysSelectedOption.ALWAYS,
+            onClick = { onOptionSelected(DaysSelectedOption.ALWAYS) }
         )
 
         Spacer(
@@ -84,8 +85,8 @@ fun DatesChoiceContent(
 
         DaysButtonUi(
             modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == SelectedOption.DAYS,
-            onClick = { onOptionSelected(SelectedOption.DAYS) }
+            isSelected = selectedOption == DaysSelectedOption.DAYS,
+            onClick = { onOptionSelected(DaysSelectedOption.DAYS) }
         )
 
         Spacer(
@@ -93,9 +94,9 @@ fun DatesChoiceContent(
         )
 
         AnimatedVisibility(
-            visible = selectedOption == SelectedOption.DAYS,
-            enter = fadeIn() + expandVertically(),
-            exit = fadeOut() + shrinkVertically()
+            visible = selectedOption == DaysSelectedOption.DAYS,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
         ) {
             Column {
                 Text(
@@ -120,9 +121,9 @@ fun DatesChoiceContent(
         )
 
         val isNextActive = when (selectedOption) {
-            SelectedOption.ALWAYS -> true
-            SelectedOption.DAYS -> selectedNumber > 0
-            SelectedOption.NONE -> false
+            DaysSelectedOption.ALWAYS -> true
+            DaysSelectedOption.DAYS -> selectedNumber > 0
+            DaysSelectedOption.NONE -> false
         }
 
         NextButton(

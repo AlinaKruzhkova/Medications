@@ -1,5 +1,11 @@
 package com.example.myfirstapplication.frequency
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,14 +13,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -26,21 +27,21 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.common.ui.NextButton
+import com.example.myfirstapplication.dateschoice.buttons.Counter
 import com.example.myfirstapplication.drug.presentation.customFont
-import com.example.myfirstapplication.frequency.buttons.HardSchemeButtonUi
-import com.example.myfirstapplication.frequency.buttons.OneButtonUi
-import com.example.myfirstapplication.frequency.buttons.OwnVersionButtonUi
-import com.example.myfirstapplication.frequency.buttons.TwoButtonUi
+import com.example.myfirstapplication.frequency.buttons.SelectableButton
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
 @Composable
 fun FrequencyContent(
     navigate: () -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    selectedOption: FrequencySelectedOption,
+    onSelectedOption: (FrequencySelectedOption) -> Unit,
+    selectedNumber: Int,
+    onNumberSelected: (Int) -> Unit
 ) {
-    var selectedOption by remember { mutableStateOf(SelectedOption.NONE) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,52 +74,64 @@ fun FrequencyContent(
             )
         }
 
-        OneButtonUi(
+        SelectableButton(
             modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == SelectedOption.ONE,
-            onClick = {
-                selectedOption = SelectedOption.ONE
-            }
+            isSelected = selectedOption == FrequencySelectedOption.ONE,
+            onClick = { onSelectedOption(FrequencySelectedOption.ONE) },
+            text = stringResource(R.string.one_button)
         )
-        Spacer(
-            modifier = Modifier.height(12.dp)
+        SelectableButton(
+            modifier = Modifier.padding(bottom = 16.dp),
+            isSelected = selectedOption == FrequencySelectedOption.TWO,
+            onClick = { onSelectedOption(FrequencySelectedOption.TWO) },
+            text = stringResource(R.string.two_button)
         )
+        SelectableButton(
+            modifier = Modifier.padding(bottom = 16.dp),
+            isSelected = selectedOption == FrequencySelectedOption.OWN,
+            onClick = { onSelectedOption(FrequencySelectedOption.OWN) },
+            text = stringResource(R.string.own_button)
+        )
+        SelectableButton(
+            modifier = Modifier.padding(bottom = 16.dp),
+            isSelected = selectedOption == FrequencySelectedOption.HARD,
+            onClick = { onSelectedOption(FrequencySelectedOption.HARD) },
+            text = stringResource(R.string.hard_scheme_button)
+        )
+        AnimatedVisibility(
+            visible = selectedOption == FrequencySelectedOption.OWN,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
+        ) {
+            Column {
+                Text(
+                    text = "Выберите количество приемов в день:",
+                    color = DeepBurgundy,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = customFont,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
 
-        TwoButtonUi(
-            modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == SelectedOption.TWO,
-            onClick = {
-                selectedOption = SelectedOption.TWO
+                Counter(
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    onNumberSelected = onNumberSelected,
+                    range = 1..10
+                )
             }
-        )
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
-
-        OwnVersionButtonUi(
-            modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == SelectedOption.OWN,
-            onClick = {
-                selectedOption = SelectedOption.OWN
-            }
-        )
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
-
-        HardSchemeButtonUi(
-            modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == SelectedOption.HARD,
-            onClick = {
-                selectedOption = SelectedOption.HARD
-            }
-        )
+        }
         Spacer(
             modifier = Modifier.weight(1f)
         )
+        val isNextActive = when (selectedOption) {
+            FrequencySelectedOption.NONE -> false
+            FrequencySelectedOption.OWN -> selectedNumber > 0
+            else -> true
+        }
         NextButton(
             onClick = navigate,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 16.dp),
+            isActive = isNextActive
         )
     }
 }
@@ -128,6 +141,10 @@ fun FrequencyContent(
 fun FrequencyContentPreview() {
     FrequencyContent(
         navigate = {},
-        navigateBack = {}
+        navigateBack = {},
+        selectedOption = FrequencySelectedOption.ONE,
+        onSelectedOption = {},
+        selectedNumber = 5,
+        onNumberSelected = {}
     )
 }

@@ -8,7 +8,9 @@ import com.example.myfirstapplication.dateschoice.DatesChoiceScreen
 import com.example.myfirstapplication.drugchoice.DrugChoiceScreen
 import com.example.myfirstapplication.formchoice.FormChoiceScreen
 import com.example.myfirstapplication.frequency.FrequencyScreen
+import com.example.myfirstapplication.frequency.HardFrequencyScreen
 import com.example.myfirstapplication.login.presentation.LoginScreenInner
+import com.example.myfirstapplication.notifications.NotificationTimeDosageScreen
 import com.example.myfirstapplication.profile.presentation.druglist.DrugListScreen
 
 @Composable
@@ -38,6 +40,12 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.FREQUENCY) {
             FrequencyScreen(navController)
         }
+        composable(route = Graph.NOTIFICATION) {
+            NotificationTimeDosageScreen(navController)
+        }
+        composable(route = Graph.HARD_FREQUENCY) {
+            HardFrequencyScreen(navController)
+        }
     }
 }
 
@@ -49,6 +57,8 @@ object Graph {
     const val FORM_CHOICE = "form_choice_screen"
     const val DATES_CHOICE = "dates_choice_screen"
     const val FREQUENCY = "frequency_screen"
+    const val HARD_FREQUENCY = "hard_frequency_screen"
+    const val NOTIFICATION = "notification_screen"
 }
 
 @Composable

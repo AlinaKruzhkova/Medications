@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import com.example.myfirstapplication.navigation.Graph
 
-enum class SelectedOption {
+enum class DaysSelectedOption {
     NONE,
     ALWAYS,
     DAYS
@@ -17,7 +17,7 @@ enum class SelectedOption {
 
 @Composable
 fun DatesChoiceScreen(navController: NavController) {
-    var selectedOption by remember { mutableStateOf(SelectedOption.NONE) }
+    var selectedOption by remember { mutableStateOf(DaysSelectedOption.NONE) }
     var selectedNumber by remember { mutableIntStateOf(0) }
 
     DatesChoiceContent(
