@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.myfirstapplication.navigation.Graph
 import com.example.myfirstapplication.profile.presentation.viewmodel.DrugViewModel
-import com.example.myfirstapplication.scheme.presentation.drugchoice.viewmodel.SchemeViewModel
+import com.example.myfirstapplication.scheme.presentation.viewmodel.SchemeViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,6 +52,7 @@ fun DrugChoiceScreen(navController: NavController) {
                 )
                 navController.navigate(Graph.DATES_CHOICE)
             }
-        }
+        },
+        schemeId = schemeViewModel.schemeId
     )
 }

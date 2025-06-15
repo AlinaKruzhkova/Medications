@@ -1,11 +1,11 @@
 package com.example.myfirstapplication.calendar.presentation.viewmodel
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import com.example.myfirstapplication.core.BaseViewModel
 import com.example.myfirstapplication.core.RunAsync
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -18,8 +18,8 @@ class CalendarViewModel @Inject constructor(
     private val _weekOffset = mutableIntStateOf(0)
     val weekOffset: Int get() = _weekOffset.value
 
-    private val _selectedDate = mutableStateOf(today)
-    val selectedDate: State<LocalDate> = _selectedDate
+    private val _selectedDate = MutableStateFlow(today)
+    val selectedDate: StateFlow<LocalDate> = _selectedDate
 
     val mondayThisWeek: LocalDate
         get() = today.minusDays((today.dayOfWeek.value - 1).toLong())

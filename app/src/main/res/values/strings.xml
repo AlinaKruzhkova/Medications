@@ -26,4 +26,5 @@
     <string name="hello_text">Удобное расписание приёма\nлекарственных препаратов уже с\nВами!</string>
     <string name="your_web_client_id" translatable="false" tools:ignore="TypographyDashes">866220557705-tcmrq4q1foh49kkld7dj15i2l9odbng7.apps.googleusercontent.com</string>
     <string name="no_internet">No internet connection</string>
+    <string name="start_date">Выберите дату начала:</string>
 </resources>

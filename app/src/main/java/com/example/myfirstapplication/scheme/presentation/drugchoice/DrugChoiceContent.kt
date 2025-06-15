@@ -48,7 +48,8 @@ fun DrugChoiceContent(
     onSearchQueryChanged: (String) -> Unit,
     selectedDrugId: String?,
     onDrugSelected: (String) -> Unit,
-    selectedDrugName: String?
+    selectedDrugName: String?,
+    schemeId: String?
 ) {
     Column(
         modifier = Modifier
@@ -118,6 +119,7 @@ fun DrugChoiceContent(
                 .padding(bottom = 16.dp),
             isActive = selectedDrugId?.isNotEmpty() == true || searchQuery.isNotEmpty()
         )
+        Text(schemeId.toString())
     }
 }
 

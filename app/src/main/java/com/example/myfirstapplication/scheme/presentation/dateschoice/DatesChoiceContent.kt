@@ -40,7 +40,8 @@ fun DatesChoiceContent(
     selectedOption: DaysSelectedOption,
     onOptionSelected: (DaysSelectedOption) -> Unit,
     selectedNumber: Int,
-    onNumberSelected: (Int) -> Unit
+    onNumberSelected: (Int) -> Unit,
+    calendar: @Composable () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -112,9 +113,18 @@ fun DatesChoiceContent(
                     modifier = Modifier.padding(bottom = 16.dp),
                     onNumberSelected = onNumberSelected
                 )
+
+                Text(
+                    text = stringResource(R.string.start_date),
+                    color = DeepBurgundy,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = customFont,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                calendar()
             }
         }
-
 
         Spacer(
             modifier = Modifier.weight(1f)
