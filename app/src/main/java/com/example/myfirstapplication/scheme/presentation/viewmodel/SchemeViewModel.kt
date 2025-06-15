@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.scheme.presentation.drugchoice.viewmodel
+package com.example.myfirstapplication.scheme.presentation.viewmodel
 
 import com.example.myfirstapplication.core.BaseViewModel
 import com.example.myfirstapplication.core.RunAsync
@@ -10,6 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,11 +38,13 @@ class SchemeViewModel @Inject constructor(
         savePartialUpdates()
     }
 
-    suspend fun saveDates(start: String, end: String?) {
+    suspend fun saveDates(startDate: String, daysCount: Int?) {
+        val endDate = daysCount?.let { calculateEndDate(startDate, it) }
+
         _currentScheme.update { current ->
             current.copy(
-                startDate = start,
-                endDate = end,
+                startDate = startDate,
+                endDate = endDate,
                 status = "dates_selected"
             )
         }
@@ -69,7 +74,6 @@ class SchemeViewModel @Inject constructor(
         savePartialUpdates()
     }
 
-    // Удали suspend
     private fun savePartialUpdates() {
         runAsync(
             background = {
@@ -94,4 +98,17 @@ class SchemeViewModel @Inject constructor(
         "schedule" to schedule,
         "status" to status
     )
+
+    private fun calculateEndDate(startDate: String, daysCount: Int): String {
+        return try {
+            val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val calendar = Calendar.getInstance().apply {
+                time = dateFormat.parse(startDate) ?: return startDate
+                add(Calendar.DAY_OF_YEAR, daysCount - 1) // -1 потому что включаем первый день
+            }
+            dateFormat.format(calendar.time)
+        } catch (e: Exception) {
+            startDate // в случае ошибки возвращаем startDate
+        }
+    }
 }
