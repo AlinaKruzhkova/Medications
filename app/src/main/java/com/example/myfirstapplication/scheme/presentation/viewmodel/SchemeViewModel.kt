@@ -25,7 +25,7 @@ class SchemeViewModel @Inject constructor(
     private val _currentScheme = MutableStateFlow(UserDrugScheme())
     val currentScheme = _currentScheme.asStateFlow()
 
-    private var schemeId: String? = null
+    var schemeId: String? = null
 
     fun saveDrugSelection(drugId: String?, customName: String?) {
         _currentScheme.update {
