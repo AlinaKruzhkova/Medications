@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.dateschoice
+package com.example.myfirstapplication.scheme.presentation.dateschoice
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

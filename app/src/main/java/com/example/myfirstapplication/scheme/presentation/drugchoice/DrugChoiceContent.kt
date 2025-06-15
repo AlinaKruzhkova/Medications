@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drugchoice
+package com.example.myfirstapplication.scheme.presentation.drugchoice
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,13 +41,14 @@ import com.example.myfirstapplication.ui.theme.Pink
 
 @Composable
 fun DrugChoiceContent(
-    navigate: () -> Unit,
-    navigateBack: () -> Unit,
+    onNavigateNext: () -> Unit,
+    onNavigateBack: () -> Unit,
     drugs: List<Pair<String, Drug>>,
-    query: String,
-    onQueryChanged: (String) -> Unit,
-    selectedDrug: String?,
+    searchQuery: String,
+    onSearchQueryChanged: (String) -> Unit,
+    selectedDrugId: String?,
     onDrugSelected: (String) -> Unit,
+    selectedDrugName: String?
 ) {
     Column(
         modifier = Modifier
@@ -65,7 +66,7 @@ fun DrugChoiceContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             BackButton(
-                onClick = navigateBack
+                onClick = onNavigateBack
             )
 
             Text(
@@ -85,8 +86,8 @@ fun DrugChoiceContent(
 
         // Поле ввода
         SearchDrugField(
-            query = query,
-            onQueryChanged = onQueryChanged
+            query = searchQuery,
+            onQueryChanged = onSearchQueryChanged
         )
 
         // Вывод лекарств
@@ -95,24 +96,14 @@ fun DrugChoiceContent(
                 .fillMaxWidth()
                 .height(350.dp)
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(drugs.size) { index ->
-                    DrugCard(
-                        drug = drugs[index].second,
-                        showDescriptionAlways = false,
-                        onClick = { onDrugSelected(drugs[index].second.name) }
-                    )
-                }
-            }
+            DrugList(
+                drugs = drugs,
+                onSelect = onDrugSelected
+            )
         }
 
         Text(
-            text = if (selectedDrug.isNullOrEmpty()) "Вы ничего не выбрали" else "Вы выбрали: $selectedDrug",
+            text = if (selectedDrugId.isNullOrEmpty()) "Вы ничего не выбрали" else "Вы выбрали: $selectedDrugName",
             modifier = Modifier.padding(8.dp),
             style = MaterialTheme.typography.labelLarge,
             color = DeepBurgundy
@@ -121,14 +112,37 @@ fun DrugChoiceContent(
 
         // Кнопка далее
         NextButton(
-            onClick = navigate,
+            onClick = onNavigateNext,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
-            isActive = selectedDrug?.isNotEmpty() == true || query.isNotEmpty()
+            isActive = selectedDrugId?.isNotEmpty() == true || searchQuery.isNotEmpty()
         )
     }
 }
+
+
+@Composable
+fun DrugList(
+    drugs: List<Pair<String, Drug>>,
+    onSelect: (String) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(drugs.size) { index ->
+            DrugCard(
+                drug = drugs[index].second,
+                showDescriptionAlways = false,
+                onClick = { onSelect(drugs[index].first) }
+            )
+        }
+    }
+}
+
 
 
 //красивое поле ввода для списка лекарств

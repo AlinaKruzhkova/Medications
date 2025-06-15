@@ -4,14 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.myfirstapplication.dateschoice.DatesChoiceScreen
-import com.example.myfirstapplication.drugchoice.DrugChoiceScreen
 import com.example.myfirstapplication.formchoice.FormChoiceScreen
 import com.example.myfirstapplication.frequency.FrequencyScreen
 import com.example.myfirstapplication.frequency.HardFrequencyScreen
 import com.example.myfirstapplication.login.presentation.LoginScreenInner
 import com.example.myfirstapplication.notifications.NotificationTimeDosageScreen
 import com.example.myfirstapplication.profile.presentation.druglist.DrugListScreen
+import com.example.myfirstapplication.scheme.presentation.dateschoice.DatesChoiceScreen
+import com.example.myfirstapplication.scheme.presentation.drugchoice.DrugChoiceScreen
 
 @Composable
 fun RootNavigationGraph(navController: NavHostController) {

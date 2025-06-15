@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.common.ui.NextButton
-import com.example.myfirstapplication.dateschoice.buttons.Counter
 import com.example.myfirstapplication.drug.presentation.customFont
 import com.example.myfirstapplication.frequency.buttons.SelectableButton
+import com.example.myfirstapplication.scheme.presentation.dateschoice.buttons.Counter
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 

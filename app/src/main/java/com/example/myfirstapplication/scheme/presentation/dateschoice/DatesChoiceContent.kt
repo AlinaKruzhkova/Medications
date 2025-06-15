@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.dateschoice
+package com.example.myfirstapplication.scheme.presentation.dateschoice
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -26,10 +26,10 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.common.ui.NextButton
-import com.example.myfirstapplication.dateschoice.buttons.AlwaysButtonUi
-import com.example.myfirstapplication.dateschoice.buttons.Counter
-import com.example.myfirstapplication.dateschoice.buttons.DaysButtonUi
 import com.example.myfirstapplication.drug.presentation.customFont
+import com.example.myfirstapplication.scheme.presentation.dateschoice.buttons.AlwaysButtonUi
+import com.example.myfirstapplication.scheme.presentation.dateschoice.buttons.Counter
+import com.example.myfirstapplication.scheme.presentation.dateschoice.buttons.DaysButtonUi
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 

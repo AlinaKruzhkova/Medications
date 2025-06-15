@@ -21,8 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.drug.presentation.customFont
-import com.example.myfirstapplication.drugchoice.SearchDrugField
 import com.example.myfirstapplication.profile.presentation.viewmodel.DrugViewModel
+import com.example.myfirstapplication.scheme.presentation.drugchoice.SearchDrugField
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
