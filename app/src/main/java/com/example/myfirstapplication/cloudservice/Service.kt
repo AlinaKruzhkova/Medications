@@ -62,7 +62,7 @@ interface Service {
         clasz: Class<T>,
     ): List<Pair<String, T>>
 
-    fun updateField(path: String, child: String, fieldId: String, fieldValue: Any)
+    fun updateField(path: String, child: String, fieldId: String, fieldValue: Any?)
 
     fun postFirstLevelAsync(path: String, obj: Any)
 
@@ -97,7 +97,7 @@ interface Service {
             })
         }
 
-        override fun updateField(path: String, child: String, fieldId: String, fieldValue: Any) {
+        override fun updateField(path: String, child: String, fieldId: String, fieldValue: Any?) {
             database
                 .child(path)
                 .child(child)

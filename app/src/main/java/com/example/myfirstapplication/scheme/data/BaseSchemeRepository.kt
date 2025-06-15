@@ -25,7 +25,7 @@ class BaseSchemeRepository @Inject constructor(
 
     override suspend fun updatePartialScheme(
         schemeId: String,
-        updates: Map<String, Any>
+        updates: Map<String, Any?>
     ) {
         myScheme.updatePartialFields(schemeId, updates)
     }

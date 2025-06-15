@@ -12,7 +12,7 @@ interface MyScheme {
 
     suspend fun updateScheme(schemeId: String, scheme: UserDrugScheme)
 
-    suspend fun updatePartialFields(string: String, map: Map<String, Any>)
+    suspend fun updatePartialFields(string: String, map: Map<String, Any?>)
 
     class Base @Inject constructor(
         private val service: Service,
@@ -50,7 +50,7 @@ interface MyScheme {
 
         override suspend fun updatePartialFields(
             schemeId: String,
-            updates: Map<String, Any>
+            updates: Map<String, Any?>
         ) {
             val path = "users/${myUser.id()}/schemes"
 

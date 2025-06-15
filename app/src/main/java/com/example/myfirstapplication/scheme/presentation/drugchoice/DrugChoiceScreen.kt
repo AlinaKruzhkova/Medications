@@ -16,32 +16,30 @@ fun DrugChoiceScreen(navController: NavController) {
     // viewModel
     val drugViewModel = hiltViewModel<DrugViewModel>()
     val schemeViewModel = hiltViewModel<SchemeViewModel>()
+    val scope = rememberCoroutineScope()
 
     val drugs by drugViewModel.drugs.collectAsState()
     val searchQuery by drugViewModel.searchQuery.collectAsState()
-    val partialScheme by schemeViewModel.partialScheme.collectAsState()
-
-    val selectedDrugId = partialScheme.selectedDrugId
-    val customDrugName = partialScheme.customDrugName
-    val scope = rememberCoroutineScope()
+    val currentScheme by schemeViewModel.currentScheme.collectAsState()
 
     DrugChoiceContent(
         searchQuery = searchQuery,
-        onSearchQueryChanged = {
-            drugViewModel.onSearchQueryChanged(it)
-            if (selectedDrugId != null) {
-                schemeViewModel.saveDrugSelection(drugId = null, customName = it)
+        onSearchQueryChanged = { query ->
+            drugViewModel.onSearchQueryChanged(query)
+            // Если пользователь начал вводить текст, сбрасываем выбранный препарат
+            if (query.isNotEmpty() && currentScheme.drugId != null) {
+                schemeViewModel.saveDrugSelection(drugId = null, customName = query)
             }
         },
         drugs = drugs,
-        selectedDrugId = selectedDrugId,
-        selectedDrugName = drugs.firstOrNull { it.first == selectedDrugId }?.second?.name
-            ?: customDrugName,
+        selectedDrugId = currentScheme.drugId,
+        selectedDrugName = drugs.firstOrNull { it.first == currentScheme.drugId }?.second?.name
+            ?: currentScheme.customDrugName,
         onDrugSelected = { drugId ->
             scope.launch {
                 schemeViewModel.saveDrugSelection(
                     drugId = drugId,
-                    customName = ""
+                    customName = null
                 )
             }
         },
@@ -49,8 +47,8 @@ fun DrugChoiceScreen(navController: NavController) {
         onNavigateNext = {
             scope.launch {
                 schemeViewModel.saveDrugSelection(
-                    drugId = selectedDrugId,
-                    customName = if (selectedDrugId == null) searchQuery else ""
+                    drugId = currentScheme.drugId,
+                    customName = if (currentScheme.drugId == null) searchQuery else null
                 )
                 navController.navigate(Graph.DATES_CHOICE)
             }

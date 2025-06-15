@@ -7,23 +7,28 @@ import javax.inject.Inject
 class SchemeMapper @Inject constructor() {
     fun map(
         selectedDrugId: String?,
-        query: String,
-        startDate: String,
-        endDate: String,
-        numberOfPills: String,
-        lowPillsNumber: String,
-        schedule: Schedule
+        query: String?,
+        startDate: String?,
+        endDate: String?,
+        numberOfPills: String?,
+        lowPillsNumber: String?,
+        schedule: Schedule?
     ): UserDrugScheme {
-        val isCustom = selectedDrugId.isNullOrEmpty()
         return UserDrugScheme(
-            drugId = selectedDrugId ?: "",
-            customDrugName = if (isCustom) query else "",
+            drugId = selectedDrugId,
+            customDrugName = if (selectedDrugId.isNullOrEmpty()) query else null,
             startDate = startDate,
             endDate = endDate,
             numberOfPills = numberOfPills,
             lowPillsNumber = lowPillsNumber,
             schedule = schedule,
-            status = "active"
+            status = when {
+                schedule != null -> "active"
+                numberOfPills != null -> "pills_selected"
+                startDate != null -> "dates_selected"
+                selectedDrugId != null || !query.isNullOrEmpty() -> "drug_selected"
+                else -> "unfinished"
+            }
         )
     }
 }

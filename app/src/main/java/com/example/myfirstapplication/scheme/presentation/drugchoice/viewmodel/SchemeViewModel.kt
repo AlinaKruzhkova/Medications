@@ -4,8 +4,8 @@ import com.example.myfirstapplication.core.BaseViewModel
 import com.example.myfirstapplication.core.RunAsync
 import com.example.myfirstapplication.scheme.data.mapper.SchemeMapper
 import com.example.myfirstapplication.scheme.domain.SchemeRepository
-import com.example.myfirstapplication.scheme.domain.model.PartialDrugScheme
 import com.example.myfirstapplication.scheme.domain.model.Schedule
+import com.example.myfirstapplication.scheme.domain.model.UserDrugScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,95 +19,79 @@ class SchemeViewModel @Inject constructor(
     runAsync: RunAsync
 ) : BaseViewModel(runAsync) {
 
-    private val _partialScheme = MutableStateFlow(PartialDrugScheme())
-    val partialScheme = _partialScheme.asStateFlow()
+    private val _currentScheme = MutableStateFlow(UserDrugScheme())
+    val currentScheme = _currentScheme.asStateFlow()
 
-    private var currentSchemeId: String? = null
+    private var schemeId: String? = null
 
-    fun saveDrugSelection(drugId: String?, customName: String) {
-        _partialScheme.update {
+    fun saveDrugSelection(drugId: String?, customName: String?) {
+        _currentScheme.update {
             it.copy(
-                selectedDrugId = drugId,
-                customDrugName = customName,
-                status = if (drugId != null || customName.isNotEmpty()) "drug_selected" else "unfinished"
+                drugId = if (customName != null) null else drugId,
+                customDrugName = if (drugId != null) null else customName,
+                status = "unfinished"
             )
         }
-
-        val status =
-            if (drugId != null) "drug_selected" else if (customName.isNotBlank()) "custom_drug_entered" else "unfinished"
-
-        val updates = mapOf<String, Any>(
-            "drugId" to (drugId ?: ""),
-            "customDrugName" to (if (drugId == null) customName else ""),
-            "status" to status
-        )
-
-
-        savePartialUpdates(updates)
+        savePartialUpdates()
     }
 
-    suspend fun saveDates(start: String, end: String) {
-        _partialScheme.update {
-            it.copy(
+    suspend fun saveDates(start: String, end: String?) {
+        _currentScheme.update { current ->
+            current.copy(
                 startDate = start,
                 endDate = end,
                 status = "dates_selected"
             )
         }
-
-        val updates = mutableMapOf(
-            "startDate" to start,
-            "status" to "dates_selected"
-        )
-        end?.let { updates["endDate"] = it }
-
-        savePartialUpdates(updates)
+        savePartialUpdates()
     }
 
     fun updatePillInfo(count: String, lowLimit: String) {
-        _partialScheme.update { it.copy(numberOfPills = count, lowPillsNumber = lowLimit) }
+        _currentScheme.update { current ->
+            current.copy(
+                numberOfPills = count,
+                lowPillsNumber = lowLimit
+            )
+        }
     }
 
     fun updateSchedule(schedule: Schedule) {
-        _partialScheme.update { it.copy(schedule = schedule) }
+        _currentScheme.update { current ->
+            current.copy(
+                schedule = schedule,
+                status = "active"
+            )
+        }
     }
 
-    suspend fun finalizeAndSave() {
-        val data = partialScheme.value
-        val mapped = schemeMapper.map(
-            selectedDrugId = data.selectedDrugId,
-            query = data.customDrugName,
-            startDate = data.startDate,
-            endDate = data.endDate,
-            numberOfPills = data.numberOfPills,
-            lowPillsNumber = data.lowPillsNumber,
-            schedule = data.schedule ?: error("Schedule is not set")
-        )
-
-        repository.addUserScheme(mapped)
+    suspend fun finalize() {
+        _currentScheme.update { it.copy(status = "active") }
+        savePartialUpdates()
     }
 
     // Удали suspend
-    private fun savePartialUpdates(updates: Map<String, Any>) {
+    private fun savePartialUpdates() {
         runAsync(
             background = {
-                if (currentSchemeId == null) {
-                    currentSchemeId = repository.addUserScheme(
-                        schemeMapper.map(
-                            selectedDrugId = _partialScheme.value.selectedDrugId,
-                            query = _partialScheme.value.customDrugName,
-                            startDate = _partialScheme.value.startDate,
-                            endDate = _partialScheme.value.endDate,
-                            numberOfPills = _partialScheme.value.numberOfPills,
-                            lowPillsNumber = _partialScheme.value.lowPillsNumber,
-                            schedule = _partialScheme.value.schedule ?: Schedule()
-                        )
-                    )
+                if (schemeId == null) {
+                    schemeId = repository.addUserScheme(_currentScheme.value)
                 } else {
-                    repository.updatePartialScheme(currentSchemeId!!, updates)
+                    val updates = _currentScheme.value.toUpdateMap()
+                    repository.updatePartialScheme(schemeId!!, updates)
                 }
             },
             uiBlock = {}
         )
     }
+
+    fun UserDrugScheme.toUpdateMap(): Map<String, Any?> = mapOf(
+        "drugId" to drugId,
+        "customDrugName" to customDrugName,
+        "startDate" to startDate,
+        "endDate" to endDate,
+        "numberOfPills" to numberOfPills,
+        "lowPillsNumber" to lowPillsNumber,
+        "schedule" to schedule,
+        "status" to status
+    )
 }
