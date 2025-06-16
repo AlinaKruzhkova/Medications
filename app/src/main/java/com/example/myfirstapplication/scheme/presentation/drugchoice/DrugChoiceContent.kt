@@ -104,12 +104,15 @@ fun DrugChoiceContent(
         }
 
         Text(
-            text = if (selectedDrugId.isNullOrEmpty()) "Вы ничего не выбрали" else "Вы выбрали: $selectedDrugName",
+            text = when {
+                selectedDrugId.isNullOrEmpty() && searchQuery.isNullOrEmpty() -> "Вы ничего не выбрали"
+                selectedDrugId.isNullOrEmpty() -> "Вы выбрали: $searchQuery"
+                else -> "Вы выбрали: $selectedDrugName"
+            },
             modifier = Modifier.padding(8.dp),
             style = MaterialTheme.typography.labelLarge,
             color = DeepBurgundy
         )
-
 
         // Кнопка далее
         NextButton(
@@ -119,7 +122,6 @@ fun DrugChoiceContent(
                 .padding(bottom = 16.dp),
             isActive = selectedDrugId?.isNotEmpty() == true || searchQuery.isNotEmpty()
         )
-        Text(schemeId.toString())
     }
 }
 

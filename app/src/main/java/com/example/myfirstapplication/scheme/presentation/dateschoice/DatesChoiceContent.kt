@@ -113,7 +113,14 @@ fun DatesChoiceContent(
                     modifier = Modifier.padding(bottom = 16.dp),
                     onNumberSelected = onNumberSelected
                 )
-
+            }
+        }
+        AnimatedVisibility(
+            visible = selectedOption == DaysSelectedOption.DAYS || selectedOption == DaysSelectedOption.ALWAYS,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
+        ) {
+            Column {
                 Text(
                     text = stringResource(R.string.start_date),
                     color = DeepBurgundy,
