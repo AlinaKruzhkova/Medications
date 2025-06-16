@@ -25,9 +25,30 @@ class SchemeViewModel @Inject constructor(
     private val _currentScheme = MutableStateFlow(UserDrugScheme())
     val currentScheme = _currentScheme.asStateFlow()
 
+    init {
+        loadCurrentScheme()
+    }
+
+    private fun loadCurrentScheme() {
+        runAsync(
+            background = {
+                // Пытаемся загрузить текущий schemeId
+                val currentId = repository.getCurrentSchemeId()
+                if (currentId != null) {
+                    // Если есть сохраненный schemeId, загружаем схему
+                    val schemes = repository.getUserSchemes()
+                    schemes.firstOrNull { it.first == currentId }?.second?.let { scheme ->
+                        _currentScheme.value = scheme
+                    }
+                }
+            },
+            uiBlock = {}
+        )
+    }
+
     var schemeId: String? = null
 
-    fun saveDrugSelection(drugId: String?, customName: String?) {
+    suspend fun saveDrugSelection(drugId: String?, customName: String?) {
         _currentScheme.update {
             it.copy(
                 drugId = if (customName != null) null else drugId,
@@ -72,20 +93,20 @@ class SchemeViewModel @Inject constructor(
     suspend fun finalize() {
         _currentScheme.update { it.copy(status = "active") }
         savePartialUpdates()
+        repository.clearCurrentSchemeId()
     }
 
-    private fun savePartialUpdates() {
-        runAsync(
-            background = {
-                if (schemeId == null) {
-                    schemeId = repository.addUserScheme(_currentScheme.value)
-                } else {
-                    val updates = _currentScheme.value.toUpdateMap()
-                    repository.updatePartialScheme(schemeId!!, updates)
-                }
-            },
-            uiBlock = {}
-        )
+    private suspend fun savePartialUpdates() {
+        val currentId = repository.getCurrentSchemeId()
+        if (currentId == null) {
+            // Если schemeId нет, создаем новую схему
+            val newId = repository.addUserScheme(_currentScheme.value)
+            repository.setCurrentSchemeId(newId)
+        } else {
+            // Если schemeId есть, обновляем существующую
+            val updates = _currentScheme.value.toUpdateMap()
+            repository.updatePartialScheme(currentId, updates)
+        }
     }
 
     fun UserDrugScheme.toUpdateMap(): Map<String, Any?> = mapOf(

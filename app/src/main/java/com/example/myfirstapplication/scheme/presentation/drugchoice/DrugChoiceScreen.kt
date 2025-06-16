@@ -28,7 +28,12 @@ fun DrugChoiceScreen(navController: NavController) {
             drugViewModel.onSearchQueryChanged(query)
             // Если пользователь начал вводить текст, сбрасываем выбранный препарат
             if (query.isNotEmpty() && currentScheme.drugId != null) {
-                schemeViewModel.saveDrugSelection(drugId = null, customName = query)
+                scope.launch { // Добавляем вызов в корутину
+                    schemeViewModel.saveDrugSelection(
+                        drugId = null,
+                        customName = query
+                    )
+                }
             }
         },
         drugs = drugs,

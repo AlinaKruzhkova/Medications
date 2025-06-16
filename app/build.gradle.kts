@@ -84,4 +84,6 @@ dependencies {
     implementation("androidx.compose.material:material:1.8.0")
     implementation("com.chargemap.compose:numberpicker:1.0.3")
     implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
+
+    implementation("androidx.preference:preference-ktx:1.2.1")
 }
