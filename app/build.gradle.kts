@@ -85,5 +85,9 @@ dependencies {
     implementation("com.chargemap.compose:numberpicker:1.0.3")
     implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
 
+    // хранение schemeId
     implementation("androidx.preference:preference-ktx:1.2.1")
+
+    // анимация перехода между экранами
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.34.0")
 }

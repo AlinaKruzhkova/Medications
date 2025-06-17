@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.myfirstapplication.navigation.Graph
 import com.example.myfirstapplication.scheme.domain.model.TimeDosage
 import com.example.myfirstapplication.scheme.presentation.viewmodel.SchemeViewModel
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ fun NotificationTimeDosageScreen(
             }
         },
         navigate = {
-            // navController.navigate(Graph.NEXT_SCREEN)
+            navController.navigate(Graph.RESTOCK)
         },
         navigateBack = {
             navController.popBackStack()

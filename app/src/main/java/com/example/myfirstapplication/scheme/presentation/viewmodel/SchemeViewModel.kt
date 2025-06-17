@@ -87,13 +87,15 @@ class SchemeViewModel @Inject constructor(
     }
 
 
-    fun updatePillInfo(count: Int, lowLimit: Int) {
+    suspend fun savePillInfo(data: Triple<Int, Int, Boolean>) {
         _currentScheme.update { current ->
             current.copy(
-                numberOfPills = count,
-                lowPillsNumber = lowLimit
+                numberOfPills = data.first,
+                lowPillsNumber = data.second,
+                isNotificationForPillsEnabled = data.third
             )
         }
+        savePartialUpdates()
     }
 
     suspend fun finalize() {

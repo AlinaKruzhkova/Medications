@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.restock
+package com.example.myfirstapplication.scheme.presentation.screens.restock
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -48,7 +48,7 @@ fun SaveButtonUi(
                 color = backgroundColor,
                 shape = RoundedCornerShape(16.dp)
             )
-            .clickable(enabled = isActive) { onClick },
+            .clickable(enabled = isActive) { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(
