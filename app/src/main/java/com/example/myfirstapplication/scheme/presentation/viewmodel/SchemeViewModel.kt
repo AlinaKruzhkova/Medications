@@ -132,4 +132,12 @@ class SchemeViewModel @Inject constructor(
             startDate // в случае ошибки возвращаем startDate
         }
     }
+
+    // количество приемов в день (промежуточное значение)
+    private val _dailyIntakesCount = MutableStateFlow(0)
+    val dailyIntakesCount = _dailyIntakesCount.asStateFlow()
+
+    fun setDailyIntakesCount(count: Int) {
+        _dailyIntakesCount.value = count
+    }
 }

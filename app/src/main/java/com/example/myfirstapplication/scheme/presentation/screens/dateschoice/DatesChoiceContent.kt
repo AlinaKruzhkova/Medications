@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.frequency
+package com.example.myfirstapplication.scheme.presentation.screens.dateschoice
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -7,12 +7,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,26 +21,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.common.ui.NextButton
 import com.example.myfirstapplication.drug.presentation.customFont
-import com.example.myfirstapplication.frequency.buttons.SelectableButton
-import com.example.myfirstapplication.scheme.presentation.dateschoice.buttons.Counter
+import com.example.myfirstapplication.scheme.presentation.screens.dateschoice.buttons.Counter
+import com.example.myfirstapplication.scheme.presentation.screens.frequency.buttons.SelectableButton
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
 @Composable
-fun FrequencyContent(
+fun DatesChoiceContent(
     navigate: () -> Unit,
     navigateBack: () -> Unit,
-    selectedOption: FrequencySelectedOption,
-    onSelectedOption: (FrequencySelectedOption) -> Unit,
+    selectedOption: DaysSelectedOption,
+    onOptionSelected: (DaysSelectedOption) -> Unit,
     selectedNumber: Int,
-    onNumberSelected: (Int) -> Unit
+    onNumberSelected: (Int) -> Unit,
+    calendar: @Composable () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -49,24 +49,19 @@ fun FrequencyContent(
             .padding(16.dp)
             .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally, // Центрируем содержимое по горизонтали
-        verticalArrangement = Arrangement.Center // Центрируем содержимое по вертикали
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BackButton(
-                onClick = navigateBack
-            )
+            BackButton(onClick = navigateBack)
 
             Text(
-                text = stringResource(R.string.how_often),
+                text = stringResource(R.string.duration),
                 color = DeepBurgundy,
-                fontSize = 16.sp, // Размер шрифта для подзаголовка
-                modifier = Modifier.padding(bottom = 24.dp), // Отступ снизу (опционально)
+                fontSize = 18.sp, // Размер шрифта для подзаголовка
                 textAlign = TextAlign.Center, // Выравнивание текста по центру
                 fontWeight = FontWeight.Bold,
                 fontFamily = customFont,
@@ -74,38 +69,40 @@ fun FrequencyContent(
             )
         }
 
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
+
         SelectableButton(
             modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == FrequencySelectedOption.ONE,
-            onClick = { onSelectedOption(FrequencySelectedOption.ONE) },
-            text = stringResource(R.string.one_button)
+            onClick = { onOptionSelected(DaysSelectedOption.ALWAYS) },
+            isSelected = selectedOption == DaysSelectedOption.ALWAYS,
+            text = stringResource(R.string.always_button)
         )
+
+        Spacer(
+            modifier = Modifier.height(12.dp)
+        )
+
         SelectableButton(
             modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == FrequencySelectedOption.TWO,
-            onClick = { onSelectedOption(FrequencySelectedOption.TWO) },
-            text = stringResource(R.string.two_button)
+            onClick = { onOptionSelected(DaysSelectedOption.DAYS) },
+            isSelected = selectedOption == DaysSelectedOption.DAYS,
+            text = stringResource(R.string.days_button),
         )
-        SelectableButton(
-            modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == FrequencySelectedOption.OWN,
-            onClick = { onSelectedOption(FrequencySelectedOption.OWN) },
-            text = stringResource(R.string.own_button)
+
+        Spacer(
+            modifier = Modifier.height(12.dp)
         )
-        SelectableButton(
-            modifier = Modifier.padding(bottom = 16.dp),
-            isSelected = selectedOption == FrequencySelectedOption.HARD,
-            onClick = { onSelectedOption(FrequencySelectedOption.HARD) },
-            text = stringResource(R.string.hard_scheme_button)
-        )
+
         AnimatedVisibility(
-            visible = selectedOption == FrequencySelectedOption.OWN,
+            visible = selectedOption == DaysSelectedOption.DAYS,
             enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
         ) {
             Column {
                 Text(
-                    text = "Выберите количество приемов в день:",
+                    text = stringResource(R.string.counter_screen),
                     color = DeepBurgundy,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
@@ -115,36 +112,42 @@ fun FrequencyContent(
 
                 Counter(
                     modifier = Modifier.padding(bottom = 16.dp),
-                    onNumberSelected = onNumberSelected,
-                    range = 1..10
+                    onNumberSelected = onNumberSelected
                 )
             }
         }
+        AnimatedVisibility(
+            visible = selectedOption == DaysSelectedOption.DAYS || selectedOption == DaysSelectedOption.ALWAYS,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
+        ) {
+            Column {
+                Text(
+                    text = stringResource(R.string.start_date),
+                    color = DeepBurgundy,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = customFont,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                calendar()
+            }
+        }
+
         Spacer(
             modifier = Modifier.weight(1f)
         )
+
         val isNextActive = when (selectedOption) {
-            FrequencySelectedOption.NONE -> false
-            FrequencySelectedOption.OWN -> selectedNumber > 0
-            else -> true
+            DaysSelectedOption.ALWAYS -> true
+            DaysSelectedOption.DAYS -> selectedNumber > 0
+            DaysSelectedOption.NONE -> false
         }
+
         NextButton(
             onClick = navigate,
             modifier = Modifier.padding(bottom = 16.dp),
             isActive = isNextActive
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FrequencyContentPreview() {
-    FrequencyContent(
-        navigate = {},
-        navigateBack = {},
-        selectedOption = FrequencySelectedOption.ONE,
-        onSelectedOption = {},
-        selectedNumber = 5,
-        onNumberSelected = {}
-    )
 }

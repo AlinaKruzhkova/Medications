@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.scheme.presentation.dateschoice
+package com.example.myfirstapplication.scheme.presentation.screens.dateschoice
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

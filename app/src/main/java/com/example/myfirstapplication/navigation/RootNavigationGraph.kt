@@ -1,18 +1,23 @@
 package com.example.myfirstapplication.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.myfirstapplication.formchoice.FormChoiceScreen
-import com.example.myfirstapplication.frequency.FrequencyScreen
-import com.example.myfirstapplication.frequency.HardFrequencyScreen
 import com.example.myfirstapplication.login.presentation.LoginScreenInner
-import com.example.myfirstapplication.notifications.NotificationTimeDosageScreen
 import com.example.myfirstapplication.profile.presentation.druglist.DrugListScreen
-import com.example.myfirstapplication.scheme.presentation.dateschoice.DatesChoiceScreen
-import com.example.myfirstapplication.scheme.presentation.drugchoice.DrugChoiceScreen
+import com.example.myfirstapplication.scheme.presentation.screens.dateschoice.DatesChoiceScreen
+import com.example.myfirstapplication.scheme.presentation.screens.drugchoice.DrugChoiceScreen
+import com.example.myfirstapplication.scheme.presentation.screens.frequency.FrequencyScreen
+import com.example.myfirstapplication.scheme.presentation.screens.frequency.HardFrequencyScreen
+import com.example.myfirstapplication.scheme.presentation.screens.notifications.NotificationTimeDosageScreen
 
+@RequiresApi(Build.VERSION_CODES.VANILLA_ICE_CREAM)
 @Composable
 fun RootNavigationGraph(navController: NavHostController) {
     NavHost(
@@ -40,9 +45,13 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.FREQUENCY) {
             FrequencyScreen(navController)
         }
-        composable(route = Graph.NOTIFICATION) {
-            NotificationTimeDosageScreen(navController)
+        composable(
+            route = "${Graph.NOTIFICATION}/{count}",
+            arguments = listOf(navArgument("count") { type = NavType.IntType })
+        ) {
+            NotificationTimeDosageScreen(navController, it.arguments?.getInt("count") ?: 0)
         }
+
         composable(route = Graph.HARD_FREQUENCY) {
             HardFrequencyScreen(navController)
         }

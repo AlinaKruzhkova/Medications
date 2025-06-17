@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.scheme.presentation.drugchoice
+package com.example.myfirstapplication.scheme.presentation.screens.drugchoice
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

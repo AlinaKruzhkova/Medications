@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.scheme.presentation.drugchoice
+package com.example.myfirstapplication.scheme.presentation.screens.drugchoice
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

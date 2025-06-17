@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.scheme.presentation.dateschoice.buttons
+package com.example.myfirstapplication.scheme.presentation.screens.dateschoice.buttons
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

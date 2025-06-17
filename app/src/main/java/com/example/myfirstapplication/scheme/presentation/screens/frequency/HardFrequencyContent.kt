@@ -1,5 +1,11 @@
-package com.example.myfirstapplication.frequency
+package com.example.myfirstapplication.scheme.presentation.screens.frequency
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,9 +28,9 @@ import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.common.ui.NextButton
 import com.example.myfirstapplication.drug.presentation.customFont
-import com.example.myfirstapplication.frequency.buttons.DaysOfWeekSelectorUi
-import com.example.myfirstapplication.frequency.buttons.NotificationFieldUi
-import com.example.myfirstapplication.frequency.buttons.SelectableButton
+import com.example.myfirstapplication.scheme.presentation.screens.frequency.buttons.DaysOfWeekSelectorUi
+import com.example.myfirstapplication.scheme.presentation.screens.frequency.buttons.NotificationFieldUi
+import com.example.myfirstapplication.scheme.presentation.screens.frequency.buttons.SelectableButton
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 
@@ -75,13 +81,17 @@ fun HardFrequencyContent(
             text = stringResource(R.string.interval)
         )
 
-        // Если выбрана INTERVAL — показываем NotificationFieldUi() с отступом
-        if (selectedOption == HardSelectedOption.INTERVAL) {
-            Spacer(modifier = Modifier.height(16.dp))
-            NotificationFieldUi()
-        } else {
-            // Если INTERVAL НЕ выбран — просто добавим отступ между кнопками
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Если выбрана INTERVAL — показываем NotificationFieldUi()
+        AnimatedVisibility(
+            visible = selectedOption == HardSelectedOption.INTERVAL,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
+        ) {
+            Column {
+                NotificationFieldUi()
+            }
         }
 
         // Кнопка "По дням недели"
@@ -95,22 +105,29 @@ fun HardFrequencyContent(
         )
 
         // Блок выбора дней недели
-        if (selectedOption == HardSelectedOption.DAYSOFWEEK) {
-            Spacer(modifier = Modifier.height(16.dp))
+        AnimatedVisibility(
+            visible = selectedOption == HardSelectedOption.DAYSOFWEEK,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
+        ) {
+            Column {
+                Spacer(modifier = Modifier.height(16.dp))
 
-            DaysOfWeekSelectorUi(
-                selectedDays = selectedDays,
-                onDayToggle = { index ->
-                    val newList = selectedDays.toMutableList()
-                    if (newList.contains(index)) {
-                        newList.remove(index)
-                    } else {
-                        newList.add(index)
+                DaysOfWeekSelectorUi(
+                    selectedDays = selectedDays,
+                    onDayToggle = { index ->
+                        val newList = selectedDays.toMutableList()
+                        if (newList.contains(index)) {
+                            newList.remove(index)
+                        } else {
+                            newList.add(index)
+                        }
+                        onSelectedDays(newList)
                     }
-                    onSelectedDays(newList)
-                }
-            )
+                )
+            }
         }
+
 
         Spacer(modifier = Modifier.weight(1f))
 

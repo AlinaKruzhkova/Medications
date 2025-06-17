@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.frequency
+package com.example.myfirstapplication.scheme.presentation.screens.frequency
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
