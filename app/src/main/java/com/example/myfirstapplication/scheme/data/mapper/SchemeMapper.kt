@@ -10,8 +10,8 @@ class SchemeMapper @Inject constructor() {
         query: String?,
         startDate: String?,
         endDate: String?,
-        numberOfPills: String?,
-        lowPillsNumber: String?,
+        numberOfPills: Int?,
+        lowPillsNumber: Int?,
         schedule: Schedule?
     ): UserDrugScheme {
         return UserDrugScheme(

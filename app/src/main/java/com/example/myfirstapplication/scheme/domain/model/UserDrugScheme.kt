@@ -5,14 +5,19 @@ data class UserDrugScheme(
     val customDrugName: String? = null,
     val startDate: String? = null,
     val endDate: String? = null,
-    val numberOfPills: String? = null,
-    val lowPillsNumber: String? = null,
+    val numberOfPills: Int? = null,
+    val lowPillsNumber: Int? = null,
     val schedule: Schedule? = null,
     val status: String? = null
 )
 
 data class Schedule(
     val intervalInMinutes: String? = null,
-    val times: List<String> = emptyList(),
-    val daysOfWeek: List<Int> = emptyList()
+    val times: List<TimeDosage>? = null,
+    val daysOfWeek: List<Int>? = null
+)
+
+data class TimeDosage(
+    val time: String? = null,
+    val dosage: Int? = null
 )

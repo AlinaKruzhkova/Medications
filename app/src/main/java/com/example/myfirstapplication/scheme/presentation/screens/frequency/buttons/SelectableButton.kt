@@ -2,6 +2,7 @@ package com.example.myfirstapplication.scheme.presentation.screens.frequency.but
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,8 +41,14 @@ fun SelectableButton(
     text: String
 ) {
     val customFont = FontFamily(Font(R.font.nunito_extralight))
-    val backgroundColor by animateColorAsState(targetValue = if (isSelected) Green else White)
-    val textColor by animateColorAsState(targetValue = if (isSelected) White else DeepBurgundy)
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isSelected) Green else White,
+        animationSpec = tween(durationMillis = 500)
+    )
+    val textColor by animateColorAsState(
+        targetValue = if (isSelected) White else DeepBurgundy,
+        animationSpec = tween(durationMillis = 500)
+    )
 
     Box(
         modifier = modifier

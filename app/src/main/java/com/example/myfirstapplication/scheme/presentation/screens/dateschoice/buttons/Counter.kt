@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,11 +24,17 @@ import com.example.myfirstapplication.ui.theme.Green
 fun Counter(
     modifier: Modifier = Modifier,
     range: IntRange = 1..600,
+    initialValue: Int? = null,
     onNumberSelected: (Int) -> Unit
 ) {
 
-    val initialValue = range.first
-    var selectedValue by remember { mutableIntStateOf(initialValue) }
+    var selectedValue by remember { mutableIntStateOf(initialValue ?: range.first) }
+
+    LaunchedEffect(initialValue) {
+        if (initialValue != null) {
+            selectedValue = initialValue
+        }
+    }
 
     Box(
         modifier = modifier
@@ -56,7 +62,7 @@ fun Counter(
 @Preview(showBackground = true)
 @Composable
 fun CenteredNumberPickerPreview() {
-    var selected by remember { mutableStateOf(45) }
+    var selected by remember { mutableIntStateOf(45) }
 
     Counter(
         onNumberSelected = { selected = it }

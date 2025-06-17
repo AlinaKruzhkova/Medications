@@ -5,6 +5,7 @@ import com.example.myfirstapplication.core.RunAsync
 import com.example.myfirstapplication.scheme.data.mapper.SchemeMapper
 import com.example.myfirstapplication.scheme.domain.SchemeRepository
 import com.example.myfirstapplication.scheme.domain.model.Schedule
+import com.example.myfirstapplication.scheme.domain.model.TimeDosage
 import com.example.myfirstapplication.scheme.domain.model.UserDrugScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,20 +73,25 @@ class SchemeViewModel @Inject constructor(
         savePartialUpdates()
     }
 
-    fun updatePillInfo(count: String, lowLimit: String) {
+    suspend fun saveSchedule(times: List<TimeDosage>? = null, daysOfWeek: List<Int>? = null) {
+        _currentScheme.update { current ->
+            current.copy(
+                schedule = Schedule(
+                    times = times,
+                    daysOfWeek = daysOfWeek
+                ),
+                status = "schedule_selected"
+            )
+        }
+        savePartialUpdates()
+    }
+
+
+    fun updatePillInfo(count: Int, lowLimit: Int) {
         _currentScheme.update { current ->
             current.copy(
                 numberOfPills = count,
                 lowPillsNumber = lowLimit
-            )
-        }
-    }
-
-    fun updateSchedule(schedule: Schedule) {
-        _currentScheme.update { current ->
-            current.copy(
-                schedule = schedule,
-                status = "active"
             )
         }
     }
@@ -131,13 +137,5 @@ class SchemeViewModel @Inject constructor(
         } catch (e: Exception) {
             startDate // в случае ошибки возвращаем startDate
         }
-    }
-
-    // количество приемов в день (промежуточное значение)
-    private val _dailyIntakesCount = MutableStateFlow(0)
-    val dailyIntakesCount = _dailyIntakesCount.asStateFlow()
-
-    fun setDailyIntakesCount(count: Int) {
-        _dailyIntakesCount.value = count
     }
 }

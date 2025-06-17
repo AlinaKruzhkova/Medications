@@ -35,7 +35,6 @@ fun FrequencyScreen(navController: NavController) {
                 }
 
                 FrequencySelectedOption.TWO -> {
-                    viewModel.setDailyIntakesCount(2)
                     navController.navigate("${Graph.NOTIFICATION}/2")
                 }
 
