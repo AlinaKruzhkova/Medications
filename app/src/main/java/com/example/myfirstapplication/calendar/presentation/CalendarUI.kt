@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.GrayPink
+import com.example.myfirstapplication.ui.theme.Grey
 import com.example.myfirstapplication.ui.theme.LightGreen
 import com.example.myfirstapplication.ui.theme.Pink
 import com.example.myfirstapplication.ui.theme.Rose
@@ -58,7 +59,9 @@ fun CalendarUI(
     selectedDate: LocalDate,
     onDateSelected: (LocalDate) -> Unit,
     weekOffset: Int,
+    minSelectableDate: LocalDate = LocalDate.MIN,
     onSwipeWeekChange: (Int) -> Unit,
+
 ) {
     var swipeDirection by remember { mutableIntStateOf(0) }
 
@@ -87,7 +90,8 @@ fun CalendarUI(
             days = days,
             selectedDate = selectedDate,
             onDateSelected = onDateSelected,
-            swipeDirection = swipeDirection
+            swipeDirection = swipeDirection,
+            minSelectableDate = minSelectableDate
         )
 
     }
@@ -98,7 +102,8 @@ fun CalendarBody(
     days: List<LocalDate>,
     selectedDate: LocalDate,
     onDateSelected: (LocalDate) -> Unit,
-    swipeDirection: Int
+    swipeDirection: Int,
+    minSelectableDate: LocalDate
 ) {
     AnimatedContent(
         targetState = days,
@@ -120,7 +125,8 @@ fun CalendarBody(
                 WeekRow(
                     week = week,
                     selectedDate = selectedDate,
-                    onDateSelected = onDateSelected
+                    onDateSelected = onDateSelected,
+                    minSelectableDate = minSelectableDate
                 )
             }
         }
@@ -131,6 +137,7 @@ fun CalendarBody(
 fun WeekRow(
     week: List<LocalDate>,
     selectedDate: LocalDate,
+    minSelectableDate: LocalDate,
     onDateSelected: (LocalDate) -> Unit
 ) {
     Row(
@@ -141,10 +148,13 @@ fun WeekRow(
             .height(IntrinsicSize.Min)
     ) {
         week.forEach { date ->
+            val isEnabled = !date.isBefore(minSelectableDate)
+
             DayItem(
                 date = date,
                 isSelected = date == selectedDate,
-                onClick = { onDateSelected(date) }
+                onClick = { onDateSelected(date) },
+                isEnabled = isEnabled
             )
         }
     }
@@ -152,7 +162,12 @@ fun WeekRow(
 
 
 @Composable
-fun DayItem(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
+fun DayItem(
+    date: LocalDate,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    isEnabled: Boolean = true
+) {
     val isFirstDay = date.dayOfMonth == 1
 
     val animatedBgColor by animateColorAsState(
@@ -168,6 +183,7 @@ fun DayItem(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
     val animatedTextColor by animateColorAsState(
         targetValue = when {
             isSelected -> Pink
+            !isEnabled -> Grey
             else -> DeepBurgundy
         },
         animationSpec = tween(durationMillis = 350),
@@ -182,7 +198,7 @@ fun DayItem(date: LocalDate, isSelected: Boolean, onClick: () -> Unit) {
             .width(48.dp)
             .padding(4.dp)
             .background(animatedBgColor, shape = RoundedCornerShape(16.dp))
-            .clickable { onClick() }
+            .then(if (isEnabled) Modifier.clickable { onClick() } else Modifier)
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -252,7 +268,7 @@ fun DayItemPreview() {
     DayItem(
         date = LocalDate.now(),
         isSelected = true,
-        onClick = {}
+        onClick = {},
     )
 }
 

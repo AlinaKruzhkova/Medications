@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,7 +17,7 @@ import com.example.myfirstapplication.ui.theme.Pink
 @Composable
 fun CalendarScreen(navController: NavHostController) {
     val viewModel = hiltViewModel<CalendarViewModel>()
-    val selectedDate by viewModel.selectedDate
+    val selectedDate by viewModel.selectedDate.collectAsState()
 
     Column(
         modifier = Modifier

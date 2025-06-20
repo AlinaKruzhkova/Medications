@@ -2,6 +2,7 @@ package com.example.myfirstapplication.navigation
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -27,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.GrayPink
+import com.example.myfirstapplication.ui.theme.Pink
 import com.example.myfirstapplication.ui.theme.White
 
 
@@ -36,9 +38,14 @@ fun HomeScreen(navController: NavHostController) {
     Scaffold(
         bottomBar = {
             BottomBar(navController = bottomNavController)
-        }
+        },
+        modifier = Modifier.background(Pink)
     ) { padding ->
-        Box(modifier = Modifier.padding(padding)) {
+        Box(
+            modifier = Modifier
+                .padding(padding)
+                .background(Pink)
+        ) {
             HomeNavGraph(bottomNavController, navController)
         }
     }
