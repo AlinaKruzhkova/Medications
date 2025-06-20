@@ -49,56 +49,53 @@ fun DrugChoiceContent(
     selectedDrug: String?,
     onDrugSelected: (String) -> Unit,
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Pink)
-            .padding(16.dp)
-            .padding(top = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = 16.dp)
     ) {
-        // Заголовок 1
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxSize()
+                .padding(top = 16.dp, bottom = 72.dp), // место под кнопку + отступ
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            BackButton(
-                onClick = navigateBack
+            // Заголовок
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BackButton(onClick = navigateBack)
+
+                Text(
+                    text = stringResource(R.string.drug_choice),
+                    style = TextStyle(
+                        fontFamily = customFont,
+                        fontSize = 18.sp,
+                        color = DeepBurgundy,
+                        lineHeight = 24.sp
+                    ),
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Поле ввода
+            SearchDrugField(
+                query = query,
+                onQueryChanged = onQueryChanged
             )
 
-            Text(
-                text = stringResource(R.string.drug_choice),
-                style = TextStyle(
-                    fontFamily = customFont,
-                    fontSize = 18.sp,
-                    color = DeepBurgundy,
-                    lineHeight = 24.sp
-                ),
-            )
-        }
+            Spacer(modifier = Modifier.height(12.dp))
 
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
-
-        // Поле ввода
-        SearchDrugField(
-            query = query,
-            onQueryChanged = onQueryChanged
-        )
-
-        // Вывод лекарств
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(350.dp)
-        ) {
+            // Список лекарств
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
+                    .fillMaxWidth()
+                    .weight(1f), // список тянется по доступной высоте
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(drugs.size) { index ->
@@ -109,20 +106,22 @@ fun DrugChoiceContent(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Информация о выбранном препарате
+            Text(
+                text = if (selectedDrug.isNullOrEmpty()) "Вы ничего не выбрали" else "Вы выбрали: $selectedDrug",
+                style = MaterialTheme.typography.labelLarge,
+                color = DeepBurgundy
+            )
         }
 
-        Text(
-            text = if (selectedDrug.isNullOrEmpty()) "Вы ничего не выбрали" else "Вы выбрали: $selectedDrug",
-            modifier = Modifier.padding(8.dp),
-            style = MaterialTheme.typography.labelLarge,
-            color = DeepBurgundy
-        )
-
-
-        // Кнопка далее
+        // Кнопка далее внизу экрана
         NextButton(
             onClick = navigate,
             modifier = Modifier
+                .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
             isActive = selectedDrug?.isNotEmpty() == true || query.isNotEmpty()
