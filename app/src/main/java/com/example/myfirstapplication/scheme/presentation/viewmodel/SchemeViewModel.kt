@@ -73,12 +73,17 @@ class SchemeViewModel @Inject constructor(
         savePartialUpdates()
     }
 
-    suspend fun saveSchedule(times: List<TimeDosage>? = null, daysOfWeek: List<Int>? = null) {
+    suspend fun saveSchedule(
+        times: List<TimeDosage>? = null,
+        daysOfWeek: List<Int>? = null,
+        intervalInMinutes: Int? = null
+    ) {
         _currentScheme.update { current ->
             current.copy(
                 schedule = Schedule(
                     times = times,
-                    daysOfWeek = daysOfWeek
+                    daysOfWeek = daysOfWeek,
+                    intervalInMinutes = intervalInMinutes,
                 ),
                 status = "schedule_selected"
             )

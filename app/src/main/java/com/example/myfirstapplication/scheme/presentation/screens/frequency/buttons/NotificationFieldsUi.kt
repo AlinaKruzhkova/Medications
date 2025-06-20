@@ -89,11 +89,22 @@ fun Field(
 }
 
 @Composable
-fun NotificationFieldUi() {
-    var hours by remember { mutableStateOf("6") }
-    var days by remember { mutableStateOf("5") }
+fun NotificationFieldUi(
+    onResultInMinutes: (Int?) -> Unit
+) {
+    var hours by remember { mutableStateOf<String?>(null) }
+    var days by remember { mutableStateOf<String?>(null) }
 
-        Column(
+    fun updateResult() {
+        val result = when {
+            !hours.isNullOrEmpty() -> hours!!.toIntOrNull()?.times(60)
+            !days.isNullOrEmpty() -> days!!.toIntOrNull()?.times(24 * 60)
+            else -> null
+        }
+        onResultInMinutes(result)
+    }
+
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
@@ -102,14 +113,22 @@ fun NotificationFieldUi() {
         Field(
             label = "Напоминать каждые",
             suffix = "часов",
-            value = hours,
-            onValueChange = { hours = it }
+            value = hours ?: "",
+            onValueChange = {
+                hours = it
+                days = null
+                updateResult()
+            }
         )
         Field(
             label = "Напоминать каждые",
             suffix = "дней",
-            value = days,
-            onValueChange = { days = it }
+            value = days ?: "",
+            onValueChange = {
+                days = it
+                hours = null
+                updateResult()
+            }
         )
     }
 }
@@ -119,6 +138,9 @@ fun NotificationFieldUi() {
 @Composable
 fun NotificationFieldUiPreview() {
     MaterialTheme {
-        NotificationFieldUi()
+        NotificationFieldUi { minutes ->
+            println("Результат в минутах: $minutes")
+        }
     }
 }
+

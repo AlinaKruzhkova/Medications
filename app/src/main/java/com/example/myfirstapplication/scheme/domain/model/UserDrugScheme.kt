@@ -13,7 +13,7 @@ data class UserDrugScheme(
 )
 
 data class Schedule(
-    val intervalInMinutes: String? = null,
+    val intervalInMinutes: Int? = null,
     val times: List<TimeDosage>? = null,
     val daysOfWeek: List<Int>? = null
 )
