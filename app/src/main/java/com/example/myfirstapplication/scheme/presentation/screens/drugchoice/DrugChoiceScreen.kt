@@ -57,7 +57,6 @@ fun DrugChoiceScreen(navController: NavController) {
                 )
                 navController.navigate(Graph.DATES_CHOICE)
             }
-        },
-        schemeId = schemeViewModel.schemeId
+        }
     )
 }

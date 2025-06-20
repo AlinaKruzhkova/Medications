@@ -48,8 +48,7 @@ fun DrugChoiceContent(
     onSearchQueryChanged: (String) -> Unit,
     selectedDrugId: String?,
     onDrugSelected: (String) -> Unit,
-    selectedDrugName: String?,
-    schemeId: String?
+    selectedDrugName: String?
 ) {
     Box(
         modifier = Modifier
@@ -70,40 +69,40 @@ fun DrugChoiceContent(
                     .padding(top = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                BackButton(onClick = navigateBack)
-            .padding(16.dp)
-            .padding(top = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Заголовок 1
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            BackButton(
-                onClick = onNavigateBack
-            )
+                BackButton(onClick = onNavigateBack)
 
-                Text(
-                    text = stringResource(R.string.drug_choice),
-                    style = TextStyle(
-                        fontFamily = customFont,
-                        fontSize = 18.sp,
-                        color = DeepBurgundy,
-                        lineHeight = 24.sp
-                    ),
-                )
+                // Заголовок 1
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BackButton(
+                        onClick = onNavigateBack
+                    )
+
+                    Text(
+                        text = stringResource(R.string.drug_choice),
+                        style = TextStyle(
+                            fontFamily = customFont,
+                            fontSize = 18.sp,
+                            color = DeepBurgundy,
+                            lineHeight = 24.sp
+                        ),
+                    )
+
+
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-        // Поле ввода
-        SearchDrugField(
-            query = searchQuery,
-            onQueryChanged = onSearchQueryChanged
-        )
+            // Поле ввода
+            SearchDrugField(
+                query = searchQuery,
+                onQueryChanged = onSearchQueryChanged
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -118,34 +117,33 @@ fun DrugChoiceContent(
                     DrugCard(
                         drug = drugs[index].second,
                         showDescriptionAlways = false,
-                        onClick = { onDrugSelected(drugs[index].second.name) }
+                        onClick = { onDrugSelected(drugs[index].first) }
                     )
                 }
             }
 
-        Text(
-            text = when {
-                selectedDrugId.isNullOrEmpty() && searchQuery.isNullOrEmpty() -> "Вы ничего не выбрали"
-                selectedDrugId.isNullOrEmpty() -> "Вы выбрали: $searchQuery"
-                else -> "Вы выбрали: $selectedDrugName"
-            },
-            modifier = Modifier.padding(8.dp),
-            style = MaterialTheme.typography.labelLarge,
-            color = DeepBurgundy
-        )
+            Text(
+                text = when {
+                    selectedDrugId.isNullOrEmpty() && searchQuery.isNullOrEmpty() -> "Вы ничего не выбрали"
+                    selectedDrugId.isNullOrEmpty() -> "Вы выбрали: $searchQuery"
+                    else -> "Вы выбрали: $selectedDrugName"
+                },
+                modifier = Modifier.padding(8.dp),
+                style = MaterialTheme.typography.labelLarge,
+                color = DeepBurgundy
+            )
 
-        // Кнопка далее внизу экрана
-        NextButton(
-            onClick = onNavigateNext,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            isActive = selectedDrugId?.isNotEmpty() == true || searchQuery.isNotEmpty()
-        )
+            // Кнопка далее внизу экрана
+            NextButton(
+                onClick = onNavigateNext,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                isActive = selectedDrugId?.isNotEmpty() == true || searchQuery.isNotEmpty()
+            )
+        }
     }
 }
-
 
 //красивое поле ввода для списка лекарств
 @OptIn(ExperimentalMaterial3Api::class)
@@ -190,3 +188,5 @@ fun SearchDrugField(
 fun PreviewSearchUser() {
     SearchDrugField("") {}
 }
+
+

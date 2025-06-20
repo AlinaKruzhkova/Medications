@@ -130,7 +130,7 @@ fun HardFrequencyContent(
 
         // Показываем, если человек выбрал количество дней
         AnimatedVisibility(
-            visible = showIntakeCount || selectedOption == HardSelectedOption.DAYSOFWEEK,
+            visible = showIntakeCount,
             enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
         ) {
@@ -188,6 +188,32 @@ fun HardFrequencyContent(
             }
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        AnimatedVisibility(
+            visible = selectedOption == HardSelectedOption.DAYSOFWEEK,
+            enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
+            exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
+        ) {
+            Column {
+                Text(
+                    text = "Выберите количество приемов в день:",
+                    color = DeepBurgundy,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = customFont,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                Counter(
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    onNumberSelected = {
+                        onIntakeCountChanged(it)
+                    },
+                    range = 1..10
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
