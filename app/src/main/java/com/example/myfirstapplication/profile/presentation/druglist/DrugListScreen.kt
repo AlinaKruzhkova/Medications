@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.myfirstapplication.common.ui.BackButton
-import com.example.myfirstapplication.drug.presentation.customFont
+import com.example.myfirstapplication.menu.presentation.customFont
 import com.example.myfirstapplication.profile.presentation.viewmodel.DrugViewModel
 import com.example.myfirstapplication.scheme.presentation.screens.drugchoice.SearchDrugField
 import com.example.myfirstapplication.ui.theme.DeepBurgundy

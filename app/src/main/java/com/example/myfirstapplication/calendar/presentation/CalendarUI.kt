@@ -60,8 +60,7 @@ fun CalendarUI(
     onDateSelected: (LocalDate) -> Unit,
     weekOffset: Int,
     minSelectableDate: LocalDate = LocalDate.MIN,
-    onSwipeWeekChange: (Int) -> Unit,
-
+    onSwipeWeekChange: (Int) -> Unit
 ) {
     var swipeDirection by remember { mutableIntStateOf(0) }
 

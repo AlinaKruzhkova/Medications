@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.example.myfirstapplication.drug.presentation.customFont
+import com.example.myfirstapplication.menu.presentation.customFont
 import com.example.myfirstapplication.profile.domain.UserProfile
 import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.DeepBurgundy

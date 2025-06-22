@@ -12,4 +12,10 @@ interface SchemeRepository {
     suspend fun getCurrentSchemeId(): String?
     suspend fun setCurrentSchemeId(schemeId: String)
     suspend fun clearCurrentSchemeId()
+
+    // Получение активных схем
+    suspend fun getAllActiveSchemes(): List<Pair<String, UserDrugScheme>> {
+        return getUserSchemes()
+            .filter { (_, scheme) -> scheme.status == "active" }
+    }
 }

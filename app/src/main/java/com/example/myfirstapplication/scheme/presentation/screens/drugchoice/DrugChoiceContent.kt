@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.common.ui.NextButton
-import com.example.myfirstapplication.drug.presentation.customFont
+import com.example.myfirstapplication.menu.presentation.customFont
 import com.example.myfirstapplication.profile.domain.Drug
 import com.example.myfirstapplication.profile.presentation.druglist.DrugCard
 import com.example.myfirstapplication.ui.theme.DeepBurgundy

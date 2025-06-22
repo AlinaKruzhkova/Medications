@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drug.presentation
+package com.example.myfirstapplication.menu.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

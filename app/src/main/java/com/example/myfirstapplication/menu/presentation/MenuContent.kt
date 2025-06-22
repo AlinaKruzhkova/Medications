@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drug.presentation
+package com.example.myfirstapplication.menu.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,13 +25,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
+import com.example.myfirstapplication.profile.domain.Drug
+import com.example.myfirstapplication.scheme.domain.model.UserDrugScheme
 import com.example.myfirstapplication.ui.theme.Pink
 import com.example.myfirstapplication.ui.theme.Rose
 
 @Composable
 fun MenuContent(
     navigate: () -> Unit,
-    itemsList: List<String>
+    itemsList: List<Pair<String, UserDrugScheme>>,
+    drugs: List<Pair<String, Drug>>
 ) {
     Column(
         modifier = Modifier
@@ -81,10 +84,16 @@ fun MenuContent(
                 )
             ) {
                 items(itemsList.size) { index ->
+                    val scheme = itemsList[index].second
+                    val drugName = (scheme.customDrugName
+                        ?: drugs.find { it.first == scheme.drugId }?.second?.name).toString()
                     DrugCardUi(
-                        drugName = itemsList[index],
-                        dosageInfo = "Ежедневно",
-                        pillsLeft = 5,
+                        drugName = drugName,
+                        dosageInfo = if (itemsList[index].second.endDate == null) {
+                            "Бесконечно"
+                        } else "Дата окончания: ${itemsList[index].second.endDate}",
+                        pillsLeft = itemsList[index].second.numberOfPills,
+                        pillsNotification = itemsList[index].second.lowPillsNumber,
                         {}
                     )
                     Spacer(modifier = Modifier.height(8.dp))
