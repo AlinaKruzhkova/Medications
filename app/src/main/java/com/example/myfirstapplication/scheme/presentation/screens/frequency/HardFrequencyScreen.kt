@@ -5,9 +5,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.myfirstapplication.navigation.Graph
+import com.example.myfirstapplication.scheme.presentation.viewmodel.SchemeViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalTime
 
 
@@ -19,6 +23,8 @@ enum class HardSelectedOption {
 
 @Composable
 fun HardFrequencyScreen(navController: NavController) {
+    val viewModel = hiltViewModel<SchemeViewModel>()
+
     var selectedOption by remember { mutableStateOf(HardSelectedOption.NONE) }
     var selectedDays = remember { mutableStateListOf<Int>() }
 
@@ -26,9 +32,20 @@ fun HardFrequencyScreen(navController: NavController) {
     var startTime by remember { mutableStateOf<LocalTime?>(null) }
     var intakeCountPerDay by remember { mutableStateOf<Int?>(null) }
 
+    val scope = rememberCoroutineScope()
+
     HardFrequencyContent(
         navigate = {
-            // Передача данных — можно сохранить или передать в ViewModel
+
+            scope.launch {
+                viewModel.saveSchedule(
+                    times = null,
+                    daysOfWeek = selectedDays,
+                    intervalInMinutes = intervalInMinutes,
+                    startTime = startTime
+                )
+            }
+
             when {
                 selectedOption == HardSelectedOption.NONE -> {}
                 selectedOption == HardSelectedOption.INTERVAL && intervalInMinutes != null && intervalInMinutes!! < 24 * 60 -> navController.navigate(

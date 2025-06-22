@@ -14,7 +14,8 @@ data class UserDrugScheme(
 data class Schedule(
     val intervalInMinutes: Int? = null,
     val times: List<TimeDosage>? = null,
-    val daysOfWeek: List<Int>? = null
+    val daysOfWeek: List<Int>? = null,
+    val startTime: String? = null,
 )
 
 data class TimeDosage(

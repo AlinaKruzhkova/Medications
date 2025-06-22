@@ -19,6 +19,20 @@ fun CalendarScreen(navController: NavHostController) {
     val viewModel = hiltViewModel<CalendarViewModel>()
     val selectedDate by viewModel.selectedDate.collectAsState()
 
+    val list = listOf(
+        "12:00" to "Парацетамол",
+        "13:00" to "Ибупрофен",
+        "16:00" to "Нимесил",
+        "12:00" to "Цитрамон",
+        "21:24" to "Но-шпа",
+        "16:00" to "Анальгин",
+        "12:35" to "Амоксициллин",
+        "13:41" to "Супрастин"
+    )
+
+
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,5 +45,9 @@ fun CalendarScreen(navController: NavHostController) {
             weekOffset = viewModel.weekOffset,
             onSwipeWeekChange = viewModel::changeWeek,
         )
+
+        SheduleUI(data = list)
     }
 }
+
+

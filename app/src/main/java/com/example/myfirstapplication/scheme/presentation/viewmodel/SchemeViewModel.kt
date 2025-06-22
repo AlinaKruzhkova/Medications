@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -73,10 +74,12 @@ class SchemeViewModel @Inject constructor(
         savePartialUpdates()
     }
 
+
     suspend fun saveSchedule(
         times: List<TimeDosage>? = null,
         daysOfWeek: List<Int>? = null,
-        intervalInMinutes: Int? = null
+        intervalInMinutes: Int? = null,
+        startTime: LocalTime? = null
     ) {
         _currentScheme.update { current ->
             current.copy(
@@ -84,6 +87,7 @@ class SchemeViewModel @Inject constructor(
                     times = times,
                     daysOfWeek = daysOfWeek,
                     intervalInMinutes = intervalInMinutes,
+                    startTime = startTime?.toString()
                 ),
                 status = "schedule_selected"
             )
@@ -111,6 +115,7 @@ class SchemeViewModel @Inject constructor(
             savePartialUpdates()
         }
     }
+
 
     suspend fun finalize() {
         _currentScheme.update { it.copy(status = "active") }
