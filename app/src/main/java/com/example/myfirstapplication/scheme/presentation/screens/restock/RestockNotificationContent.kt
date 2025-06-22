@@ -1,6 +1,12 @@
 package com.example.myfirstapplication.scheme.presentation.screens.restock
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -41,7 +47,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
+import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.drug.presentation.customFont
+import com.example.myfirstapplication.scheme.presentation.screens.frequency.FrequencySelectedOption
 import com.example.myfirstapplication.ui.theme.DarkGreen
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Green
@@ -50,7 +58,8 @@ import com.example.myfirstapplication.ui.theme.Pink
 @Composable
 fun RestockNotificationContent(
     navigate: () -> Unit,
-    onDataSelected: (Triple<Int, Int, Boolean>) -> Unit,
+    onDataSelected: (Pair<Int, Int>?) -> Unit,
+    navigateBack: () -> Unit,
 ) {
 
     var numberOfPills: Int? by remember { mutableStateOf(null) }
@@ -64,6 +73,9 @@ fun RestockNotificationContent(
             .fillMaxSize()
             .background(Pink)
     ) {
+        BackButton(
+            onClick = navigateBack
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -71,6 +83,7 @@ fun RestockNotificationContent(
                 .padding(horizontal = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            
             Spacer(modifier = Modifier.height(36.dp))
 
             Image(
@@ -91,18 +104,30 @@ fun RestockNotificationContent(
 
             ReminderButton(
                 isChecked = isChecked,
-                onCheckedChange = { isChecked = it }
+                onCheckedChange = {
+                    isChecked = it
+                    numberOfPills = null
+                    lowNumberOfPills = null
+                }
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            AnimatedVisibility(
+                visible = isChecked,
+                enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
+                exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
+            ){
+                Spacer(modifier = Modifier.height(32.dp))
 
-            RestockFields { number, low ->
-                numberOfPills = number
-                lowNumberOfPills = low
+                RestockFields { number, low ->
+                    numberOfPills = number
+                    lowNumberOfPills = low
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
             }
-
-            Spacer(modifier = Modifier.height(32.dp))
         }
+
+
 
         // Кнопка внизу экрана
         Row(
@@ -123,7 +148,7 @@ fun RestockNotificationContent(
                         "Save clicked - values: $numberOfPills, $lowNumberOfPills, $isChecked",
                     )
                     if (allFieldsValid) {
-                        onDataSelected(Triple(numberOfPills!!, lowNumberOfPills!!, isChecked))
+                        onDataSelected(Pair(numberOfPills!!, lowNumberOfPills!!))
                         navigate()
                     } else {
                         Log.d(TAG, "Validation failed")
@@ -142,7 +167,8 @@ fun RestockNotificationContent(
 fun RestockNotificationContentPreview() {
     RestockNotificationContent(
         navigate = {},
-        onDataSelected = {}
+        onDataSelected = {},
+        navigateBack = {}
     )
 }
 

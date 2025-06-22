@@ -7,7 +7,6 @@ data class UserDrugScheme(
     val endDate: String? = null,
     val numberOfPills: Int? = null,
     val lowPillsNumber: Int? = null,
-    val isNotificationForPillsEnabled: Boolean? = null,
     val schedule: Schedule? = null,
     val status: String? = null
 )

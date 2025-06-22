@@ -92,15 +92,24 @@ class SchemeViewModel @Inject constructor(
     }
 
 
-    suspend fun savePillInfo(data: Triple<Int, Int, Boolean>) {
-        _currentScheme.update { current ->
-            current.copy(
-                numberOfPills = data.first,
-                lowPillsNumber = data.second,
-                isNotificationForPillsEnabled = data.third
-            )
+    suspend fun savePillInfo(data: Pair<Int, Int>?) {
+        if (data != null) {
+            _currentScheme.update { current ->
+                current.copy(
+                    numberOfPills = data.first,
+                    lowPillsNumber = data.second
+                )
+            }
+            savePartialUpdates()
+        } else {
+            _currentScheme.update { current ->
+                current.copy(
+                    numberOfPills = null,
+                    lowPillsNumber = null
+                )
+            }
+            savePartialUpdates()
         }
-        savePartialUpdates()
     }
 
     suspend fun finalize() {

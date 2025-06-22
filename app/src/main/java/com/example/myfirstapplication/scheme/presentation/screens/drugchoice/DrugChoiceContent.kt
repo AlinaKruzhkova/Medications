@@ -69,31 +69,19 @@ fun DrugChoiceContent(
                     .padding(top = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                BackButton(onClick = onNavigateBack)
+                BackButton(
+                    onClick = onNavigateBack
+                )
 
-                // Заголовок 1
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    BackButton(
-                        onClick = onNavigateBack
-                    )
-
-                    Text(
-                        text = stringResource(R.string.drug_choice),
-                        style = TextStyle(
-                            fontFamily = customFont,
-                            fontSize = 18.sp,
-                            color = DeepBurgundy,
-                            lineHeight = 24.sp
-                        ),
-                    )
-
-
-                }
+                Text(
+                    text = stringResource(R.string.drug_choice),
+                    style = TextStyle(
+                        fontFamily = customFont,
+                        fontSize = 18.sp,
+                        color = DeepBurgundy,
+                        lineHeight = 24.sp
+                    ),
+                )
             }
 
             Spacer(modifier = Modifier.height(12.dp))

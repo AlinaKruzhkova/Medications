@@ -21,6 +21,7 @@ fun RestockNotificationScreen(navController: NavController) {
                 schemeViewModel.savePillInfo(data)
                 schemeViewModel.finalize()
             }
-        }
+        },
+        navigateBack = { navController.popBackStack() }
     )
 }
