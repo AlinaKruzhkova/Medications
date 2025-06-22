@@ -1,6 +1,5 @@
 package com.example.myfirstapplication.scheme.presentation.screens.frequency
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -15,7 +14,7 @@ import java.time.LocalTime
 enum class HardSelectedOption {
     NONE,
     INTERVAL,
-    DAYSOFWEEK
+    DAYS_OF_WEEK
 }
 
 @Composable
@@ -30,24 +29,56 @@ fun HardFrequencyScreen(navController: NavController) {
     HardFrequencyContent(
         navigate = {
             // Передача данных — можно сохранить или передать в ViewModel
-            Log.d("DEBUG", "SelectedOption: $selectedOption")
-            Log.d("DEBUG", "IntervalMinutes: $intervalInMinutes")
-            Log.d("DEBUG", "StartTime: $startTime")
-            Log.d("DEBUG", "SelectedDaysOfWeek: $selectedDays")
-            Log.d("DEBUG", "IntakeCountPerDay: $intakeCountPerDay")
+            when {
+                selectedOption == HardSelectedOption.NONE -> {}
+                selectedOption == HardSelectedOption.INTERVAL && intervalInMinutes != null && intervalInMinutes!! < 24 * 60 -> navController.navigate(
+                    Graph.RESTOCK
+                )
 
-            navController.navigate(Graph.HOME)
+                selectedOption == HardSelectedOption.INTERVAL && intervalInMinutes != null && intervalInMinutes!! >= 24 * 60 -> navController.navigate(
+                    "${Graph.NOTIFICATION}/$intakeCountPerDay"
+                )
+
+                selectedOption == HardSelectedOption.DAYS_OF_WEEK -> navController.navigate("${Graph.NOTIFICATION}/$intakeCountPerDay")
+            }
         },
         navigateBack = { navController.popBackStack() },
         selectedOption = selectedOption,
-        onSelectedOption = { selectedOption = it },
+        onSelectedOption = {
+            selectedOption = it
+
+            when (it) {
+                HardSelectedOption.INTERVAL -> {
+                    selectedDays.clear()
+                    intakeCountPerDay = null
+                    startTime = null // если он есть, сбрасываем до выбора заново
+                }
+
+                HardSelectedOption.DAYS_OF_WEEK -> {
+                    intervalInMinutes = null
+                    startTime = null
+                }
+
+                else -> {}
+            }
+        },
         selectedDays = selectedDays,
         onSelectedDays = {
             selectedDays.clear()
             selectedDays.addAll(it)
         },
-        onIntervalChanged = { intervalInMinutes = it },
+        onIntervalChanged = {
+            intervalInMinutes = it
+
+            if (it != null && it < 24 * 60) {
+                intakeCountPerDay = null // Не показывать счетчик, если показываем время
+            } else if (it != null && it >= 24 * 60) {
+                startTime = null // Убираем время, если переключились на дни
+            }
+        },
         onStartTimeSelected = { startTime = it },
-        onIntakeCountChanged = { intakeCountPerDay = it }
+        onIntakeCountChanged = { intakeCountPerDay = it },
+        showCountPerDay = selectedOption == HardSelectedOption.INTERVAL && intervalInMinutes != null && intervalInMinutes!! >= 24 * 60,
+        showStartTime = selectedOption == HardSelectedOption.INTERVAL && intervalInMinutes != null && intervalInMinutes!! < 24 * 60
     )
 }

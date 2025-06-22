@@ -37,6 +37,7 @@ import com.example.myfirstapplication.scheme.presentation.screens.frequency.butt
 import com.example.myfirstapplication.scheme.presentation.screens.frequency.buttons.NotificationFieldUi
 import com.example.myfirstapplication.scheme.presentation.screens.frequency.buttons.SelectableButton
 import com.example.myfirstapplication.scheme.presentation.screens.notifications.TimePickerButton
+import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 import java.time.LocalTime
@@ -49,14 +50,15 @@ fun HardFrequencyContent(
     onSelectedOption: (HardSelectedOption) -> Unit,
     selectedDays: List<Int>,
     onSelectedDays: (List<Int>) -> Unit,
-
     onIntervalChanged: (Int?) -> Unit,
     onStartTimeSelected: (LocalTime?) -> Unit,
-    onIntakeCountChanged: (Int?) -> Unit
+    onIntakeCountChanged: (Int?) -> Unit,
+    showCountPerDay: Boolean,
+    showStartTime: Boolean
 ) {
     var intervalInMinutes by remember { mutableStateOf<Int?>(null) }
-    var showStartTime by remember { mutableStateOf(false) }
-    var showIntakeCount by remember { mutableStateOf(false) }
+    var intakeCount by remember { mutableStateOf<Int?>(null) }
+
 
     Column(
         modifier = Modifier
@@ -65,6 +67,8 @@ fun HardFrequencyContent(
             .padding(horizontal = 12.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        // Заголовок
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -75,7 +79,6 @@ fun HardFrequencyContent(
                 onClick = navigateBack
             )
 
-            // Заголовок
             Text(
                 text = stringResource(R.string.how_often),
                 color = DeepBurgundy,
@@ -108,9 +111,6 @@ fun HardFrequencyContent(
                 NotificationFieldUi { interval ->
                     intervalInMinutes = interval
                     onIntervalChanged(interval)
-
-                    showStartTime = interval != null && interval < 24 * 60
-                    showIntakeCount = interval != null && interval >= 24 * 60
                 }
             }
         }
@@ -118,8 +118,16 @@ fun HardFrequencyContent(
         // Показываем, если пользователь выбрал Интервал в часах
         AnimatedVisibility(visible = showStartTime) {
             Column {
+                Text(
+                    text = "Выбрать стартовое время:",
+                    color = DarkBurgundy,
+                    fontSize = 16.sp,
+                    fontFamily = customFont,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
                 TimePickerButton(
-                    initialTime = LocalTime.now(),
+                    initialTime = LocalTime.MIDNIGHT,
                     onTimeSelected = {
                         onStartTimeSelected(it)
                     }
@@ -127,30 +135,15 @@ fun HardFrequencyContent(
             }
         }
 
-
         // Показываем, если человек выбрал количество дней
         AnimatedVisibility(
-            visible = showIntakeCount,
+            visible = showCountPerDay,
             enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
         ) {
-            Column {
-                Text(
-                    text = "Выберите количество приемов в день:",
-                    color = DeepBurgundy,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = customFont,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-
-                Counter(
-                    modifier = Modifier.padding(bottom = 16.dp),
-                    onNumberSelected = {
-                        onIntakeCountChanged(it)
-                    },
-                    range = 1..10
-                )
+            IntakeCountBlock { count ->
+                intakeCount = count
+                onIntakeCountChanged(count)
             }
         }
 
@@ -159,14 +152,17 @@ fun HardFrequencyContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            isSelected = selectedOption == HardSelectedOption.DAYSOFWEEK,
-            onClick = { onSelectedOption(HardSelectedOption.DAYSOFWEEK) },
+            isSelected = selectedOption == HardSelectedOption.DAYS_OF_WEEK,
+            onClick = {
+                onSelectedOption(HardSelectedOption.DAYS_OF_WEEK)
+                intakeCount = null
+            },
             text = stringResource(R.string.days_of_week)
         )
 
         // Блок выбора дней недели
         AnimatedVisibility(
-            visible = selectedOption == HardSelectedOption.DAYSOFWEEK,
+            visible = selectedOption == HardSelectedOption.DAYS_OF_WEEK,
             enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
         ) {
@@ -191,36 +187,24 @@ fun HardFrequencyContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         AnimatedVisibility(
-            visible = selectedOption == HardSelectedOption.DAYSOFWEEK,
+            visible = selectedOption == HardSelectedOption.DAYS_OF_WEEK,
             enter = fadeIn(animationSpec = tween(durationMillis = 500)) + expandVertically(),
             exit = fadeOut(animationSpec = tween(durationMillis = 500)) + shrinkVertically()
         ) {
-            Column {
-                Text(
-                    text = "Выберите количество приемов в день:",
-                    color = DeepBurgundy,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = customFont,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
 
-                Counter(
-                    modifier = Modifier.padding(bottom = 16.dp),
-                    onNumberSelected = {
-                        onIntakeCountChanged(it)
-                    },
-                    range = 1..10
-                )
+            IntakeCountBlock { count ->
+                intakeCount = count
+                onIntakeCountChanged(count)
             }
+
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
         val isNextEnabled = when (selectedOption) {
             HardSelectedOption.NONE -> false
-            HardSelectedOption.INTERVAL -> true
-            HardSelectedOption.DAYSOFWEEK -> selectedDays.isNotEmpty()
+            HardSelectedOption.INTERVAL -> intervalInMinutes != null && (intakeCount != null || showStartTime)
+            HardSelectedOption.DAYS_OF_WEEK -> selectedDays.isNotEmpty() && intakeCount != null
         }
 
         //"Далее"
@@ -234,18 +218,40 @@ fun HardFrequencyContent(
     }
 }
 
+@Composable
+private fun IntakeCountBlock(onIntakeCountChanged: (Int?) -> Unit) {
+    Column {
+        Text(
+            text = "Выберите количество приемов в день:",
+            color = DeepBurgundy,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = customFont,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Counter(
+            modifier = Modifier.padding(bottom = 16.dp),
+            onNumberSelected = { onIntakeCountChanged(it) },
+            range = 1..10
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun HardFrequencyContentPreview() {
     HardFrequencyContent(
         navigate = {},
         navigateBack = {},
-        selectedOption = HardSelectedOption.DAYSOFWEEK,
+        selectedOption = HardSelectedOption.DAYS_OF_WEEK,
         onSelectedOption = {},
         selectedDays = listOf(1, 3, 5),
         onSelectedDays = {},
         onIntervalChanged = {},
         onStartTimeSelected = {},
-        onIntakeCountChanged = {}
+        onIntakeCountChanged = {},
+        showCountPerDay = true,
+        showStartTime = false
     )
 }

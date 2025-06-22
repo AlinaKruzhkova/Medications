@@ -142,6 +142,8 @@ class SchemeViewModel @Inject constructor(
         "status" to status
     )
 
+
+    // DatesChoice logic
     private fun calculateEndDate(startDate: String, daysCount: Int): String {
         return try {
             val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
@@ -154,4 +156,6 @@ class SchemeViewModel @Inject constructor(
             startDate // в случае ошибки возвращаем startDate
         }
     }
+
+    // HardFrequency logic
 }
