@@ -22,9 +22,8 @@ import com.example.myfirstapplication.ui.theme.GrayPink
 
 @Composable
 fun ScheduleUI(
-    data: List<Pair<String, String>>
+    data: List<Triple<String, String, Int?>>
 ) {
-    // Группируем лекарства по времени
     val groupedData = data.groupBy { it.first }.toSortedMap()
 
     Column(
@@ -49,17 +48,21 @@ fun ScheduleUI(
                 modifier = Modifier.padding(vertical = 16.dp)
             )
         } else {
-            groupedData.forEach { (time, medicines) ->
-                ScheduleItem(time, medicines.map { it.second })
+            groupedData.forEach { (time, items) ->
+                ScheduleItem(
+                    time = time,
+                    medicines = items.map { it.second to it.third }
+                )
             }
         }
     }
 }
 
+
 @Composable
 private fun ScheduleItem(
     time: String,
-    medicines: List<String>,
+    medicines: List<Pair<String, Int?>>,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -68,7 +71,6 @@ private fun ScheduleItem(
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Время с красивым оформлением
         Box(
             modifier = Modifier
                 .width(64.dp)
@@ -89,11 +91,11 @@ private fun ScheduleItem(
 
         Spacer(modifier = Modifier.width(12.dp))
 
-        // Список лекарств
         Column {
-            medicines.forEach { medicine ->
+            medicines.forEach { (name, dosage) ->
+                val dosageText = dosage?.let { " – $it ед" } ?: ""
                 Text(
-                    text = "• $medicine",
+                    text = "• $name$dosageText",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(vertical = 2.dp)

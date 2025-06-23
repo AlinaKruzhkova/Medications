@@ -1,9 +1,11 @@
 package com.example.myfirstapplication.calendar.presentation.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.mutableIntStateOf
 import com.example.myfirstapplication.core.BaseViewModel
 import com.example.myfirstapplication.core.RunAsync
 import com.example.myfirstapplication.profile.domain.DrugRepository
+import com.example.myfirstapplication.pushnotifications.ReminderScheduler
 import com.example.myfirstapplication.scheme.domain.SchemeRepository
 import com.example.myfirstapplication.scheme.domain.model.Schedule
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
@@ -43,8 +47,9 @@ class CalendarViewModel @Inject constructor(
     private val _selectedDate = MutableStateFlow(today)
     val selectedDate: StateFlow<LocalDate> = _selectedDate
 
-    private val _scheduleForDay = MutableStateFlow<List<Pair<String, String>>>(emptyList())
+    private val _scheduleForDay = MutableStateFlow<List<Triple<String, String, Int?>>>(emptyList())
     val scheduleForDay = _scheduleForDay.asStateFlow()
+
 
     val mondayThisWeek: LocalDate
         get() = today.minusDays((today.dayOfWeek.value - 1).toLong())
@@ -101,7 +106,7 @@ class CalendarViewModel @Inject constructor(
         runAsync(
             background = {
                 val schemes = schemeRepository.getAllActiveSchemes()
-                val results = mutableListOf<Pair<String, String>>()
+                val results = mutableListOf<Triple<String, String, Int?>>()
 
                 for ((_, scheme) in schemes) {
                     val schedule = scheme.schedule ?: continue
@@ -116,13 +121,16 @@ class CalendarViewModel @Inject constructor(
                     val drugName = scheme.customDrugName ?: drugsMap[scheme.drugId] ?: "Препарат"
 
                     val times =
-                        schedule.times?.mapNotNull { it.time?.let { time -> time to drugName } }
+                        schedule.times?.mapNotNull { timeDosage ->
+                            val time = timeDosage.time ?: return@mapNotNull null
+                            Triple(time, drugName, timeDosage.dosage)
+                        }
                             ?: generateTimesForDateFromInterval(
                                 schedule,
                                 scheme.startDate ?: continue,
                                 date
                             )
-                                ?.map { it to drugName }
+                                ?.map { time -> Triple(time, drugName, null) }
                             ?: continue
 
                     results += times
@@ -149,4 +157,139 @@ class CalendarViewModel @Inject constructor(
         return (date.dayOfWeek.value + 6) % 7
     }
 
+
+    fun scheduleNotificationsForDate(context: Context, date: LocalDate) {
+        val reminderScheduler = ReminderScheduler(context)
+
+        runAsync(
+            background = {
+                val drugsMap = _drugMap.value
+                val schemes = schemeRepository.getAllActiveSchemes()
+                val notificationList = mutableListOf<Triple<String, String, Int?>>()
+
+                for ((_, scheme) in schemes) {
+                    val schedule = scheme.schedule ?: continue
+
+                    val start = scheme.startDate
+                    val end = scheme.endDate
+                    if (start != null && end != null && !isDateInRange(date, start, end)) continue
+
+                    val dayOfWeek = getDayOfWeek(date)
+                    if (schedule.daysOfWeek != null && !schedule.daysOfWeek.contains(dayOfWeek)) continue
+
+                    val drugName = scheme.customDrugName ?: drugsMap[scheme.drugId] ?: "Препарат"
+
+                    val times = schedule.times?.mapNotNull { td ->
+                        td.time?.let { Triple(it, drugName, td.dosage) }
+                    } ?: generateTimesForDateFromInterval(
+                        schedule,
+                        scheme.startDate ?: continue,
+                        date
+                    )
+                        ?.map { Triple(it, drugName, null) }
+                    ?: continue
+
+                    notificationList += times
+                }
+
+                notificationList
+            },
+            uiBlock = { times ->
+                times.forEachIndexed { index, (timeStr, drugName, dosage) ->
+                    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+                    val localTime = LocalTime.parse(timeStr, formatter)
+                    val dateTime = date.atTime(localTime)
+
+                    val msg = if (dosage != null)
+                        "Примите $drugName: $dosage ед."
+                    else
+                        "Пора принять $drugName"
+
+                    reminderScheduler.scheduleReminder(
+                        dateTime = dateTime,
+                        title = "Напоминание",
+                        message = msg,
+                        requestCode = (date.toString() + timeStr).hashCode() + index
+                    )
+                }
+            }
+        )
+    }
+
+    fun scheduleAllNotifications(context: Context) {
+        val reminderScheduler = ReminderScheduler(context)
+
+        runAsync(
+            background = {
+                val drugsMap = _drugMap.value
+                val schemes = schemeRepository.getAllActiveSchemes()
+                val allNotifications = mutableListOf<Triple<LocalDateTime, String, Int>>()
+
+                val dateFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+                val today = LocalDate.now()
+                val daysAhead = 14 // Можно увеличить по желанию
+
+                for (offset in 0 until daysAhead) {
+                    val date = today.plusDays(offset.toLong())
+
+                    for ((_, scheme) in schemes) {
+                        val schedule = scheme.schedule ?: continue
+
+                        val start = scheme.startDate
+                        val end = scheme.endDate
+                        if (start != null && end != null && !isDateInRange(
+                                date,
+                                start,
+                                end
+                            )
+                        ) continue
+
+                        val dayOfWeek = getDayOfWeek(date)
+                        if (schedule.daysOfWeek != null && !schedule.daysOfWeek.contains(dayOfWeek)) continue
+
+                        val drugName =
+                            scheme.customDrugName ?: drugsMap[scheme.drugId] ?: "Препарат"
+
+                        val times = schedule.times?.mapNotNull { td ->
+                            td.time?.let { Triple(it, drugName, td.dosage) }
+                        } ?: generateTimesForDateFromInterval(
+                            schedule,
+                            scheme.startDate ?: continue,
+                            date
+                        )
+                            ?.map { Triple(it, drugName, null) }
+                        ?: continue
+
+                        times.forEachIndexed { index, (timeStr, name, dosage) ->
+                            val localTime = LocalTime.parse(timeStr, dateFormatter)
+                            val dateTime = date.atTime(localTime)
+                            val message =
+                                dosage?.let { "Примите $name: $it ед." } ?: "Пора принять $name"
+
+                            allNotifications.add(
+                                Triple(
+                                    dateTime,
+                                    message,
+                                    (date.toString() + timeStr).hashCode() + index
+                                )
+                            )
+                        }
+                    }
+                }
+
+                allNotifications
+            },
+            uiBlock = { notifications ->
+                notifications.forEach { (dateTime, message, requestCode) ->
+                    reminderScheduler.scheduleReminder(
+                        dateTime = dateTime,
+                        title = "Напоминание",
+                        message = message,
+                        requestCode = requestCode
+                    )
+                }
+            }
+        )
+    }
 }
