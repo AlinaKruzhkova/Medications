@@ -2,7 +2,6 @@ package com.example.myfirstapplication.scheme.presentation.viewmodel
 
 import com.example.myfirstapplication.core.BaseViewModel
 import com.example.myfirstapplication.core.RunAsync
-import com.example.myfirstapplication.scheme.data.mapper.SchemeMapper
 import com.example.myfirstapplication.scheme.domain.SchemeRepository
 import com.example.myfirstapplication.scheme.domain.model.Schedule
 import com.example.myfirstapplication.scheme.domain.model.TimeDosage
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -19,7 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SchemeViewModel @Inject constructor(
     private val repository: SchemeRepository,
-    private val schemeMapper: SchemeMapper,
     runAsync: RunAsync
 ) : BaseViewModel(runAsync) {
 
@@ -43,11 +42,32 @@ class SchemeViewModel @Inject constructor(
                     }
                 }
             },
-            uiBlock = {}
+            uiBlock = {
+
+            }
         )
     }
 
-    var schemeId: String? = null
+    fun softDeleteScheme(schemeId: String) {
+        runAsync(
+            background = {
+                repository.markSchemeAsDeleted(schemeId)
+            },
+            uiBlock = {
+            }
+        )
+    }
+
+    fun hardDeleteScheme(schemeId: String) {
+        runAsync(
+            background = {
+                repository.permanentlyDeleteScheme(schemeId)
+            },
+            uiBlock = {
+                // Можно показать уведомление об успешном удалении
+            }
+        )
+    }
 
     suspend fun saveDrugSelection(drugId: String?, customName: String?) {
         _currentScheme.update {
@@ -73,17 +93,20 @@ class SchemeViewModel @Inject constructor(
         savePartialUpdates()
     }
 
+
     suspend fun saveSchedule(
         times: List<TimeDosage>? = null,
         daysOfWeek: List<Int>? = null,
-        intervalInMinutes: Int? = null
+        intervalInMinutes: Int? = null,
+        startTime: LocalTime? = null
     ) {
         _currentScheme.update { current ->
             current.copy(
                 schedule = Schedule(
-                    times = times,
-                    daysOfWeek = daysOfWeek,
-                    intervalInMinutes = intervalInMinutes,
+                    times = times ?: current.schedule?.times,
+                    daysOfWeek = daysOfWeek ?: current.schedule?.daysOfWeek,
+                    intervalInMinutes = intervalInMinutes ?: current.schedule?.intervalInMinutes,
+                    startTime = startTime?.toString() ?: current.schedule?.startTime
                 ),
                 status = "schedule_selected"
             )
@@ -111,6 +134,7 @@ class SchemeViewModel @Inject constructor(
             savePartialUpdates()
         }
     }
+
 
     suspend fun finalize() {
         _currentScheme.update { it.copy(status = "active") }
@@ -156,6 +180,4 @@ class SchemeViewModel @Inject constructor(
             startDate // в случае ошибки возвращаем startDate
         }
     }
-
-    // HardFrequency logic
 }

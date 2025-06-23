@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,8 +62,7 @@ fun CalendarUI(
     onDateSelected: (LocalDate) -> Unit,
     weekOffset: Int,
     minSelectableDate: LocalDate = LocalDate.MIN,
-    onSwipeWeekChange: (Int) -> Unit,
-
+    onSwipeWeekChange: (Int) -> Unit
 ) {
     var swipeDirection by remember { mutableIntStateOf(0) }
 
@@ -86,6 +87,9 @@ fun CalendarUI(
             }
     ) {
         MonthAndYearRow(selectedDate)
+
+        Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+
         CalendarBody(
             days = days,
             selectedDate = selectedDate,

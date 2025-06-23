@@ -2,6 +2,7 @@ package com.example.myfirstapplication.profile.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myfirstapplication.core.RunAsync
 import com.example.myfirstapplication.profile.domain.Drug
 import com.example.myfirstapplication.profile.domain.DrugRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DrugViewModel @Inject constructor(
-    private val drugRepository: DrugRepository
+    private val drugRepository: DrugRepository,
+    runAsync: RunAsync
 ) : ViewModel() {
 
     private val _allDrugs = mutableListOf<Pair<String, Drug>>() // исходный список
@@ -53,7 +55,6 @@ class DrugViewModel @Inject constructor(
             .map { it.trim().lowercase() }
             .distinct()
             .sorted()
-
         _forms.value = normalized
     }
 

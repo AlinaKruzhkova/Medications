@@ -2,9 +2,12 @@ package com.example.myfirstapplication.calendar.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,6 +21,11 @@ import com.example.myfirstapplication.ui.theme.Pink
 fun CalendarScreen(navController: NavHostController) {
     val viewModel = hiltViewModel<CalendarViewModel>()
     val selectedDate by viewModel.selectedDate.collectAsState()
+    val schedule by viewModel.scheduleForDay.collectAsState()
+
+    LaunchedEffect(selectedDate) {
+        viewModel.loadScheduleForSelectedDate()
+    }
 
     Column(
         modifier = Modifier
@@ -31,5 +39,9 @@ fun CalendarScreen(navController: NavHostController) {
             weekOffset = viewModel.weekOffset,
             onSwipeWeekChange = viewModel::changeWeek,
         )
+
+        Spacer(modifier = Modifier.height(18.dp))
+
+        ScheduleUI(data = schedule)
     }
 }

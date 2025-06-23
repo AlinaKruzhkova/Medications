@@ -1,4 +1,4 @@
-package com.example.myfirstapplication.drug.presentation
+package com.example.myfirstapplication.menu.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
+import com.example.myfirstapplication.ui.theme.Burgundy
 import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.DeepBurgundy
 import com.example.myfirstapplication.ui.theme.Green
@@ -49,7 +50,8 @@ val customFont = FontFamily(
 fun DrugCardUi(
     drugName: String,
     dosageInfo: String,
-    pillsLeft: Int,
+    pillsLeft: Int?,
+    pillsNotification: Int?,
     onDelete: () -> Unit
 ) {
     var visible by remember { mutableStateOf(false) }
@@ -71,7 +73,7 @@ fun DrugCardUi(
                 .padding(8.dp)
         ) {
             DrugAndDays(drugName, dosageInfo, onDelete)
-            PillsLeftCard(pillsLeft)
+            PillsLeftCard(pillsLeft, pillsNotification)
         }
     }
 }
@@ -130,19 +132,30 @@ fun DrugAndDays(
 }
 
 @Composable
-fun PillsLeftCard(pillsLeft: Int) {
-    Box(
-        modifier = Modifier
-            .padding(start = 16.dp)
-            .background(color = Green, shape = RoundedCornerShape(32.dp))
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
-        Text(
-            text = getPillsLeftText(pillsLeft),
-            color = Color.White,
-            fontSize = 12.sp,
-            fontFamily = customFont
-        )
+fun PillsLeftCard(pillsLeft: Int?, pillsNotification: Int?) {
+    if (pillsLeft != null && pillsNotification != null) {
+
+        val isLowPills = pillsLeft <= pillsNotification
+        val backgroundColor = if (pillsLeft <= pillsNotification) Burgundy else Green
+
+        Box(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .background(
+                    color = backgroundColor,
+                    shape = RoundedCornerShape(32.dp)
+                )
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = if (isLowPills) "${getPillsLeftText(pillsLeft)}!!!" else getPillsLeftText(
+                    pillsLeft
+                ),
+                color = Color.White,
+                fontSize = 12.sp,
+                fontFamily = customFont
+            )
+        }
     }
 }
 
@@ -168,6 +181,7 @@ fun DrugCardUiPreview() {
         drugName = "АбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбакталАбактал АбакталАбакталАбакталАбактал АбакталАбакталАбактал АбакталАбактал АбакталАбактал АбакталАбактал АбакталАбактал",
         dosageInfo = "Ежедневно",
         pillsLeft = 121,
+        pillsNotification = 12,
         onDelete = { /* handle delete */ }
     )
 }

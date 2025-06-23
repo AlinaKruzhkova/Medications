@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.myfirstapplication.formchoice.FormChoiceScreen
 import com.example.myfirstapplication.login.presentation.LoginScreenInner
+import com.example.myfirstapplication.profile.presentation.deletedschemes.DeletedSchemesScreen
 import com.example.myfirstapplication.profile.presentation.druglist.DrugListScreen
 import com.example.myfirstapplication.scheme.presentation.screens.dateschoice.DatesChoiceScreen
 import com.example.myfirstapplication.scheme.presentation.screens.drugchoice.DrugChoiceScreen
@@ -86,10 +87,14 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(route = Graph.RESTOCK) {
             RestockNotificationScreen(navController)
         }
+        composable(route = Graph.DELETED_SHEMES) {
+            DeletedSchemesScreen(navController)
+        }
     }
 }
 
 object Graph {
+    const val DELETED_SHEMES = "deleted_scheme_screen"
     const val HOME = "home_screen"
     const val LOGIN = "login_screen"
     const val DRUG_LIST = "drug_list_screen"

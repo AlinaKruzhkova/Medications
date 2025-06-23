@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.common.ui.BackButton
 import com.example.myfirstapplication.common.ui.NextButton
-import com.example.myfirstapplication.drug.presentation.customFont
+import com.example.myfirstapplication.menu.presentation.customFont
 import com.example.myfirstapplication.scheme.presentation.screens.dateschoice.buttons.Counter
 import com.example.myfirstapplication.scheme.presentation.screens.frequency.buttons.DaysOfWeekSelectorUi
 import com.example.myfirstapplication.scheme.presentation.screens.frequency.buttons.NotificationFieldUi

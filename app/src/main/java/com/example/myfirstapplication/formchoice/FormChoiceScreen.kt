@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContentResolverCompat.query
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.myfirstapplication.navigation.Graph
@@ -22,7 +21,7 @@ fun FormChoiceScreen(navController: NavController) {
         navigate = {
             val chosenForm = selectedForm ?: query
             navController.navigate(Graph.DRUG_CHOICE)
-                   },
+        },
         navigateBack = { navController.popBackStack() },
         forms = forms,
         query = query,

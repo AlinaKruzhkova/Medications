@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.myfirstapplication.calendar.presentation.CalendarScreen
-import com.example.myfirstapplication.drug.presentation.MenuScreen
+import com.example.myfirstapplication.menu.presentation.MenuScreen
 import com.example.myfirstapplication.profile.presentation.ProfileScreen
 
 @Composable

@@ -17,6 +17,14 @@ class BaseDrugRepository @Inject constructor(
         }
     }
 
+    override suspend fun getDrugById(id: String): Drug? {
+        return try {
+            myDrug.drugById(id)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     override suspend fun getAllDrugs(): List<Pair<String, Drug>> {
         return myDrug.allDrugs()
     }
