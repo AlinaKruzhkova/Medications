@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,17 +21,11 @@ import com.example.myfirstapplication.ui.theme.Pink
 fun CalendarScreen(navController: NavHostController) {
     val viewModel = hiltViewModel<CalendarViewModel>()
     val selectedDate by viewModel.selectedDate.collectAsState()
+    val schedule by viewModel.scheduleForDay.collectAsState()
 
-    val list = listOf(
-        "12:00" to "Парацетамол",
-        "13:00" to "Ибупрофен",
-        "16:00" to "Нимесил",
-        "12:00" to "Цитрамон",
-        "21:24" to "Но-шпа",
-        "16:00" to "Анальгин",
-        "12:35" to "Амоксициллин",
-        "13:41" to "Супрастин"
-    )
+    LaunchedEffect(selectedDate) {
+        viewModel.loadScheduleForSelectedDate()
+    }
 
     Column(
         modifier = Modifier
@@ -47,8 +42,6 @@ fun CalendarScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(18.dp))
 
-        ScheduleUI(data = list)
+        ScheduleUI(data = schedule)
     }
 }
-
-

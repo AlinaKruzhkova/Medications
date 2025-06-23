@@ -27,4 +27,6 @@ interface SchemeRepository {
 
     suspend fun markSchemeAsDeleted(schemeId: String)
     suspend fun permanentlyDeleteScheme(schemeId: String)
+
+
 }
