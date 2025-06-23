@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.DateRange
+import com.example.myfirstapplication.R
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Search
@@ -25,6 +25,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -103,7 +105,7 @@ fun ProfileContent(
         ProfileActionButton(
             navigate = navigateToDeletedSchemesScreen,
             text = "Удаленные схемы",
-            imageVector = Icons.Default.DateRange
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_delete)
         )
 
         ProfileActionButton(
@@ -112,11 +114,11 @@ fun ProfileContent(
             imageVector = Icons.Default.Favorite
         )
 
-        ProfileActionButton(
-            navigate = {},
-            text = "Поддержка",
-            imageVector = Icons.Default.Phone
-        )
+//        ProfileActionButton(
+//            navigate = {},
+//            text = "Поддержка",
+//            imageVector = Icons.Default.Phone
+//        )
 
     }
 }

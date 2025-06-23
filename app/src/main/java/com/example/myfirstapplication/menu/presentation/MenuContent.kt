@@ -31,6 +31,9 @@ import com.example.myfirstapplication.scheme.domain.model.UserDrugScheme
 import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 import com.example.myfirstapplication.ui.theme.Rose
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun MenuContent(
@@ -79,7 +82,12 @@ fun MenuContent(
         ) {
 
             if (itemsList.isEmpty()) {
-                Text("Схем пока нет!", color = DarkBurgundy, fontSize = 16.sp)
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Схем пока нет!", color = DarkBurgundy, fontSize = 16.sp, fontFamily = customFont)
+                }
             }
 
             //  Прокручиваемый список элементов

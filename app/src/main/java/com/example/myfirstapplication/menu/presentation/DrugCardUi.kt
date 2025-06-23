@@ -161,10 +161,10 @@ fun PillsLeftCard(pillsLeft: Int?, pillsNotification: Int?) {
 
 fun getPillsLeftText(count: Int): String {
     val noun = when {
-        count % 100 in 11..14 -> "таблеток"
-        count % 10 == 1 -> "таблетка"
-        count % 10 in 2..4 -> "таблетки"
-        else -> "таблеток"
+        count % 100 in 11..14 -> "единиц"
+        count % 10 == 1 -> "единица"
+        count % 10 in 2..4 -> "единицы"
+        else -> "единиц"
     }
 
     val verb = if (count % 10 == 1 && count % 100 != 11) "Осталась" else "Осталось"
