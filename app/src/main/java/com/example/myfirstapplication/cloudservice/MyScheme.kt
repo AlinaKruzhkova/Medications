@@ -8,11 +8,13 @@ interface MyScheme {
 
     suspend fun uploadScheme(scheme: UserDrugScheme): String
 
-    suspend fun deleteScheme(schemeId: String)
-
     suspend fun updateScheme(schemeId: String, scheme: UserDrugScheme)
 
     suspend fun updatePartialFields(string: String, map: Map<String, Any?>)
+
+    suspend fun markSchemeAsDeleted(schemeId: String)
+
+    suspend fun permanentlyDeleteScheme(schemeId: String)
 
     class Base @Inject constructor(
         private val service: Service,
@@ -30,13 +32,6 @@ interface MyScheme {
             return service.postFirstLevel(
                 path = "users/${myUser.id()}/schemes",
                 obj = scheme
-            )
-        }
-
-        override suspend fun deleteScheme(schemeId: String) {
-            service.remove(
-                path = "users/${myUser.id()}/schemes",
-                child = schemeId
             )
         }
 
@@ -62,6 +57,22 @@ interface MyScheme {
                     fieldValue = value
                 )
             }
+        }
+
+        override suspend fun markSchemeAsDeleted(schemeId: String) {
+            service.updateField(
+                path = "users/${myUser.id()}/schemes",
+                child = schemeId,
+                fieldId = "status",
+                fieldValue = "deleted"
+            )
+        }
+
+        override suspend fun permanentlyDeleteScheme(schemeId: String) {
+            service.remove(
+                path = "users/${myUser.id()}/schemes",
+                child = schemeId
+            )
         }
     }
 }

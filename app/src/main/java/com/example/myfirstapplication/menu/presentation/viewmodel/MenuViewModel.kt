@@ -18,8 +18,13 @@ class MenuViewModel @Inject constructor(
     private val _schemesState = MutableStateFlow<List<Pair<String, UserDrugScheme>>>(emptyList())
     val schemesState = _schemesState.asStateFlow()
 
+    private val _deletedSchemesState =
+        MutableStateFlow<List<Pair<String, UserDrugScheme>>>(emptyList())
+    val deletedSchemesState = _deletedSchemesState.asStateFlow()
+
     init {
         loadAllActiveSchemes()
+        loadAllDeletedSchemes()
     }
 
     private fun loadAllActiveSchemes() {
@@ -32,5 +37,21 @@ class MenuViewModel @Inject constructor(
                 _schemesState.value = schemes
             }
         )
+    }
+
+    private fun loadAllDeletedSchemes() {
+        runAsync(
+            background = {
+                val schemes = repository.getAllDeletedSchemes()
+                return@runAsync schemes
+            },
+            uiBlock = { schemes ->
+                _deletedSchemesState.value = schemes
+            }
+        )
+    }
+
+    fun refreshSchemes() {
+        loadAllActiveSchemes()
     }
 }

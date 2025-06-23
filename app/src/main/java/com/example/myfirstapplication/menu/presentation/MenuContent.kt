@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.myfirstapplication.R
 import com.example.myfirstapplication.profile.domain.Drug
 import com.example.myfirstapplication.scheme.domain.model.UserDrugScheme
+import com.example.myfirstapplication.ui.theme.DarkBurgundy
 import com.example.myfirstapplication.ui.theme.Pink
 import com.example.myfirstapplication.ui.theme.Rose
 
@@ -34,7 +36,8 @@ import com.example.myfirstapplication.ui.theme.Rose
 fun MenuContent(
     navigate: () -> Unit,
     itemsList: List<Pair<String, UserDrugScheme>>,
-    drugs: List<Pair<String, Drug>>
+    drugs: List<Pair<String, Drug>>,
+    onDelete: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -74,6 +77,11 @@ fun MenuContent(
                 .weight(1f) // Занимает оставшееся пространство
                 .fillMaxWidth()
         ) {
+
+            if (itemsList.isEmpty()) {
+                Text("Схем пока нет!", color = DarkBurgundy, fontSize = 16.sp)
+            }
+
             //  Прокручиваемый список элементов
             LazyColumn(
                 modifier = Modifier
@@ -85,16 +93,17 @@ fun MenuContent(
             ) {
                 items(itemsList.size) { index ->
                     val scheme = itemsList[index].second
-                    val drugName = (scheme.customDrugName
-                        ?: drugs.find { it.first == scheme.drugId }?.second?.name).toString()
+                    val drugMap = remember(drugs) { drugs.toMap() }
+                    val drugName = (scheme.customDrugName ?: drugMap[scheme.drugId]?.name).orEmpty()
+
                     DrugCardUi(
                         drugName = drugName,
-                        dosageInfo = if (itemsList[index].second.endDate == null) {
+                        dosageInfo = if (scheme.endDate == null) {
                             "Бесконечно"
-                        } else "Дата окончания: ${itemsList[index].second.endDate}",
-                        pillsLeft = itemsList[index].second.numberOfPills,
-                        pillsNotification = itemsList[index].second.lowPillsNumber,
-                        {}
+                        } else "Дата окончания: ${scheme.endDate}",
+                        pillsLeft = scheme.numberOfPills,
+                        pillsNotification = scheme.lowPillsNumber,
+                        onDelete = { onDelete(itemsList[index].first) }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }

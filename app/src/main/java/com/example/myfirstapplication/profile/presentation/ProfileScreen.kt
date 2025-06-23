@@ -21,6 +21,9 @@ fun ProfileScreen(navController: NavController) {
         },
         navigateToDrugListScreen = {
             navController.navigate(Graph.DRUG_LIST)
+        },
+        navigateToDeletedSchemesScreen = {
+            navController.navigate(Graph.DELETED_SHEMES)
         }
     )
 

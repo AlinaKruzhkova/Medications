@@ -18,4 +18,13 @@ interface SchemeRepository {
         return getUserSchemes()
             .filter { (_, scheme) -> scheme.status == "active" }
     }
+
+    // Получение неактивных схем
+    suspend fun getAllDeletedSchemes(): List<Pair<String, UserDrugScheme>> {
+        return getUserSchemes()
+            .filter { (_, scheme) -> scheme.status == "deleted" }
+    }
+
+    suspend fun markSchemeAsDeleted(schemeId: String)
+    suspend fun permanentlyDeleteScheme(schemeId: String)
 }

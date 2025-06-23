@@ -2,7 +2,6 @@ package com.example.myfirstapplication.scheme.presentation.viewmodel
 
 import com.example.myfirstapplication.core.BaseViewModel
 import com.example.myfirstapplication.core.RunAsync
-import com.example.myfirstapplication.scheme.data.mapper.SchemeMapper
 import com.example.myfirstapplication.scheme.domain.SchemeRepository
 import com.example.myfirstapplication.scheme.domain.model.Schedule
 import com.example.myfirstapplication.scheme.domain.model.TimeDosage
@@ -20,7 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SchemeViewModel @Inject constructor(
     private val repository: SchemeRepository,
-    private val schemeMapper: SchemeMapper,
     runAsync: RunAsync
 ) : BaseViewModel(runAsync) {
 
@@ -44,12 +42,32 @@ class SchemeViewModel @Inject constructor(
                     }
                 }
             },
-            uiBlock = {}
+            uiBlock = {
+
+            }
         )
     }
 
+    fun softDeleteScheme(schemeId: String) {
+        runAsync(
+            background = {
+                repository.markSchemeAsDeleted(schemeId)
+            },
+            uiBlock = {
+            }
+        )
+    }
 
-    var schemeId: String? = null
+    fun hardDeleteScheme(schemeId: String) {
+        runAsync(
+            background = {
+                repository.permanentlyDeleteScheme(schemeId)
+            },
+            uiBlock = {
+                // Можно показать уведомление об успешном удалении
+            }
+        )
+    }
 
     suspend fun saveDrugSelection(drugId: String?, customName: String?) {
         _currentScheme.update {
@@ -85,10 +103,10 @@ class SchemeViewModel @Inject constructor(
         _currentScheme.update { current ->
             current.copy(
                 schedule = Schedule(
-                    times = times,
-                    daysOfWeek = daysOfWeek,
-                    intervalInMinutes = intervalInMinutes,
-                    startTime = startTime?.toString()
+                    times = times ?: current.schedule?.times,
+                    daysOfWeek = daysOfWeek ?: current.schedule?.daysOfWeek,
+                    intervalInMinutes = intervalInMinutes ?: current.schedule?.intervalInMinutes,
+                    startTime = startTime?.toString() ?: current.schedule?.startTime
                 ),
                 status = "schedule_selected"
             )
@@ -162,6 +180,4 @@ class SchemeViewModel @Inject constructor(
             startDate // в случае ошибки возвращаем startDate
         }
     }
-
-    // HardFrequency logic
 }

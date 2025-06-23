@@ -43,6 +43,7 @@ fun ProfileContent(
     user: UserProfile,
     logout: () -> Unit,
     navigateToDrugListScreen: () -> Unit,
+    navigateToDeletedSchemesScreen: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -100,8 +101,8 @@ fun ProfileContent(
         )
 
         ProfileActionButton(
-            navigate = {},
-            text = "Схемы лечения",
+            navigate = navigateToDeletedSchemesScreen,
+            text = "Удаленные схемы",
             imageVector = Icons.Default.DateRange
         )
 
@@ -132,5 +133,6 @@ fun ProfileContentPreview() {
         ),
         logout = {},
         navigateToDrugListScreen = {},
+        navigateToDeletedSchemesScreen = {},
     )
 }

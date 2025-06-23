@@ -47,4 +47,12 @@ class BaseSchemeRepository @Inject constructor(
     override suspend fun clearCurrentSchemeId() {
         prefs.edit().remove("current_scheme_id").apply()
     }
+
+    override suspend fun markSchemeAsDeleted(schemeId: String) {
+        myScheme.markSchemeAsDeleted(schemeId)
+    }
+
+    override suspend fun permanentlyDeleteScheme(schemeId: String) {
+        myScheme.permanentlyDeleteScheme(schemeId)
+    }
 }

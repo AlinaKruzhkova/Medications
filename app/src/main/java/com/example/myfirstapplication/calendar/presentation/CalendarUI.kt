@@ -27,6 +27,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -85,6 +87,9 @@ fun CalendarUI(
             }
     ) {
         MonthAndYearRow(selectedDate)
+
+        Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+
         CalendarBody(
             days = days,
             selectedDate = selectedDate,
