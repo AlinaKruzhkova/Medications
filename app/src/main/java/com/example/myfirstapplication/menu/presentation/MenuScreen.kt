@@ -32,9 +32,17 @@ fun MenuScreen(navController: NavController) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        checkAndRequestExactAlarmPermission(context)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            if (!alarmManager.canScheduleExactAlarms()) {
+                checkAndRequestExactAlarmPermission(context)
+                return@LaunchedEffect
+            }
+        }
+
         calendarViewModel.scheduleAllNotifications(context)
     }
+
 
     MenuContent(
         navigate = {
