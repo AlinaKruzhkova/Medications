@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">My First Application</string>
+    <string name="app_name">Мои лекарства</string>
     <string name="registration_text">Войти с помощью Google</string>
     <string name="authorization_text">У меня уже есть профиль</string>
     <string name="next_text">Далее</string>
